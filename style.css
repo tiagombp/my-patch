@@ -1,0 +1,8 @@
+
+
+body {
+
+    background-color: hsl(200, 80%, 30%);
+    background-image: radial-gradient(hsl(200, 80%, 30%), hsl(210, 80%, 20%));
+
+}
