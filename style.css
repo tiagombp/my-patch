@@ -2,7 +2,33 @@
 
 body {
 
-    background-color: hsl(200, 80%, 30%);
-    background-image: radial-gradient(hsl(200, 80%, 30%), hsl(210, 80%, 20%));
+    --first-color: hsl(200, 80%, 30%);
+    --second-color: hsl(210, 69%, 43%);
 
+    background-color: hsl(200, 80%, 30%);
+    background-image: radial-gradient(var(--first-color), var(--second-color));
+    min-height: 100vh; /* so the gradient fills the screen */
+
+    color: white;
+
+    /*animation: gradient 1s infinite;*/
+
+}
+
+@keyframes gradient {
+
+    from {
+
+        --first-color: hsl(200, 80%, 30%);
+        --second-color: hsl(210, 80%, 20%);
+
+    }
+
+    to {
+
+        --second-color: hsl(200, 80%, 30%);
+        --first-color: hsl(210, 80%, 20%);
+
+    }
+    
 }
