@@ -1,17 +1,69 @@
 
+* {
+    box-sizing: border-box;
+}
 
 body {
 
     --first-color: hsl(200, 80%, 30%);
     --second-color: hsl(210, 69%, 43%);
 
-    background-color: hsl(200, 80%, 30%);
-    background-image: radial-gradient(var(--first-color), var(--second-color));
-    min-height: 100vh; /* so the gradient fills the screen */
+    margin: 0;
 
-    color: white;
+    background-color: #333;
+    /*background-image: radial-gradient(var(--first-color), var(--second-color));*/
+    height: 100vh; /* so the gradient fills the screen */
+
+    color: #333;
 
     /*animation: gradient 1s infinite;*/
+
+}
+
+header {
+
+    margin: 0 2rem;
+    height: 2rem;
+    color: white;
+
+}
+
+header nav {
+    height: 100%;
+}
+
+header ul {
+
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    margin: 0;
+    align-items: center;
+    justify-content: space-around;
+
+
+}
+
+.grid {
+
+    height: 160px;
+
+}
+
+main {
+
+    margin: 2rem;
+    margin-top: 0;
+    background-color: #f4f4f4;
+    height: calc(100vh - 4rem);
+    padding: 2rem;
+    border-radius: 0 5rem 0 0;
+
+}
+
+h1 {
+
+    max-width: 300px;
 
 }
 
