@@ -1,3 +1,10 @@
+:root {
+
+    --header-height: 3rem;
+    --cell-size: 10px;
+
+}
+
 
 * {
     box-sizing: border-box;
@@ -20,11 +27,12 @@ body {
 
 }
 
-header {
+header, footer {
 
     margin: 0 2rem;
-    height: 2rem;
-    color: white;
+    height: var(--header-height);
+    color: whitesmoke;
+    font-size: 12px;
 
 }
 
@@ -44,18 +52,27 @@ header ul {
 
 }
 
-.grid {
+footer {
 
-    height: 160px;
+    display: flex;
+    align-items: center;
+
+}
+
+.grid-container {
+
+    height: calc(8 * var(--cell-size));
+    outline: 1px solid tomato;
+    background: /*repeating-linear-gradient(to right,  #333, #333 20px, white 20px, white 40px);*/
+                linear-gradient(to right, cyan, orange, hotpink);
 
 }
 
 main {
 
-    margin: 2rem;
-    margin-top: 0;
+    margin: 0 2rem;
     background-color: #f4f4f4;
-    height: calc(100vh - 4rem);
+    height: calc(100vh - 2 * var(--header-height));
     padding: 2rem;
     border-radius: 0 5rem 0 0;
 
