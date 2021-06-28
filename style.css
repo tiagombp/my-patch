@@ -2,6 +2,8 @@
 
     --header-height: 3rem;
     --cell-size: 10px;
+    --almost-white: #f4f4f4;
+
 
 }
 
@@ -31,7 +33,7 @@ header, footer {
 
     margin: 0 2rem;
     height: var(--header-height);
-    color: whitesmoke;
+    color: var(--almost-white);
     font-size: 12px;
 
 }
@@ -59,21 +61,10 @@ footer {
 
 }
 
-.grid-container {
-
-    height: calc(8 * var(--cell-size));
-    outline: 1px solid tomato;
-    background: /*repeating-linear-gradient(to right,  #333, #333 20px, white 20px, white 40px);*/
-                linear-gradient(to right, cyan, orange, hotpink);
-
-    display: flex;
-
-}
-
 main {
 
     margin: 0 2rem;
-    background-color: #f4f4f4;
+    background-color: var(--almost-white);
     height: calc(100vh - 2 * var(--header-height));
     padding: 2rem;
     border-radius: 0 5rem 0 0;
@@ -108,8 +99,15 @@ h1 {
 
 .grid-container {
 
+    height: calc(8 * var(--cell-size));
+    /*background: /*repeating-linear-gradient(to right,  #333, #333 20px, white 20px, white 40px);*/
+                /*linear-gradient(to right, cyan, orange, hotpink);*/
+    background-color: #333;/*var(--almost-white);*/
+
+    display: flex;
+
     width: calc( 80 * var(--cell-size));
-    perspective: 100px;
+    perspective: 700px;
 
 }
 
@@ -129,11 +127,11 @@ h1 {
 
     height: 10px;
     width: 10px;
-    /*border: 1px solid black;*/
+    border: 1px solid white;
     flex-shrink: 0;
     position: relative;
     z-index: 1;
-    background-color: white;
+    background-color: var(--almost-white);
     transform-style: preserve-3d;
     transform-origin: center center;
 

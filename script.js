@@ -102,10 +102,65 @@ const js = {
 
             })
 
+            const anim = new gsap.timeline({paused: true})
+                //  .to('.grid--cell', {
+
+                //     borderColor : "#efefef"
+
+                //  })
+                 .to('.phrase0', {
+
+                    //rotationX: -90,
+                    z: -1000,
+                    //scale: 0,
+                    //opacity: 0,
+
+                    stagger: {
+                        grid: "auto",
+                        from: "edges",
+                        each: 0.075
+                        }
+
+                 }, '+=.5')
+                 .to('.phrase0', {
+
+                    z : 0,
+                    //rotationX: 0,
+                    //scale: 0,
+                    //opacity: 1,
+
+                    stagger: {
+                        grid: "auto",
+                        from: "edges",
+                        each: 0.025
+                        }
+
+                 }, '+=3')
+
+                 .to('.phrase1', {
+
+                    rotationX: -90,
+                    //scale: 0,
+                    //opacity: 0,
+
+                    stagger: {
+                        grid: "auto",
+                        from: "start",
+                        each: 0.075
+                        }
+
+                 }, '+=.5')
+            
+            anim.play();
+
+
+            
+
 
         }
 
     },
+
 
     data : {
 
@@ -144,8 +199,6 @@ const js = {
 
             js.grid.mark_cells();
 
-            anim.play();
-
         }
     }
 
@@ -153,9 +206,4 @@ const js = {
 
 js.ctrl.init();
 
-const anim = gsap.timeline({paused: true})
-                 .to('.phrase0', {
 
-                    rotationX: -90
-
-                 });
