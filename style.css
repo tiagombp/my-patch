@@ -108,6 +108,9 @@ h1 {
 
 .grid-container {
 
+    width: calc( 80 * var(--cell-size));
+    perspective: 100px;
+
 }
 
 .grid--letter {
@@ -126,13 +129,25 @@ h1 {
 
     height: 10px;
     width: 10px;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    background-color: white;
+    transform-style: preserve-3d;
+    transform-origin: center center;
 
 }
 
-.phrase0 {
+.phrase0, .phrase1 {
 
-    background-color : rebeccapurple;
+    position: relative;
+    z-index: 1;
 
 }
+
+/*.phrase0 {
+
+    background-color: tomato;
+
+}*/

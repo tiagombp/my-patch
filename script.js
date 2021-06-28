@@ -8,8 +8,9 @@ const js = {
 
     phrases : [
 
-        'Hi there',
-        'I am Tiago'
+        'hi there',
+        'i am tiago'
+        // make it work with capital letters to, later
 
     ],
 
@@ -143,9 +144,18 @@ const js = {
 
             js.grid.mark_cells();
 
+            anim.play();
+
         }
     }
 
 }
 
 js.ctrl.init();
+
+const anim = gsap.timeline({paused: true})
+                 .to('.phrase0', {
+
+                    rotationX: -90
+
+                 });
