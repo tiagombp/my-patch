@@ -116,14 +116,16 @@ h1 {
     flex-wrap: wrap;
     width: calc( 8 * var(--cell-size));
     outline: 1px solid lavender;
+    flex-grow: 0;
+    flex-shrink: 0;
 
 }
 
 .grid--cell {
 
 
-    height: 8px;
-    width: 8px;
+    height: 10px;
+    width: 10px;
     border: 1px solid black;
     flex-shrink: 0;
 

@@ -29,10 +29,7 @@ const js = {
 
                 cont.appendChild(new_div);
 
-
             }
-
-
 
         },
 
@@ -52,29 +49,51 @@ const js = {
 
                 letters.forEach((letter,i) => {
 
+                    const first_cell = div_letters[i].querySelector('.grid--cell');
+
+                    if (first_cell) div_letters[i].classList.add('has-cells');
+
                     //if (i > js.params.nof_letters) continue;
 
                     const letter_positions = js.data.raw[letter.toLowerCase()];
 
                     for (let n = 0; n <= 63; n++) {
 
-                        console.log(letter, i, n);
+                        //console.log(letter, i, n);
 
-                        const new_cell = document.createElement('div');
+                        let current_cell;
 
-                        new_cell.classList.add('grid--cell');
+                        const was_empty_div_letter = !div_letters[i].classList.contains('has-cells');
+
+                        if (!was_empty_div_letter) {
+
+                            current_cell = div_letters[i].querySelector('[data-cell-no="' + n + '"]');
+
+                        } else {
+
+                            current_cell = document.createElement('div');
+                            current_cell.classList.add('grid--cell');
+                            current_cell.dataset['cellNo'] = n;
+
+                        }
 
                         if ( js.data.raw.hasOwnProperty(letter) ) {
 
                             if ( letter_positions.includes(n)) {
 
-                                new_cell.classList.add('phrase' + i_phrase);
+                                current_cell.classList.add('phrase' + i_phrase);
 
                             } 
 
                         }
+
+                        if (was_empty_div_letter) {
+
+                            div_letters[i].appendChild(current_cell);
+
+                        }
                         
-                        div_letters[i].appendChild(new_cell);
+                        
 
                     }
 
