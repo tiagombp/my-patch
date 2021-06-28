@@ -66,6 +66,8 @@ footer {
     background: /*repeating-linear-gradient(to right,  #333, #333 20px, white 20px, white 40px);*/
                 linear-gradient(to right, cyan, orange, hotpink);
 
+    display: flex;
+
 }
 
 main {
@@ -100,4 +102,35 @@ h1 {
 
     }
     
+}
+
+/* GRID CELLS */
+
+.grid-container {
+
+}
+
+.grid--letter {
+
+    display: flex;
+    flex-wrap: wrap;
+    width: calc( 8 * var(--cell-size));
+    outline: 1px solid lavender;
+
+}
+
+.grid--cell {
+
+
+    height: 8px;
+    width: 8px;
+    border: 1px solid black;
+    flex-shrink: 0;
+
+}
+
+.phrase0 {
+
+    background-color : rebeccapurple;
+
 }
