@@ -111,20 +111,22 @@ const js = {
                  .to('.phrase0', {
 
                     //rotationX: -90,
-                    z: -1000,
+                    z: 0,
+                    backgroundColor: "#333",
                     //scale: 0,
                     //opacity: 0,
 
                     stagger: {
                         grid: "auto",
-                        from: "edges",
+                        from: "start",
                         each: 0.075
                         }
 
                  }, '+=.5')
                  .to('.phrase0', {
 
-                    z : 0,
+                    z : -1000,
+                    backgroundColor: "transparent",
                     //rotationX: 0,
                     //scale: 0,
                     //opacity: 1,
@@ -139,7 +141,8 @@ const js = {
 
                  .to('.phrase1', {
 
-                    rotationX: -90,
+                    z: 0,
+                    backgroundColor: "#333",
                     //scale: 0,
                     //opacity: 0,
 
@@ -150,8 +153,60 @@ const js = {
                         }
 
                  }, '+=.5')
+
+            const anim2 = new gsap.timeline({paused: true})
+            //  .to('.grid--cell', {
+
+            //     borderColor : "#efefef"
+
+            //  })
+            .to('.phrase0', {
+
+                //rotationX: -90,
+                rotationY: 180,
+                backgroundColor: "#333",
+                //scale: 0,
+                //opacity: 0,
+
+                stagger: {
+                    grid: "auto",
+                    from: "start",
+                    each: 0.075
+                    }
+
+            }, '+=.5')
+            .to('.phrase0', {
+
+                rotationY: 0,
+                backgroundColor: "transparent",
+                //rotationX: 0,
+                //scale: 0,
+                //opacity: 1,
+
+                stagger: {
+                    grid: "auto",
+                    from: "end",
+                    each: 0.02
+                    }
+
+            }, '+=2')
+
+            .to('.phrase1', {
+
+                rotationY: 180,
+                backgroundColor: "#333",
+                //scale: 0,
+                //opacity: 0,
+
+                stagger: {
+                    grid: "auto",
+                    from: "start",
+                    each: 0.075
+                    }
+
+            }, '+=.5')
             
-            anim.play();
+            anim2.play();
 
 
             

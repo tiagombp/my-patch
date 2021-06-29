@@ -102,12 +102,13 @@ h1 {
     height: calc(8 * var(--cell-size));
     /*background: /*repeating-linear-gradient(to right,  #333, #333 20px, white 20px, white 40px);*/
                 /*linear-gradient(to right, cyan, orange, hotpink);*/
-    background-color: #333;/*var(--almost-white);*/
+    background-color: var(--almost-white);
 
     display: flex;
 
     width: calc( 80 * var(--cell-size));
     perspective: 700px;
+    margin-left: calc( -2 * var(--cell-size));
 
 }
 
@@ -116,7 +117,7 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     width: calc( 8 * var(--cell-size));
-    outline: 1px solid lavender;
+    /*outline: 1px solid lavender;*/
     flex-grow: 0;
     flex-shrink: 0;
 
@@ -124,14 +125,14 @@ h1 {
 
 .grid--cell {
 
-
+    /*transform: translateZ(-1000px);*/
     height: 10px;
     width: 10px;
-    border: 1px solid white;
+    /*border: 1px solid white;*/
     flex-shrink: 0;
     position: relative;
     z-index: 1;
-    background-color: var(--almost-white);
+    background-color: tranparent;
     transform-style: preserve-3d;
     transform-origin: center center;
 
@@ -141,6 +142,12 @@ h1 {
 
     position: relative;
     z-index: 1;
+
+}
+
+.phrase1 {
+
+    z-index: 2;
 
 }
 
