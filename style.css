@@ -3,6 +3,7 @@
     --header-height: 3rem;
     --cell-size: 10px;
     --almost-white: #f4f4f4;
+    --dark: #353c52;
 
 
 }
@@ -19,11 +20,11 @@ body {
 
     margin: 0;
 
-    background-color: #333;
+    background-color: var(--dark);
     /*background-image: radial-gradient(var(--first-color), var(--second-color));*/
     height: 100vh; /* so the gradient fills the screen */
 
-    color: #333;
+    color: var(--dark);
 
     /*animation: gradient 1s infinite;*/
 
@@ -100,7 +101,7 @@ h1 {
 .grid-container {
 
     height: calc(8 * var(--cell-size));
-    /*background: /*repeating-linear-gradient(to right,  #333, #333 20px, white 20px, white 40px);*/
+    /*background: /*repeating-linear-gradient(to right,  var(--dark), var(--dark) 20px, white 20px, white 40px);*/
                 /*linear-gradient(to right, cyan, orange, hotpink);*/
     background-color: var(--almost-white);
 

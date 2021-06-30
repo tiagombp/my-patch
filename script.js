@@ -14,6 +14,25 @@ const js = {
 
     ],
 
+    utils : {
+
+        nof_pixels : function(word) {
+
+            console.log(word.length);
+
+            let sum = 0;
+            
+            for (letter of word) {
+                if (letter == " ") continue
+                sum += js.data.raw[letter].length;
+            }
+            
+            return sum 
+
+        }
+
+    },
+
     grid : {
 
         ref : '.grid-container',
