@@ -81,8 +81,9 @@ svg {
 rect[data-color] { 
     
     stroke : black;
+    stroke-width: 3;
     transform-origin: center center;
-    transition : all.25s;
+    transition : all .25s;
     /*fill-opacity: .6;*/
     /* combinado com background-color: olivedrab no svg deu um efeito interessante!;*/
 
