@@ -33,23 +33,69 @@ const js = {
 
     },
 
+    treemap : {
+
+        prepare : function() {
+
+            console.log('Prepare');
+
+            const data = {
+                
+                children : js.data.random
+
+            };
+
+            console.log(data);
+
+            js.data.root = d3.treemap()
+              .tile(d3.treemapBinary)
+              .size([1000, 600])
+              .round(true)
+              (d3.hierarchy(data).sum(d => d))
+
+        },
+
+        draw : function() {
+
+            const root = js.data.root;
+
+            const svg = d3.select("svg");
+
+            const leaf = svg.selectAll("g")
+                .data(root.leaves())
+                .join("g")
+                .attr("transform", d => `translate(${d.x0},${d.y0})`);
+
+            leaf.append("rect")
+                .attr("fill", "hotpink")
+                .attr("stroke", "khaki")
+                .attr("fill-opacity", 0.6)
+                .attr("width", d => d.x1 - d.x0)
+                .attr("height", d => d.y1 - d.y0);
+
+        }
+
+
+
+    },
+
     grid : {
 
         ref : '.grid-container',
 
         init : function() {
 
-            const cont = document.querySelector(this.ref);
+            //const cont = document.querySelector(this.ref);
 
-            for (let i = 1; i<=js.params.nof_letters; i++) {
+            // for (let i = 1; i<=js.params.nof_letters; i++) {
 
-                const new_div = document.createElement('div');
+            //     const new_div = document.createElement('div');
 
-                new_div.classList.add('grid--letter');
+            //     new_div.classList.add('grid--letter');
 
-                cont.appendChild(new_div);
+            //     cont.appendChild(new_div);
 
-            }
+            // }
 
         },
 
@@ -240,16 +286,23 @@ const js = {
 
         raw : null,
 
+        random : [],
+
         load : function() {
 
             fetch('./prep/grid.json')
               .then(response => response.json())
               .then(data => js.ctrl.after_data(data));
 
+        },
 
+        create : function() {
 
+            for (let i = 0; i < 800; i++) {
 
+                js.data.random.push(Math.round(Math.random() * 100));
 
+            }
 
         }
 
@@ -259,19 +312,26 @@ const js = {
 
         init : function() {
 
-            js.grid.init();
+            //js.grid.init();
 
-            js.data.load();
+            //js.data.load();
+
+            js.data.create();
+
+            js.ctrl.after_data();
 
         },
 
         after_data : function(data) {
 
-            js.data.raw = data;
+            js.treemap.prepare();
+            js.treemap.draw();
 
-            console.log('Hi there');
+            //js.data.raw = data;
 
-            js.grid.mark_cells();
+            //console.log('Hi there');
+
+            //js.grid.mark_cells();
 
         }
     }
