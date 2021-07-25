@@ -67,9 +67,11 @@ const js = {
                 .attr("transform", d => `translate(${d.x0},${d.y0})`);
 
             leaf.append("rect")
-                .attr("fill", "hotpink")
-                .attr("stroke", "khaki")
-                .attr("fill-opacity", 0.6)
+                .attr('data-id', (d,i) => i)
+                .attr('data-color', (d,i) => `color${(i % 5) + 1}`)
+                //.attr("fill", "hotpink")
+                //.attr("stroke", "khaki")
+                //.attr("fill-opacity", 0.6)
                 .attr("width", d => d.x1 - d.x0)
                 .attr("height", d => d.y1 - d.y0);
 

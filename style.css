@@ -5,8 +5,16 @@
     --almost-white: #f4f4f4;
     --dark: #353c52;
 
+    --color1 : #BF2C62;
+    --color2 : #F6E2DF; 
+    --color3 : #F2A007; 
+    --color4 : #D95407; 
+    --color5 : #1E5693;
 
 }
+
+/* --- themes --- */
+
 
 
 * {
@@ -28,3 +36,20 @@ svg {
     border: 2px solid tomato;
 
 }
+
+/* --- tiles --- */
+
+rect[data-color] { 
+    
+    stroke : black;
+    transform-origin: center center;
+    transition : transform .25s;
+    fill-opacity: .6;
+
+}
+
+rect[data-color="color1"] { fill : var(--color1); }
+rect[data-color="color2"] { fill : var(--color2); }
+rect[data-color="color3"] { fill : var(--color3); }
+rect[data-color="color4"] { fill : var(--color4); }
+rect[data-color="color5"] { fill : var(--color5); }
