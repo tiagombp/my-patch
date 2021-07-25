@@ -4,7 +4,11 @@ Claiming a small patch of the web for myself. Hopefully this will be the home of
 
 ![](img/interoperable_shrink_vmtvx6.png)
 
+Borda de 2px? 4px (dá um efeito legal nas cores do Santuário)?
 
 ### Inspirations
 
 https://www.behance.net/gallery/117432271/Marco-Polo-Festivals-Web
+
+Santuário
+
