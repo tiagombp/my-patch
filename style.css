@@ -6,7 +6,7 @@
     --dark: #353c52;
 
     --color1 : #BF2C62;
-    --color2 : #F6E2DF; 
+    --color2 : #F6E2DF;/*F5EFEB;/*/
     --color3 : #F2A007; 
     --color4 : #D95407; 
     --color5 : #1E5693;
@@ -14,6 +14,47 @@
 }
 
 /* --- themes --- */
+
+[data-theme="camuflagem"] {
+
+    /* Color Theme Swatches in Hex */
+    --color1: #112719; 
+    --color2: #26BDAC; 
+    --color3: #0B126B; 
+    --color4: #1A5CC6; 
+    --color5: #4E6655; 
+
+}
+
+[data-theme="santuario"] {
+
+    --color1: #0D05F2;
+    --color2: #1B6DFD;
+    --color3: #030A8C;
+    --color4: #9DF0FF;
+    --color5: #161A59;
+
+}
+
+[data-theme="desenho-dodo"] {
+
+    --color1: #F2E205;
+    --color2: #F2CB05;
+    --color3: #F2B705;
+    --color4: #734B1A;
+    --color5: #F27272; 
+
+}
+
+[data-theme="andorinhas2"] {
+
+    --color1: #BF2C62; 
+    --color2: #F2B707; 
+    --color3: #F2A007; 
+    --color4: #D95407; 
+    --color5: #D9564A;
+
+}
 
 
 
@@ -32,8 +73,6 @@ svg {
     position: fixed;
     width: 100vw;
     height: 100vh;
-    background-color: olivedrab;
-    border: 2px solid tomato;
 
 }
 
@@ -43,8 +82,9 @@ rect[data-color] {
     
     stroke : black;
     transform-origin: center center;
-    transition : transform .25s;
-    fill-opacity: .6;
+    transition : all.25s;
+    /*fill-opacity: .6;*/
+    /* combinado com background-color: olivedrab no svg deu um efeito interessante!;*/
 
 }
 
