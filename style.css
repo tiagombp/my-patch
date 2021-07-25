@@ -68,7 +68,7 @@ body {
 
 }
 
-svg {
+div.container {
 
     position: fixed;
     width: 100vw;
@@ -78,10 +78,12 @@ svg {
 
 /* --- tiles --- */
 
-rect[data-color] { 
-    
-    stroke : black;
-    stroke-width: 3;
+.rect[data-color] { 
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    border : 2px solid black;
     transform-origin: center center;
     transition : all .25s;
     /*fill-opacity: .6;*/
@@ -89,8 +91,8 @@ rect[data-color] {
 
 }
 
-rect[data-color="color1"] { fill : var(--color1); }
-rect[data-color="color2"] { fill : var(--color2); }
-rect[data-color="color3"] { fill : var(--color3); }
-rect[data-color="color4"] { fill : var(--color4); }
-rect[data-color="color5"] { fill : var(--color5); }
+.rect[data-color="color1"] { background-color : var(--color1); }
+.rect[data-color="color2"] { background-color : var(--color2); }
+.rect[data-color="color3"] { background-color : var(--color3); }
+.rect[data-color="color4"] { background-color : var(--color4); }
+.rect[data-color="color5"] { background-color : var(--color5); }

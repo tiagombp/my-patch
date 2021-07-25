@@ -59,21 +59,24 @@ const js = {
 
             const root = js.data.root;
 
-            const svg = d3.select("svg");
+            const svg = d3.select(".container");
 
-            const leaf = svg.selectAll("g")
+            const leaf = svg.selectAll("div.rect")
                 .data(root.leaves())
-                .join("g")
-                .attr("transform", d => `translate(${d.x0},${d.y0})`);
-
-            leaf.append("rect")
+                .join("div")
+                .classed('rect', true)
+                .style("transform", d => `translate(${d.x0}px,${d.y0}px)`)
                 .attr('data-id', (d,i) => i)
                 .attr('data-color', (d,i) => `color${(i % 5) + 1}`)
                 //.attr("fill", "hotpink")
                 //.attr("stroke", "khaki")
                 //.attr("fill-opacity", 0.6)
-                .attr("width", d => d.x1 - d.x0)
-                .attr("height", d => d.y1 - d.y0);
+                .style("width", d => (d.x1 - d.x0) + 'px')
+                .style("height", d => (d.y1 - d.y0) + 'px');
+
+            /* document.querySelectorAll('[data-color="color1"]').forEach(div => {
+                let current_transform = div.style.transform.slice(0,-9);
+                div.style.transform = current_transform + 'scale(1)'; }) */
 
         }
 
