@@ -56,6 +56,26 @@
 
 }
 
+/* -- theme selector -- */
+
+.theme-selector {
+
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+
+}
+
+.theme-selector select {
+
+    border-radius: 20px;
+    padding: 2px 5px;
+
+
+
+}
+
 
 
 * {
@@ -83,7 +103,7 @@ div.container {
     position: absolute;
     top: 0;
     left: 0;
-    border : 4px solid black;
+    border : 3px solid black;
     transform-origin: center center;
     transition : all .25s;
     /*fill-opacity: .6;*/

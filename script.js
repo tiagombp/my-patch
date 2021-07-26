@@ -9,7 +9,9 @@ const js = {
     phrases : [
 
         'hi there',
-        'i am tiago'
+        'i am tiago',
+        'i like...'
+
         // make it work with capital letters to, later
 
     ],
@@ -31,6 +33,36 @@ const js = {
 
         }
 
+    },
+
+    interactions : {
+
+        theme : {
+
+            ref : '.theme-selector select',
+
+            container_ref : '.container',
+
+            monitor_change : () => {
+
+                const sel = document.querySelector(js.interactions.theme.ref);
+
+                sel.addEventListener('change', js.interactions.theme.update);
+
+            },
+
+            update : (e) => {
+
+                console.log(e.target.value);
+
+                const ref = js.interactions.theme.container_ref;
+                const option = e.target.value;
+
+                document.querySelector(ref).dataset.theme = option;
+
+            }
+
+        }
     },
 
     treemap : {
@@ -81,13 +113,6 @@ const js = {
         }
 
     },
-
-    // interacoes : {
-
-    //     theme : { // document.querySelector('.container').dataset.theme = "santuario" }
-
-
-    // },
 
     grid : {
 
@@ -324,7 +349,7 @@ const js = {
 
             //js.grid.init();
 
-            //js.data.load();
+            js.data.load();
 
             js.data.create();
 
@@ -337,7 +362,9 @@ const js = {
             js.treemap.prepare();
             js.treemap.draw();
 
-            //js.data.raw = data;
+            js.data.raw = data;
+
+            js.interactions.theme.monitor_change();
 
             //console.log('Hi there');
 
