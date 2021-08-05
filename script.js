@@ -16,6 +16,22 @@ const js = {
 
     ],
 
+    sizings : {
+
+        // will be set by .set()
+        h : null,
+        w : null,
+
+        set : function() {
+
+            this.h = window.innerHeight;
+            this.w = window.innerWidth;
+
+        }
+
+
+    },
+
     utils : {
 
         nof_pixels : function(word) {
@@ -79,9 +95,12 @@ const js = {
 
             console.log(data);
 
+            const w = js.sizings.w;
+            const h = js.sizings.h;
+
             js.data.root = d3.treemap()
               .tile(d3.treemapBinary)
-              .size([1000, 600])
+              .size([w, h])
               .round(true)
               (d3.hierarchy(data).sum(d => d))
 
@@ -203,6 +222,16 @@ const js = {
             })
 
             const anim = new gsap.timeline({paused: true})
+
+            // gsap.to('[data-id]', {scale: 0,
+
+            //     stagger: {
+            //         from: "center",
+            //         amount: 2
+            //         }
+
+            //  });
+
                 //  .to('.grid--cell', {
 
                 //     borderColor : "#efefef"
@@ -352,6 +381,8 @@ const js = {
             js.data.load();
 
             js.data.create();
+
+            js.sizings.set();
 
             js.ctrl.after_data();
 
