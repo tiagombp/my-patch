@@ -345,6 +345,10 @@ const js = {
 
     },
 
+    anims : {
+        //let els = d3.selectAll('[data-color]').transition().duration(1000).delay((d,i)=>50+i*25).style('transform', 'translate(800px,0px) scale(0)')
+    },
+
 
     data : {
 
