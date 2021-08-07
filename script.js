@@ -140,8 +140,8 @@ const js = {
 
         compute_position: function(step) {
 
-            const ch = js.params.ch;
-            const sq = js.params.sq;
+            const ch = js.params.ch; 
+            const sq = js.params.sq; // nof squares in each letter side -- 8
             const l  = js.params.l;
 
             const last_index = ch * ch;
@@ -206,9 +206,11 @@ const js = {
                 'p2' : p2
             }
 
+            let general_index = 0;
+
             // a function to evaluate the positions for a given reference
 
-            function evaluate_positions(ref) {
+            function evaluate_positions_and_move(ref) {
 
                 let phrase_positions = [];
 
@@ -219,6 +221,8 @@ const js = {
                 console.log(p);
 
                 let n = 0;
+
+                let y_desloc = ref == "p2" ? (l * (ch + 1) ) : 0;
 
                 // for each letter of the phrase
 
@@ -231,16 +235,31 @@ const js = {
                         letter = letter.toLowerCase();
     
                         let this_letter_positions = js.data.letters[letter];
-    
-                        if (n >= 1) {
-        
-                            this_letter_positions = this_letter_positions.map(d => d + (n * last_index));
-        
+
+                        for (pos of this_letter_positions) {
+
+                            let current_square = d3.select('[data-id="' + general_index + '"]');
+
+                            let x = ( ( (pos % ch)) * l ) + (n * l * ch) + x0;
+                            let y = ( Math.floor( pos / ch ) * l ) + y_desloc + y0;
+
+                            console.log(pos, x, y);
+
+                            current_square
+                                .transition()
+                                .duration(200)
+                                .style('opacity', 1)
+                                .style('width', l + 'px')
+                                .style('height', l + 'px')
+                                .style('background-color', 'yellow')
+                                .style('transform', `translate(${x}px,${y}px)`);
+
+                            general_index++;
                         }
     
                         //console.log(n, n*last_index, this_letter_positions);
         
-                        phrase_positions = phrase_positions.concat(this_letter_positions);
+                        // phrase_positions = phrase_positions.concat(this_letter_positions);
 
                         //console.log(phrase_positions);
     
@@ -256,8 +275,10 @@ const js = {
 
             // now evalutate the positions for the phrases
 
-            if (p1) evaluate_positions('p1');
-            if (p2) evaluate_positions('p2');
+            console.log(x0, y0, sq, l);
+
+            if (p1) evaluate_positions_and_move('p1');
+            if (p2) evaluate_positions_and_move('p2');
 
             // for (ref of ["p1", "p2"]) {
             // }
