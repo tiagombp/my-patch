@@ -45,7 +45,7 @@ const js = {
             
             for (letter of word) {
                 if (letter == " ") continue
-                sum += js.data.raw[letter].length;
+                sum += js.data.letters[letter].length;
             }
             
             return sum 
@@ -144,11 +144,16 @@ const js = {
             const sq = js.params.sq;
             const l  = js.params.l;
 
+            const last_index = ch * ch;
+    
+
             const st = js.steps[step];
 
             p1 = st.phrase1;
             p2 = st.phrase2;
             dr = st.drawing;
+
+            // overall width and height
 
             let height = 0;
 
@@ -166,23 +171,141 @@ const js = {
             let w_screen = js.sizings.w;
             let h_screen = js.sizings.h;
 
+            // initial positions in pixels
+
             const x0 = (w_screen - width)  / 2;
             const y0 = (h_screen - height) / 2;
 
+            // borda
+
+            d3.select('div.borda').remove();
+
             const cont = d3.select('.container')
               .append('div')
+              .classed('borda', true)
               .style('position', 'absolute')
               .style('top', y0 + 'px')
               .style('left', x0 + 'px')
               .style('width', width + 'px')
               .style('height', height + 'px')
-              .style('background-color', 'hotpink');
+              .style('background-color', 'transparent')
+              .style('border', "3px solid black");
+
+            // initialize positions
+
+            let positions = {
+                
+                'p1' : null,
+                'p2' : null
+
+            };
+
+            let phrases = {
+
+                'p1' : p1,
+                'p2' : p2
+            }
+
+            // a function to evaluate the positions for a given reference
+
+            function evaluate_positions(ref) {
+
+                let phrase_positions = [];
+
+                const p = phrases[ref];
+
+                // initialize counter
+
+                console.log(p);
+
+                let n = 0;
+
+                // for each letter of the phrase
+
+                for (letter of p) {
+
+                    console.log(letter);
+    
+                    if (letter != ' ') {
+    
+                        letter = letter.toLowerCase();
+    
+                        let this_letter_positions = js.data.letters[letter];
+    
+                        if (n >= 1) {
+        
+                            this_letter_positions = this_letter_positions.map(d => d + (n * last_index));
+        
+                        }
+    
+                        //console.log(n, n*last_index, this_letter_positions);
+        
+                        phrase_positions = phrase_positions.concat(this_letter_positions);
+
+                        //console.log(phrase_positions);
+    
+                    }
+    
+                    n++;
+    
+                }
+
+                positions[ref] = phrase_positions;
+
+            }
+
+            // now evalutate the positions for the phrases
+
+            if (p1) evaluate_positions('p1');
+            if (p2) evaluate_positions('p2');
+
+            // for (ref of ["p1", "p2"]) {
+            // }
+
+            console.log(positions);
+
+            // save positions to current state
+
+            js.ctrl.current_state.positions = positions;
+
+
+            // move squares
+
+            // let general_index = 0;
+
+            // positions.p1.forEach(d => {
+
+            //     let current_square = d3.select('[data-index=' + general_index + ']');
+
+            //     let x = d
+
+            //     current_square
+            //       .transition()
+            //       .duration(200)
+            //       .style('opacity', 1)
+            //       .style('width', l + 'px')
+            //       .style('height', l + 'px')
+            //       .style('transform')
+
+            // })
+
+
+
 
         },
 
+        // move_letters : function() {
+
+        //     const positions = js.ctrl.current_state.positions;
+
+        //     // phrase 1
+
+
+        // },
+
         first : {
 
-            phrase1 : 'Hi!',
+            phrase1 : 'hi',
             phrase2 : null,
             drawing : null,
 
@@ -259,7 +382,7 @@ const js = {
 
                     //if (i > js.params.nof_letters) continue;
 
-                    const letter_positions = js.data.raw[letter.toLowerCase()];
+                    const letter_positions = js.data.letters[letter.toLowerCase()];
 
                     for (let n = 0; n <= 63; n++) {
 
@@ -281,7 +404,7 @@ const js = {
 
                         }
 
-                        if ( js.data.raw.hasOwnProperty(letter) ) {
+                        if ( js.data.letters.hasOwnProperty(letter) ) {
 
                             if ( letter_positions.includes(n)) {
 
@@ -442,7 +565,7 @@ const js = {
 
     data : {
 
-        raw : null,
+        letters : null,
 
         random : [],
 
@@ -468,6 +591,12 @@ const js = {
 
     ctrl : {
 
+        current_state : {
+
+            positions : null
+
+        },
+
         init : function() {
 
             //js.grid.init();
@@ -487,7 +616,7 @@ const js = {
             js.treemap.prepare();
             js.treemap.draw();
 
-            js.data.raw = data;
+            js.data.letters = data;
 
             js.interactions.theme.monitor_change();
 
