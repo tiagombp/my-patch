@@ -161,6 +161,7 @@ div.container {
     /*transform: translate(50vw,-10vh);*/
     opacity: 0;
     border: none;
+    /*transition-timing-function: */
 
 }
 

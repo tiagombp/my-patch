@@ -292,15 +292,17 @@ const js = {
 
             // hide the rest
 
-            for (let id = general_index + 1; id <= js.data.random.length; id++) {
+            d3.selectAll('[data-id]')
+              .classed('active', (d,i) => !(i >= general_index));
 
-                let current_square = d3.select('[data-id="' + general_index + '"]');
+            // for (let id = general_index + 1; id <= js.data.random.length; id++) {
 
-                current_square
-                    .style('transform', null) // css will take care now
-                    .classed('active', false);
+            //     let current_square = d3.select('[data-id="' + id + '"]');
 
-            }
+            //     current_square
+            //         .classed('active', false);
+
+            // }
 
         },
 
