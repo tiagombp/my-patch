@@ -246,12 +246,13 @@ const js = {
                             console.log(pos, x, y);
 
                             current_square
+                                .classed('active', true)
                                 .transition()
+                                .delay(1000)
                                 .duration(200)
-                                .style('opacity', 1)
-                                .style('width', l + 'px')
-                                .style('height', l + 'px')
-                                .style('background-color', 'yellow')
+                                //.style('opacity', 1)
+                                //.style('width', l + 'px')
+                                //.style('height', l + 'px')
                                 .style('transform', `translate(${x}px,${y}px)`);
 
                             general_index++;
@@ -289,40 +290,19 @@ const js = {
 
             js.ctrl.current_state.positions = positions;
 
+            // hide the rest
 
-            // move squares
+            for (let id = general_index + 1; id <= js.data.random.length; id++) {
 
-            // let general_index = 0;
+                let current_square = d3.select('[data-id="' + general_index + '"]');
 
-            // positions.p1.forEach(d => {
+                current_square
+                    .style('transform', null) // css will take care now
+                    .classed('active', false);
 
-            //     let current_square = d3.select('[data-index=' + general_index + ']');
-
-            //     let x = d
-
-            //     current_square
-            //       .transition()
-            //       .duration(200)
-            //       .style('opacity', 1)
-            //       .style('width', l + 'px')
-            //       .style('height', l + 'px')
-            //       .style('transform')
-
-            // })
-
-
-
+            }
 
         },
-
-        // move_letters : function() {
-
-        //     const positions = js.ctrl.current_state.positions;
-
-        //     // phrase 1
-
-
-        // },
 
         first : {
 
@@ -580,6 +560,27 @@ const js = {
 
         // duracao boa
         // let els = d3.selectAll('[data-color]').transition().duration(1000).delay((d,i)=>50+i*5).style('transform', 'translate(800px,0px) scale(0)')
+
+        dissolve : function() {
+
+            let els = d3.selectAll('[data-id]')
+              .classed('pixel', true)
+              //.style('transform', null) // css will take care now
+              .style('width', null)
+              .style('height', null);
+              //.transition().duration(1000).delay((d,i)=>50+i*25).style('transform', 'translate(800px,0px) scale(0)')
+    
+    
+        },
+
+        prepare : function() {
+
+            let els = d3.selectAll('[data-id]')
+              .classed('pixel-start', false)
+              .classed('pixel', true);
+
+
+        }
 
     },
 

@@ -117,3 +117,55 @@ div.container {
 .rect[data-color="color3"] { background-color : var(--color3); }
 .rect[data-color="color4"] { background-color : var(--color4); }
 .rect[data-color="color5"] { background-color : var(--color5); }
+
+/* -- pixels -- */
+
+.rect[data-color].pixel.active {
+
+    opacity: 1;
+
+}
+
+@keyframes off-you-go {
+
+    from {
+
+        transform: translate(50vw,50vh);
+
+    }
+
+    to {
+
+        transform: translate(50vw,-10vh);
+
+    }
+
+}
+
+/*.rect[data-color].pixel-start {
+
+    transition: all 1s;
+    width: var(--cell-size);
+    height: var(--cell-size);
+    /*transform: translate(50vw,50vh);*/ /*
+    opacity: 0;
+    border: none;
+
+}*/
+
+.rect[data-color].pixel {
+
+    transition: all 1s;
+    width: var(--cell-size);
+    height: var(--cell-size);
+    /*transform: translate(50vw,-10vh);*/
+    opacity: 0;
+    border: none;
+
+}
+
+.rect[data-color="color1"].pixel {transition-delay: 0;}
+.rect[data-color="color2"].pixel {transition-delay: .2s;}
+.rect[data-color="color3"].pixel {transition-delay: .4s;}
+.rect[data-color="color4"].pixel {transition-delay: .5s;}
+.rect[data-color="color5"].pixel {transition-delay: .6s;}
