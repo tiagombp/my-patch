@@ -50,6 +50,51 @@ const js = {
             
             return sum 
 
+        },
+
+        shuffle : function(array) {
+
+            // #### Not my original code ####
+            // taken from : https://bost.ocks.org/mike/shuffle/
+            // just changed a 'var' for a 'let'
+
+            let m = array.length, t, i;
+          
+            // While there remain elements to shuffle…
+            while (m) {
+          
+              // Pick a remaining element…
+              i = Math.floor(Math.random() * m--);
+          
+              // And swap it with the current element.
+              t = array[m];
+              array[m] = array[i];
+              array[i] = t;
+            }
+          
+            return array;
+
+        },
+
+        set_ids : function() {
+
+            let rects = document.querySelectorAll('div.rect');
+
+            console.log('vamos iterar');
+            
+            rects.forEach(div => {
+
+                let id = js.data.indexes.pop()
+
+                div.dataset.id = String(id);
+
+                console.log(id);
+
+            })
+
+            console.log('fim');
+
+
         }
 
     },
@@ -120,17 +165,9 @@ const js = {
                 .join("div")
                 .classed('rect', true)
                 .style("transform", d => `translate(${d.x0}px,${d.y0}px)`)
-                .attr('data-id', (d,i) => i)
                 .attr('data-color', (d,i) => `color${(i % 5) + 1}`)
-                //.attr("fill", "hotpink")
-                //.attr("stroke", "khaki")
-                //.attr("fill-opacity", 0.6)
                 .style("width", d => (d.x1 - d.x0) + 'px')
                 .style("height", d => (d.y1 - d.y0) + 'px');
-
-            /* document.querySelectorAll('[data-color="color1"]').forEach(div => {
-                let current_transform = div.style.transform.slice(0,-9);
-                div.style.transform = current_transform + 'scale(1)'; }) */
 
         }
 
@@ -243,7 +280,8 @@ const js = {
                             let x = ( ( (pos % ch)) * l ) + (n * l * ch) + x0;
                             let y = ( Math.floor( pos / ch ) * l ) + y_desloc + y0;
 
-                            console.log(pos, x, y);
+                            //console.log(pos, x, y);
+                            console.log(general_index, current_square.attr('data-id'));
 
                             current_square
                                 .classed('active', true)
@@ -591,6 +629,8 @@ const js = {
 
         letters : null,
 
+        indexes : [],
+
         random : [],
 
         load : function() {
@@ -608,6 +648,12 @@ const js = {
                 js.data.random.push(Math.round(Math.random() * 100));
 
             }
+
+        },
+
+        make_indexes : function() {
+
+            js.data.indexes = js.data.random.map((d,i) => i);
 
         }
 
@@ -628,14 +674,18 @@ const js = {
             js.data.load();
 
             js.data.create();
+            js.data.make_indexes();
+            js.utils.shuffle(js.data.indexes);
 
             js.sizings.set();
 
-            js.ctrl.after_data();
+            //js.ctrl.after_data();
 
         },
 
         after_data : function(data) {
+
+            console.log('after data called')
 
             js.treemap.prepare();
             js.treemap.draw();
@@ -644,7 +694,9 @@ const js = {
 
             js.interactions.theme.monitor_change();
 
-            //console.log('Hi there');
+            console.log('Hi there');
+
+            js.utils.set_ids();
 
             //js.grid.mark_cells();
 
