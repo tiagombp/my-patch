@@ -2,7 +2,10 @@ const js = {
 
     params : {
 
-        nof_letters : 10
+        nof_letters : 10,
+        l : 10, // side of square,
+        ch : 8, // squares in each dimension of a letter
+        sq : 40 // squares in each dimension of a drawing
 
     },
 
@@ -132,6 +135,87 @@ const js = {
         }
 
     },
+
+    steps : {
+
+        compute_position: function(step) {
+
+            const ch = js.params.ch;
+            const sq = js.params.sq;
+            const l  = js.params.l;
+
+            const st = js.steps[step];
+
+            p1 = st.phrase1;
+            p2 = st.phrase2;
+            dr = st.drawing;
+
+            let height = 0;
+
+            height += p1 ? ch * l : 0;
+            height += p2 ? ch * l + l : 0;
+            height += dr ? sq * l + l : 0;
+
+
+            let width = 0;
+
+            width += p1 ? p1.length * ch * l : 0;
+            width = p2 ? Math.max(p1.length, p2.length) * ch * l : width;
+            width = dr ? Math.max(sq * l, width) : width;
+
+            let w_screen = js.sizings.w;
+            let h_screen = js.sizings.h;
+
+            const x0 = (w_screen - width)  / 2;
+            const y0 = (h_screen - height) / 2;
+
+            const cont = d3.select('.container')
+              .append('div')
+              .style('position', 'absolute')
+              .style('top', y0 + 'px')
+              .style('left', x0 + 'px')
+              .style('width', width + 'px')
+              .style('height', height + 'px')
+              .style('background-color', 'hotpink');
+
+        },
+
+        first : {
+
+            phrase1 : 'Hi!',
+            phrase2 : null,
+            drawing : null,
+
+            computed : {
+
+                phrase1_positions: null,
+                phrase2_positions: null,
+                drawing_positions: null
+
+            }
+
+        },
+
+        second : {
+
+            phrase1 : 'I am Tiago',
+            phrase2 : 'a drawing',
+            drawing : null,
+
+            computed : {
+
+                phrase1_positions: null,
+                phrase2_positions: null,
+                drawing_positions: null
+
+            }
+
+        }
+
+
+    },
+
+    /*
 
     grid : {
 
@@ -345,8 +429,14 @@ const js = {
 
     },
 
+    */
+
     anims : {
         //let els = d3.selectAll('[data-color]').transition().duration(1000).delay((d,i)=>50+i*25).style('transform', 'translate(800px,0px) scale(0)')
+
+        // duracao boa
+        // let els = d3.selectAll('[data-color]').transition().duration(1000).delay((d,i)=>50+i*5).style('transform', 'translate(800px,0px) scale(0)')
+
     },
 
 
