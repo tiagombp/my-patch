@@ -1,3 +1,9 @@
+* {
+
+    box-sizing: border-box;
+
+}
+
 :root {
 
     --header-height: 3rem;
@@ -10,6 +16,11 @@
     --color3 : #F2A007; 
     --color4 : #D95407; 
     --color5 : #1E5693;
+
+    --grad1 : var(--color1);
+    --grad2 : var(--color5);
+
+    --pixels : var(--color2);
 
 }
 
@@ -24,6 +35,8 @@
     --color4: #1A5CC6; 
     --color5: #4E6655; 
 
+
+
 }
 
 [data-theme="santuario"] {
@@ -33,6 +46,12 @@
     --color3: #030A8C;
     --color4: #9DF0FF;
     --color5: #161A59;
+
+    --grad1 : var(--color3);
+    --grad1 : #333;
+    --grad2 : var(--color5);
+
+    --pixels : var(--color4);
 
 }
 
@@ -94,6 +113,7 @@ div.container {
     position: fixed;
     width: 100vw;
     height: 100vh;
+    background: linear-gradient(to right, var(--grad1), var(--grad2));
 
 }
 
@@ -123,35 +143,11 @@ div.container {
 .rect[data-color].pixel.active {
 
     opacity: 1;
+    background-color : var(--pixels);
+    z-index: 2;
+    border-radius: 50%;
 
 }
-
-@keyframes off-you-go {
-
-    from {
-
-        transform: translate(50vw,50vh);
-
-    }
-
-    to {
-
-        transform: translate(50vw,-10vh);
-
-    }
-
-}
-
-/*.rect[data-color].pixel-start {
-
-    transition: all 1s;
-    width: var(--cell-size);
-    height: var(--cell-size);
-    /*transform: translate(50vw,50vh);*/ /*
-    opacity: 0;
-    border: none;
-
-}*/
 
 .rect[data-color].pixel {
 
@@ -159,7 +155,7 @@ div.container {
     width: var(--cell-size);
     height: var(--cell-size);
     /*transform: translate(50vw,-10vh);*/
-    opacity: 0;
+    opacity: 0.2;
     border: none;
     /*transition-timing-function: */
 
