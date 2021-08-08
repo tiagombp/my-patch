@@ -1,13 +1,16 @@
 library(tidyverse)
 library(readxl)
 
-grid <- readxl::read_excel('characters8bit.xlsx') %>%
+grid <- readxl::read_excel('characters8bit.xlsx', sheet = 'letters') %>%
   select(-1) %>% as.matrix()
 
 starting_lines <- seq(1, nrow(grid), 8)
 starting_cols <- seq(1, ncol(grid), 8)
 
 output <- list()
+
+simbolos <- c(letters, "heart", "exclamation", "smile", "ellipsis")
+
 
 letter_no <- 1
   
@@ -27,9 +30,9 @@ for (starting_line in starting_lines) {
       
       for (j in 0:7) {
         
-        print(paste(starting_line, starting_col, i, j, el, seq))
-        
         el <- grid[[i+starting_line, j+starting_col]] %>% unlist()
+        
+        print(paste(starting_line, starting_col, i, j, el, seq))
         
         seq <- seq + 1
         
@@ -44,13 +47,10 @@ for (starting_line in starting_lines) {
         }
         
       }
-      
-      
-      
     
     }
     
-    output[[letters[letter_no]]] <- vetor_saida
+    output[[simbolos[letter_no]]] <- vetor_saida
     letter_no <- letter_no+1
   }
   

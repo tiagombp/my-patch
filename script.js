@@ -5,7 +5,10 @@ const js = {
         nof_letters : 10,
         l : 10, // side of square,
         ch : 8, // squares in each dimension of a letter
-        sq : 40 // squares in each dimension of a drawing
+        sq : 40, // squares in each dimension of a drawing
+
+        symbols : ["@", "!", ":", "_"],
+        symbols_refs : ["heart", "exclamation", "smile", "ellipsis"]
 
     },
 
@@ -79,8 +82,6 @@ const js = {
         set_ids : function() {
 
             let rects = document.querySelectorAll('div.rect');
-
-            console.log('vamos iterar');
             
             rects.forEach(div => {
 
@@ -88,11 +89,8 @@ const js = {
 
                 div.dataset.id = String(id);
 
-                console.log(id);
-
             })
 
-            console.log('fim');
 
 
         }
@@ -215,7 +213,7 @@ const js = {
 
             // borda
 
-            d3.select('div.borda').remove();
+            /*d3.select('div.borda').remove();
 
             const cont = d3.select('.container')
               .append('div')
@@ -226,7 +224,7 @@ const js = {
               .style('width', width + 'px')
               .style('height', height + 'px')
               .style('background-color', 'transparent')
-              .style('border', "3px solid black");
+              .style('border', "3px solid black");*/
 
             // initialize positions
 
@@ -269,7 +267,17 @@ const js = {
     
                     if (letter != ' ') {
     
-                        letter = letter.toLowerCase();
+                        if (js.params.symbols.includes(letter)) {
+
+                            const symbol_index = js.params.symbols.indexOf(letter);
+                            
+                            letter = js.params.symbols_refs[symbol_index];
+
+                        } else {
+
+                            letter = letter.toLowerCase();
+
+                        }
     
                         let this_letter_positions = js.data.letters[letter];
 
@@ -279,9 +287,6 @@ const js = {
 
                             let x = ( ( (pos % ch)) * l ) + (n * l * ch) + x0;
                             let y = ( Math.floor( pos / ch ) * l ) + y_desloc + y0;
-
-                            //console.log(pos, x, y);
-                            console.log(general_index, current_square.attr('data-id'));
 
                             current_square
                                 .classed('active', true)
@@ -351,7 +356,7 @@ const js = {
 
         first : {
 
-            phrase1 : 'hi',
+            phrase1 : 'hi! :',
             phrase2 : null,
             drawing : null,
 
@@ -367,8 +372,8 @@ const js = {
 
         second : {
 
-            phrase1 : 'I am Tiago',
-            phrase2 : 'a drawing',
+            phrase1 : 'I am',
+            phrase2 : 'tiago',
             drawing : null,
 
             computed : {
@@ -378,6 +383,31 @@ const js = {
                 drawing_positions: null
 
             }
+
+        },
+
+        third : {
+
+            phrase1 : 'I @ _',
+            phrase2 : null,
+            drawing : null,
+
+            computed : {
+
+                phrase1_positions: null,
+                phrase2_positions: null,
+                drawing_positions: null
+
+            }
+
+        },
+
+        fourth : {
+
+            phrase1 : 'I @ _',
+            phrase2 : 'bu',
+            drawing : null,
+
 
         }
 
@@ -690,16 +720,12 @@ const js = {
 
         after_data : function(data) {
 
-            console.log('after data called')
-
             js.treemap.prepare();
             js.treemap.draw();
 
             js.data.letters = data;
 
             js.interactions.theme.monitor_change();
-
-            console.log('Hi there');
 
             js.utils.set_ids();
 
