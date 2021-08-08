@@ -331,7 +331,12 @@ const js = {
             // hide the rest
 
             d3.selectAll('[data-id]')
-              .classed('active', (d,i) => !(i >= general_index));
+              .classed('active', function(d) {
+                  
+                const id = +d3.select(this).attr('data-id')
+                return !(id >= general_index);
+
+              });
 
             // for (let id = general_index + 1; id <= js.data.random.length; id++) {
 
