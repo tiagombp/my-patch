@@ -163,6 +163,7 @@ const js = {
                 .join("div")
                 .classed('rect', true)
                 .style("transform", d => `translate(${d.x0}px,${d.y0}px)`)
+                .attr('data-original-transform', d => `translate(${d.x0}px,${d.y0}px)`)
                 .attr('data-color', (d,i) => `color${(i % 5) + 1}`)
                 .style("width", d => (d.x1 - d.x0) + 'px')
                 .style("height", d => (d.y1 - d.y0) + 'px');
@@ -333,12 +334,24 @@ const js = {
 
             js.ctrl.current_state.positions = positions;
 
-            // hide the rest
+            // hide the rest, return to position
 
             d3.selectAll('[data-id]')
               .classed('active', function(d) {
+
+                const sel = d3.select(this);
                   
-                const id = +d3.select(this).attr('data-id')
+                const id = +sel.attr('data-id')
+
+                // retrieves and set original positions
+                if (id >= general_index) {
+
+                    const original_transform = sel.attr('data-original-transform');
+
+                    d3.select(this).style('transform', original_transform);
+
+                }
+
                 return !(id >= general_index);
 
               });
@@ -405,7 +418,7 @@ const js = {
         fourth : {
 
             phrase1 : 'I @ _',
-            phrase2 : 'bu',
+            phrase2 : ' ',
             drawing : null,
 
 

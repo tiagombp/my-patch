@@ -161,7 +161,7 @@ div.container {
 
 }
 
-.rect[data-color="color1"].pixel {transition-delay: 0;}
+.rect[data-color="color1"].pixel {transition-delay: 0;  }
 .rect[data-color="color2"].pixel {transition-delay: .2s;}
 .rect[data-color="color3"].pixel {transition-delay: .4s;}
 .rect[data-color="color4"].pixel {transition-delay: .5s;}
