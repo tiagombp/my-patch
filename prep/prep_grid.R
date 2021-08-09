@@ -60,44 +60,104 @@ for (starting_line in starting_lines) {
 
 # drawings ----------------------------------------------------------------
 
-bar_chart <- readxl::read_excel('characters8bit.xlsx', 
-                                sheet = 'bar_chart',
-                                range = 'B1:AO40') %>%
-  as.matrix()
-
-lista_bar_chart <- list()
-seq <- 0
-list_position <- 1
-
-for (i in 1:nrow(bar_chart)) {
+process_drawing <- function(drawing, excel_range) {
   
-  for (j in 1:ncol(bar_chart)) {
+  # returns the list with positions and colors
+  
+  data <- bar_chart <- readxl::read_excel('characters8bit.xlsx', 
+                                          sheet = drawing,
+                                          range = excel_range) %>%
+    as.matrix()
+  
+  this_list <- list()
+  seq <- 0
+  list_position <- 1
+  
+  for (i in 1:nrow(data)) {
     
-    el <- bar_chart[[i, j]] %>% unlist()
-    
-    print(paste(i, j, el, seq))
-    
-    seq <- seq + 1
-    
-    if (!is.na(el)) {
+    for (j in 1:ncol(data)) {
       
-      elemento <- list()
-      elemento[["pos"]] <- seq-1
-      elemento[["cor"]] <- el
+      el <- data[[i, j]] %>% unlist()
       
-      lista_bar_chart[[list_position]] <- elemento
+      #print(paste(i, j, el, seq))
       
-      list_position <- list_position + 1
+      seq <- seq + 1
       
-    } else {
-      
-      next
+      if (!is.na(el)) {
+        
+        elemento <- list()
+        elemento[["pos"]] <- seq-1
+        elemento[["cor"]] <- el
+        
+        this_list[[list_position]] <- elemento
+        
+        list_position <- list_position + 1
+        
+      } else {
+        
+        next
+        
+      }
       
     }
     
   }
   
+  return(this_list)
+  
 }
+
+bar_chart <- process_drawing(
+  drawing = 'bar_chart',
+  excel_range = 'B1:AO40'
+)
+
+webdev <- process_drawing(
+  drawing = 'webdev',
+  excel_range = 'W1:BJ40'
+)
+
+
+
+
+# bar_chart <- readxl::read_excel('characters8bit.xlsx', 
+#                                 sheet = 'bar_chart',
+#                                 range = 'B1:AO40') %>%
+#   as.matrix()
+# 
+# lista_bar_chart <- list()
+# seq <- 0
+# list_position <- 1
+# 
+# for (i in 1:nrow(bar_chart)) {
+#   
+#   for (j in 1:ncol(bar_chart)) {
+#     
+#     el <- bar_chart[[i, j]] %>% unlist()
+#     
+#     print(paste(i, j, el, seq))
+#     
+#     seq <- seq + 1
+#     
+#     if (!is.na(el)) {
+#       
+#       elemento <- list()
+#       elemento[["pos"]] <- seq-1
+#       elemento[["cor"]] <- el
+#       
+#       lista_bar_chart[[list_position]] <- elemento
+#       
+#       list_position <- list_position + 1
+#       
+#     } else {
+#       
+#       next
+#       
+#     }
+#     
+#   }
+#   
+# }
 
 
 
@@ -106,7 +166,8 @@ for (i in 1:nrow(bar_chart)) {
 general_output <- list(
   letters = output,
   drawings = list(
-    bar_chart = lista_bar_chart
+    bar_chart = bar_chart,
+    webdev = webdev
   )
 )
 
