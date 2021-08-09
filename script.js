@@ -198,18 +198,18 @@ const js = {
             height += dr ? sq * l + l : 0;
 
 
-            let width = 0;
+            //let width = 0;
 
-            width += p1 ? p1.length * ch * l : 0;
-            width = p2 ? Math.max(p1.length, p2.length) * ch * l : width;
-            width = dr ? Math.max(sq * l, width) : width;
+            //width += p1 ? p1.length * ch * l : 0;
+            //width = p2 ? Math.max(p1.length, p2.length) * ch * l : width;
+            //width = dr ? Math.max(sq * l, width) : width;
 
             let w_screen = js.sizings.w;
             let h_screen = js.sizings.h;
 
             // initial positions in pixels
 
-            const x0 = (w_screen - width)  / 2;
+            //const x0 = (w_screen - width)  / 2;
             const y0 = (h_screen - height) / 2;
 
             // borda
@@ -251,6 +251,9 @@ const js = {
                 let phrase_positions = [];
 
                 const p = phrases[ref];
+
+                const width = p.length * ch * l;
+                const x0 = (w_screen - width)  / 2;
 
                 // initialize counter
 
@@ -320,8 +323,6 @@ const js = {
 
             // now evalutate the positions for the phrases
 
-            console.log(x0, y0, sq, l);
-
             if (p1) evaluate_positions_and_move('p1');
             if (p2) evaluate_positions_and_move('p2');
 
@@ -338,7 +339,9 @@ const js = {
                     const pos = unit.pos;
                     const color = unit.cor;
 
-                    y_desloc = l * (ch + 1);
+                    const x0 = (w_screen - sq * l)  / 2;
+
+                    y_desloc = ( l * (ch + 1) ) * ( p2 ? 2 : 1);
 
                     let x = ( ( (pos % sq)) * l ) + x0;
                     let y = ( Math.floor( pos / sq ) * l ) + y_desloc + y0;
@@ -401,7 +404,7 @@ const js = {
 
         },
 
-        first : {
+        'Hi' : {
 
             phrase1 : 'hi! :',
             phrase2 : null,
@@ -417,7 +420,7 @@ const js = {
 
         },
 
-        second : {
+        'I am' : {
 
             phrase1 : 'I am',
             phrase2 : 'tiago',
@@ -433,7 +436,7 @@ const js = {
 
         },
 
-        third : {
+        'I love' : {
 
             phrase1 : 'I @ _',
             phrase2 : null,
@@ -449,24 +452,40 @@ const js = {
 
         },
 
-        fourth : {
+        'dataviz' : {
 
             phrase1 : 'dataviz',
-            phrase2 : ' ',
+            phrase2 : null,
             drawing : 'bar_chart',
 
 
         },
 
-        fifth : {
+        'webdev' : {
 
             phrase1 : 'webdev',
-            phrase2 : ' ',
+            phrase2 : null,
             drawing : 'webdev',
 
 
-        }
+        },
 
+        'family' : {
+
+            phrase1 : 'my family',
+            phrase2 : null,
+            drawing : 'family',
+
+
+        },
+
+        'cookie' : {
+
+            phrase1 : 'and',
+            phrase2 : 'cookies!',
+            drawing : 'cookie',
+
+        }
 
     },
 

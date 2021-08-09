@@ -117,6 +117,15 @@ webdev <- process_drawing(
   excel_range = 'W1:BJ40'
 )
 
+family <- process_drawing(
+  drawing = 'family',
+  excel_range = 'W1:BJ40'
+)
+
+cookie <- process_drawing(
+  drawing = 'cookie',
+  excel_range = 'W1:BJ40'
+)
 
 
 
@@ -167,7 +176,9 @@ general_output <- list(
   letters = output,
   drawings = list(
     bar_chart = bar_chart,
-    webdev = webdev
+    webdev = webdev,
+    family = family,
+    cookie = cookie
   )
 )
 
