@@ -58,11 +58,60 @@ for (starting_line in starting_lines) {
 }
   
 
+# drawings ----------------------------------------------------------------
+
+bar_chart <- readxl::read_excel('characters8bit.xlsx', 
+                                sheet = 'bar_chart',
+                                range = 'B1:AO40') %>%
+  as.matrix()
+
+lista_bar_chart <- list()
+seq <- 0
+list_position <- 1
+
+for (i in 1:nrow(bar_chart)) {
+  
+  for (j in 1:ncol(bar_chart)) {
+    
+    el <- bar_chart[[i, j]] %>% unlist()
+    
+    print(paste(i, j, el, seq))
+    
+    seq <- seq + 1
+    
+    if (!is.na(el)) {
+      
+      elemento <- list()
+      elemento[["pos"]] <- seq-1
+      elemento[["cor"]] <- el
+      
+      lista_bar_chart[[list_position]] <- elemento
+      
+      list_position <- list_position + 1
+      
+    } else {
+      
+      next
+      
+    }
+    
+  }
+  
+}
+
+
 
 # output ------------------------------------------------------------------
+
+general_output <- list(
+  letters = output,
+  drawings = list(
+    bar_chart = lista_bar_chart
+  )
+)
 
 library(jsonify)
 library(jsonlite)
 
-jsonlite::write_json(output, "grid.json")
+jsonlite::write_json(general_output, "grid.json")
 
