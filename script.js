@@ -325,8 +325,42 @@ const js = {
             if (p1) evaluate_positions_and_move('p1');
             if (p2) evaluate_positions_and_move('p2');
 
-            // for (ref of ["p1", "p2"]) {
-            // }
+            // drawing
+
+            if (dr) {
+
+                const picture_data = js.data.grids.drawings[dr];
+
+                for (unit of picture_data) {
+
+                    let current_square = d3.select('[data-id="' + general_index + '"]');
+
+                    const pos = unit.pos;
+                    const color = unit.cor;
+
+                    y_desloc = l * (ch + 1);
+
+                    let x = ( ( (pos % sq)) * l ) + x0;
+                    let y = ( Math.floor( pos / sq ) * l ) + y_desloc + y0;
+
+                    current_square
+                        .classed('active', true)
+                        .attr('data-color-' + dr, color)
+                        .transition()
+                        .delay(1000)
+                        .duration(200)
+                        //.style('opacity', 1)
+                        //.style('width', l + 'px')
+                        //.style('height', l + 'px')
+                        .style('transform', `translate(${x}px,${y}px)`);
+
+                    general_index++;
+                }
+
+
+
+            }
+
 
             console.log(positions);
 
@@ -417,9 +451,9 @@ const js = {
 
         fourth : {
 
-            phrase1 : 'I @ _',
+            phrase1 : 'dataviz',
             phrase2 : ' ',
-            drawing : null,
+            drawing : 'bar_chart',
 
 
         }
@@ -675,6 +709,8 @@ const js = {
 
     data : {
 
+        grids : null,
+
         letters : null,
 
         indexes : [],
@@ -736,7 +772,8 @@ const js = {
             js.treemap.prepare();
             js.treemap.draw();
 
-            js.data.letters = data;
+            js.data.grids = data;
+            js.data.letters = data.letters;
 
             js.interactions.theme.monitor_change();
 
