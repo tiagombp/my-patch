@@ -22,6 +22,26 @@
 
     --pixels : var(--color2);
 
+
+
+    /* drawings */
+    --family1 : ;
+    --family2 : ;
+    --family3 : ;
+    --family4 : ;
+    --family5 : ;
+    --family6 : ;
+    --family7 : ;
+    --family8 : ;
+    --family9 : ;
+
+    --cookie1 : ;
+    --cookie2 : ;
+    --cookie3 : ;
+    --cookie4 : ;
+    --cookie5 : ;
+
+
 }
 
 @media (max-width: 640px) {
@@ -174,3 +194,46 @@ div.container {
 .rect[data-color="color3"].pixel {transition-delay: .4s;}
 .rect[data-color="color4"].pixel {transition-delay: .5s;}
 .rect[data-color="color5"].pixel {transition-delay: .6s;}
+
+.rect.pixel[data-drawing="family"][data-color-drawing="1"] { background-color : var(--family1);}
+.rect.pixel[data-drawing="family"][data-color-drawing="2"] { background-color : var(--family2);}
+.rect.pixel[data-drawing="family"][data-color-drawing="3"] { background-color : var(--family3);}
+.rect.pixel[data-drawing="family"][data-color-drawing="4"] { background-color : var(--family4);}
+.rect.pixel[data-drawing="family"][data-color-drawing="5"] { background-color : var(--family5);}
+.rect.pixel[data-drawing="family"][data-color-drawing="6"] { background-color : var(--family6);}
+.rect.pixel[data-drawing="family"][data-color-drawing="7"] { background-color : var(--family7);}
+.rect.pixel[data-drawing="family"][data-color-drawing="8"] { background-color : var(--family8);}
+.rect.pixel[data-drawing="family"][data-color-drawing="9"] { background-color : var(--family9);}
+
+.rect.pixel[data-drawing="cookie"][data-color-drawing="1"] { background-color : var(--cookie1);}
+.rect.pixel[data-drawing="cookie"][data-color-drawing="2"] { background-color : var(--cookie2);}
+.rect.pixel[data-drawing="cookie"][data-color-drawing="3"] { background-color : var(--cookie3);}
+.rect.pixel[data-drawing="cookie"][data-color-drawing="4"] { background-color : var(--cookie4);}
+.rect.pixel[data-drawing="cookie"][data-color-drawing="5"] { background-color : var(--cookie5);}
+
+.rect.pixel[data-drawing="bar_chart"][data-color-drawing="1"] { background-color : var(--color1); }
+.rect.pixel[data-drawing="bar_chart"][data-color-drawing="2"] { background-color : var(--color2); }
+.rect.pixel[data-drawing="bar_chart"][data-color-drawing="3"] { background-color : var(--color3); }
+.rect.pixel[data-drawing="bar_chart"][data-color-drawing="4"] { background-color : var(--color4); }
+.rect.pixel[data-drawing="bar_chart"][data-color-drawing="5"] { background-color : var(--color5); }
+.rect.pixel[data-drawing="bar_chart"][data-color-drawing="6"] { background-color : var(--grad1); }
+
+
+/* temp controls */
+
+.temp-controls {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    z-index: 3;
+}
+
+.temp-controls button {
+
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    /*border: 2px solid black;*/
+    background-color: white;
+
+}

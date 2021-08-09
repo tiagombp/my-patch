@@ -134,6 +134,34 @@ const js = {
 
             }
 
+        },
+
+        temp_controls : {
+
+            ref : '.temp-controls',
+
+            monitor : () => {
+
+                const cont = document.querySelector(js.interactions.temp_controls.ref);
+
+                cont.addEventListener('click', js.interactions.temp_controls.on_click);
+
+            },
+
+            on_click : function(e) {
+
+                if (e.target.tagName == 'BUTTON') {
+
+                    const step = e.target.id;
+
+                    if (step == 'dissolves') js.anims.dissolve();
+
+                    else js.steps.compute_position(step);
+
+                }
+
+            }
+
         }
     },
 
@@ -304,6 +332,8 @@ const js = {
 
                             current_square
                                 .classed('active', true)
+                                .attr('data-color-drawing', '')
+                                .attr('data-drawing', '')
                                 .transition()
                                 .delay(1000)
                                 .duration(200)
@@ -358,7 +388,8 @@ const js = {
 
                     current_square
                         .classed('active', true)
-                        .attr('data-color-' + dr, color)
+                        .attr('data-color-drawing', color)
+                        .attr('data-drawing', dr)
                         .transition()
                         .delay(1000)
                         .duration(200)
@@ -395,7 +426,10 @@ const js = {
 
                     const original_transform = sel.attr('data-original-transform');
 
-                    d3.select(this).style('transform', original_transform);
+                    sel
+                      .style('transform', original_transform)
+                      .attr('data-color-drawing', '')
+                      .attr('data-drawing', '');
 
                 }
 
@@ -414,7 +448,7 @@ const js = {
 
         },
 
-        'Hi' : {
+        'hi' : {
 
             phrase1 : 'hi! :',
             phrase2 : null,
@@ -430,7 +464,7 @@ const js = {
 
         },
 
-        'I am' : {
+        'i-am' : {
 
             phrase1 : 'I am',
             phrase2 : 'tiago',
@@ -446,7 +480,7 @@ const js = {
 
         },
 
-        'I love' : {
+        'i-love' : {
 
             phrase1 : 'I @ _',
             phrase2 : null,
@@ -815,6 +849,7 @@ const js = {
             js.data.letters = data.letters;
 
             js.interactions.theme.monitor_change();
+            js.interactions.temp_controls.monitor();
 
             js.utils.set_ids();
 
