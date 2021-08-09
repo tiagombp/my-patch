@@ -482,8 +482,8 @@ const js = {
 
         'family' : {
 
-            phrase1 : 'my family',
-            phrase2 : null,
+            phrase1 : 'my',
+            phrase2 : 'family @',
             drawing : 'family',
 
 
