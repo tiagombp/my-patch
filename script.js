@@ -3,7 +3,7 @@ const js = {
     params : {
 
         nof_letters : 10,
-        l : 10, // side of square,
+        l : null, // side of square -- comes from CSS
         ch : 8, // squares in each dimension of a letter
         sq : 40, // squares in each dimension of a drawing
 
@@ -32,6 +32,16 @@ const js = {
 
             this.h = window.innerHeight;
             this.w = window.innerWidth;
+
+        },
+
+        get : {
+
+            square_size : () => {
+
+                js.params.l = +window.getComputedStyle(document.documentElement).getPropertyValue('--cell-size').slice(0,-2)
+
+            }
 
         }
 
@@ -782,6 +792,7 @@ const js = {
         init : function() {
 
             //js.grid.init();
+            js.sizings.get.square_size();
 
             js.data.load();
 
