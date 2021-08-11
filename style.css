@@ -177,7 +177,8 @@ div.container {
 
 }
 
-.rect[data-color].pixel {
+.rect[data-color].pixel,
+article.pixel {
 
     transition: all 1s;
     width: var(--cell-size);
@@ -235,5 +236,95 @@ div.container {
     border-radius: 50%;
     /*border: 2px solid black;*/
     background-color: white;
+
+}
+
+/* article */
+
+article.pixel {
+
+    overflow: hidden;
+    background-color: var(--color1);
+
+}
+
+article {
+
+    position: absolute;
+    left: 0;
+    top: 50vh;
+    transform: translateY(-50%);
+    margin: 2rem;
+    width: 50%;
+    color: #F6E2DF;
+    font-size: 1.5rem;
+
+}
+
+.sections {
+
+    display: flex;
+
+}
+
+.links {
+    letter-spacing: 1px;
+    position: relative;
+}
+
+.links + .links {
+    margin-left: 2rem;
+}
+
+.crazy-letter-container {
+    /*border: 2px solid wheat;*/
+}
+
+.crazy-letter {
+
+    display: inline-block;
+    background-color: firebrick;
+    border: 1px solid currentColor;
+    box-shadow: 2px 2px #391B59;
+    transform: rotate(10deg) scale(.8);
+
+    transition: all .2s;
+
+
+}
+
+.links-container {
+    position: absolute;
+    border: 1px solid currentColor;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(0);
+    z-index: -1;
+}
+
+.links:hover .crazy-letter {
+
+    transform: rotate(360deg) scale(1);
+    background-color: transparent;
+    text-transform: lowercase;
+    border: none;
+}
+
+.links:hover .links-container {
+    transition: transform .2s, box-shadow .2s .2s;
+    transform: scale(1.2);
+    box-shadow: 2px 2px currentColor;
+    background-color: #391B59;
+}
+
+.links:hover {
+    transform: translate(-1px, -1px);
+    transition: all .2s;
+    color: #9DF0FF;
+}
+
+.crazy-letter.d {
+
+    transform: rotate(-10deg) scale(.8);
 
 }
