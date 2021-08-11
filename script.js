@@ -774,6 +774,36 @@ const js = {
               .classed('pixel', true);
 
 
+        },
+
+        drop : function() {
+
+            let els = d3.selectAll('[data-id]')
+            
+            els
+              .classed('active', false)
+              .style('transform', function(d) {
+
+                const sel = d3.select(this);
+                const original_transform = sel.attr('data-original-transform');
+                
+                return original_transform.split(',')[0] + ',' + (js.sizings.h * 1.5) + 'px)';
+
+              })
+
+        },
+
+        show_text : () => {
+
+            document.querySelector('article').classList.remove('shrunk');
+
+        },
+
+        drop_and_show : function() {
+
+            this.drop();
+            this.show_text();
+
         }
 
     },
