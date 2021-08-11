@@ -17,8 +17,13 @@
     --color4 : #D95407; 
     --color5 : #1E5693;
 
+    /* fica bem legal com essas cores
     --grad1 : var(--color1);
     --grad2 : var(--color5);
+    */
+
+    --grad1 : var(--color2);
+    --grad2 : var(--color3);
 
     --pixels : var(--color2);
 
@@ -80,6 +85,8 @@
     --grad2 : var(--color5);
 
     --pixels : var(--color4);
+
+    --highlight: #F2A007;
 
 }
 
@@ -302,6 +309,10 @@ article > * {
 
 }
 
+.highlight {
+    color: var(--highlight);
+}
+
 div.sections {
 
     display: flex;
@@ -324,10 +335,11 @@ div.sections {
 
 .crazy-letter {
 
+    color: var(--grad1);
     display: inline-block;
-    background-color: firebrick;
+    background-color: var(--highlight);
     border: 1px solid currentColor;
-    box-shadow: 2px 2px #391B59;
+    box-shadow: 2px 2px var(--grad1);
     transform: rotate(10deg) scale(.8);
 
     transition: all .2s;
@@ -350,6 +362,7 @@ div.sections {
     background-color: transparent;
     text-transform: lowercase;
     border: none;
+    color: currentColor;
 }
 
 .links:hover .links-container {
@@ -362,7 +375,7 @@ div.sections {
 .links:hover {
     transform: translate(-1px, -1px);
     transition: all .2s;
-    color: #9DF0FF;
+    color: var(--highlight);
 }
 
 .crazy-letter.d {
