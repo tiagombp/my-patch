@@ -369,7 +369,7 @@ div.sections {
     transition: all .2s, transform .2s, box-shadow .2s .2s;
     transform: scale(1.2);
     box-shadow: 2px 2px currentColor;
-    background-color: #391B59;
+    background-color: var(--grad1);
 }
 
 .links:hover {
