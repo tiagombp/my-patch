@@ -177,8 +177,7 @@ div.container {
 
 }
 
-.rect[data-color].pixel,
-article.pixel {
+.rect[data-color].pixel {
 
     transition: all 1s;
     width: var(--cell-size);
@@ -241,29 +240,72 @@ article.pixel {
 
 /* article */
 
-article.pixel {
+article.shrunk {
 
     overflow: hidden;
     background-color: var(--color1);
+    top: 50vh;
+    left: 50vw;
+    padding: 0;
+
+    width: var(--cell-size);
+    height: var(--cell-size);
+    /*transform: translate(50vw,-10vh);*/
+    /*transform: scale(.5);*/
+    opacity: 0.2;
+    border: none;
+    z-index: 1;
+
+}
+
+article.shrunk > * {
+
+    opacity: 0;
 
 }
 
 article {
 
+    padding: 1rem;
+    padding-top: 0;
+    overflow: hidden;
+    transition: all 1s 2s, background-color 1s 2.5s, opacity .2s, left 1s 1s, top 1s 1s, transform 1s 1s;
     position: absolute;
     left: 0;
     top: 50vh;
-    transform: translateY(-50%);
-    margin: 2rem;
+    transform: translateY(-50%); /*scale(1);*/
+    margin: 1rem;
+    margin-top: 0;
+    margin-left: 10vw;
+    height: 50%;
     width: 50%;
+    max-width: 800px;
     color: #F6E2DF;
     font-size: 1.5rem;
 
 }
 
-.sections {
+@media (max-width: 640px) {
+
+    article {
+        width: 100%;
+        height: 75%;
+        margin-left: 1rem;
+    }
+
+}
+
+article > * {
+
+    transition: all 1s 2.5s;
+    opacity: 1;
+
+}
+
+div.sections {
 
     display: flex;
+    transition: all 0s 0s;
 
 }
 
@@ -311,7 +353,7 @@ article {
 }
 
 .links:hover .links-container {
-    transition: transform .2s, box-shadow .2s .2s;
+    transition: all .2s, transform .2s, box-shadow .2s .2s;
     transform: scale(1.2);
     box-shadow: 2px 2px currentColor;
     background-color: #391B59;
