@@ -89,6 +89,10 @@
     --pixels : var(--color4);
 
     --highlight: #F2A007;
+    --highlight-dim: #AAA;
+
+    --text-color: #F6E2DF;
+    --text-color-dim: #DBCAC8;
 
 }
 
@@ -291,7 +295,7 @@ article {
     height: 100%;
     width: 50%;
     max-width: 800px;
-    color: #F6E2DF;
+    color: var(--text-color);
     font-size: 1.5rem;
 
 }
@@ -349,7 +353,7 @@ div.sections {
     color: var(--highlight);
     display: inline-block;
     background-color: var(--grad1);
-    border: 1px solid #F6E2DF;
+    border: 1px solid var(--text-color);
     box-shadow: 2px 2px var(--grad1);
     transform: rotate(10deg) scale(.8);
 
@@ -394,3 +398,110 @@ div.sections {
     transform: rotate(-10deg) scale(.8);
 
 }
+
+
+/* ********************
+   Works subpage 
+   ******************** */
+
+.subpage {
+
+    background-image: linear-gradient(to right, var(--grad1), var(--grad2));
+    color: var(--text-color);
+
+}
+
+.subpage header {
+
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem auto;
+    max-width: 1000px;
+    font-size: 1.25rem;
+
+}
+
+.subpage header a {
+
+    margin: 1rem;
+    text-decoration: none;
+    color: inherit;
+
+}
+
+.subpage header ul {
+
+    padding: 0;
+}
+
+.subpage header li {
+
+    display: inline;
+
+}
+
+.subpage .link {
+
+    position: relative;
+
+}
+
+
+.subpage .link:not(.link-active) {
+
+    transition: all .3s;
+    background: linear-gradient(
+    	to right,
+	    var(--highlight-dim),
+	    var(--highlight-dim) 50%,
+	    var(--text-color) 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    background-position: 100%;
+
+}
+
+.subpage .link:hover {
+
+    background-position: 0%;
+
+
+}
+
+.subpage .link::after {
+
+    position: absolute;
+    content: '';
+    left: 0;
+    bottom: -15px;
+    width: 100%;
+    height: 5px;
+    background-color: var(--highlight-dim);
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: all .3s;
+
+}
+
+.subpage .link:hover::after{
+
+    transform: none;
+
+}
+
+.subpage .link-active {
+
+    color: var(--highlight);
+
+}
+
+.subpage .link-active::after {
+
+    background-color: var(--highlight);
+    transform: none;
+
+
+}
+
+
