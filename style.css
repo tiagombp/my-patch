@@ -411,6 +411,8 @@ div.sections {
 
 }
 
+/* header / nav */
+
 .subpage header {
 
     display: flex;
@@ -501,7 +503,39 @@ div.sections {
     background-color: var(--highlight);
     transform: none;
 
+}
+
+/* END of header / nav */
+
+/* MAIN */
+
+.subpage main {
+
+    margin: 0 auto;
+    margin-top: 6rem;
+    max-width: 900px;
 
 }
 
+.subpage h1 {
 
+    text-align: center;
+    margin-bottom: 6rem;
+}
+
+.subheading {
+    margin: 0;
+    font-size: 1.25rem;
+    padding-left: 2rem;
+    padding-top: .5rem;
+    font-style: italic;
+}
+
+.work {
+
+    width: 300px;
+    height: 400px;
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    border: 2px solid white;
+
+}
