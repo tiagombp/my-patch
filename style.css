@@ -513,6 +513,7 @@ div.sections {
 
     margin: 0 auto;
     margin-top: 6rem;
+    margin-bottom: 3rem;
     max-width: 900px;
 
 }
@@ -537,5 +538,6 @@ div.sections {
     height: 400px;
     border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
     border: 2px solid white;
+    box-shadow: 6px 6px currentColor;
 
 }
