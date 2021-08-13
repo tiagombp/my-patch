@@ -6,6 +6,8 @@
 
 :root {
 
+    font-family: Lora;
+
     --header-height: 3rem;
     --cell-size: 10px;
     --almost-white: #f4f4f4;
