@@ -29,6 +29,9 @@
 
     --pixels : var(--color2);
 
+    --irregular-border: 255px 15px 225px 15px/15px 225px 15px 255px;
+    --irregular-border-top: 255px 15px 0 0/15px 225px 0 0;
+
 
 
     /* drawings */
@@ -415,11 +418,18 @@ div.sections {
 
 .subpage header {
 
+    font-family: 'Work Sans';
     display: flex;
     justify-content: space-between;
     margin: 1rem auto;
     max-width: 1000px;
     font-size: 1.25rem;
+
+}
+
+.subpage header .nav-main-link {
+
+    letter-spacing: .2em;
 
 }
 
@@ -540,15 +550,20 @@ article.work {
 
 }
 
-article.work p {
+article.work p, article.work h2 {
 
     font-weight: 400;
 
 }
 
+article.work h3 {
+
+    font-weight: 500;
+}
+
 .work-wrapper {
 
-    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    border-radius: var(--irregular-border);
     border: 2px solid white;
     width: 100%;
     padding: 2rem;
@@ -572,5 +587,7 @@ article.work p {
     /*box-shadow: 6px 6px currentColor;*/
     width: 100%;
     height: 100%;
+
+    border-radius: var(--irregular-border-top);
 
 }
