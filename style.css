@@ -32,21 +32,21 @@
 
 
     /* drawings */
-    --family1 : var(--color1);
-    --family2 : var(--color2);
-    --family3 : var(--color3);
-    --family4 : var(--color4);
-    --family5 : var(--color5);
-    --family6 : var(--color1);
-    --family7 : var(--color2);
+    --family1 : #806000;
+    --family2 : #FCE4D6;
+    --family3 : #FF3928;
+    --family4 : #AEAAAA;
+    --family5 : #2F75B5;
+    --family6 : #DF5FCE;
+    --family7 : #375623;
     --family8 : var(--color3);
-    --family9 : var(--color4);
+    --family9 : #ED7D31;
 
-    --cookie1 : var(--color1);
-    --cookie2 : var(--color2);
-    --cookie3 : var(--color3);
-    --cookie4 : var(--color4);
-    --cookie5 : var(--color5);
+    --cookie1 : #F6BF79;
+    --cookie2 : #DCA562;
+    --cookie3 : #B67A40;
+    --cookie4 : #633E2F;
+    --cookie5 : #955941;
 
 
 }
