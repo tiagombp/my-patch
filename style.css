@@ -532,21 +532,36 @@ div.sections {
     font-style: italic;
 }
 
+article.work {
+
+    font-family: 'Work Sans';
+    line-height: 1.6;
+    font-size: 18px;
+
+}
+
+article.work p {
+
+    font-weight: 400;
+
+}
+
 .work-wrapper {
 
     border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
     border: 2px solid white;
     width: 100%;
+    padding: 2rem;
 
+    /*
     display: flex;
-    justify-content: space-between;
-    padding: 1rem;
+    justify-content: space-between;*/
 
 }
 
 .work-screenshot {
 
-    flex-basis: 300px;
+    flex: 0 0 50%;
 
 }
 
