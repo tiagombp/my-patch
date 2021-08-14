@@ -131,7 +131,7 @@ const js = {
                 const option = e.target.value;
 
                 document.querySelector(ref).dataset.theme = option;
-                document.querySelector(article).dataset.theme = option;
+                document.querySelector('article').dataset.theme = option;
 
             }
 
