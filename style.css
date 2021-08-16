@@ -29,8 +29,15 @@
 
     --pixels : var(--color2);
 
+    --text-color: #363131;
+    --text-color-dim: #212121;
+    --highlight: var(--color4);
+    --highlight-dim: #f0adc6;
+
     --irregular-border: 255px 15px 225px 15px/15px 225px 15px 255px;
     --irregular-border-top: 255px 15px 0 0/15px 225px 0 0;
+
+    --max-width: 640px;
 
 
 
@@ -49,7 +56,7 @@
     --cookie2 : #DCA562;
     --cookie3 : #B67A40;
     --cookie4 : #633E2F;
-    --cookie5 : #955941;
+    --cookie5 : #080604;
 
 
 }
@@ -409,7 +416,8 @@ div.sections {
 
 .subpage {
 
-    background-image: linear-gradient(to right, var(--grad1), var(--grad2));
+    /* background-image: linear-gradient(to right, var(--grad1), var(--grad2)); */
+    background-color: var(--grad1);
     color: var(--text-color);
 
 }
@@ -521,10 +529,16 @@ div.sections {
 
 .subpage main {
 
-    margin: 0 auto;
     margin-top: 6rem;
     margin-bottom: 3rem;
-    max-width: 900px;
+    /*max-width: var(--max-width);*/
+
+}
+
+.subpage .contained {
+
+    margin: 0 auto;
+    max-width: var(--max-width);
 
 }
 
@@ -556,6 +570,26 @@ article.work p, article.work h2 {
 
 }
 
+article.work h2 {
+
+    position: relative;
+    margin-bottom: 2rem;
+
+}
+
+/*
+article.work h2::after{
+
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: calc(-1rem + 5px);
+    width: 50%;
+    height: 5px;
+    background-color: currentColor;
+
+}*/
+
 article.work h3 {
 
     font-weight: 500;
@@ -563,14 +597,20 @@ article.work h3 {
 
 .work-wrapper {
 
-    border-radius: var(--irregular-border);
+    /*border-radius: var(--irregular-border);
     border: 2px solid white;
-    width: 100%;
-    padding: 2rem;
+    border-left: 5px solid currentColor;*/
+    padding: 0;
 
     /*
     display: flex;
     justify-content: space-between;*/
+
+}
+
+[data-work="epicentro"] .work-wrapper {
+
+    /*background-color: black;*/
 
 }
 
@@ -588,6 +628,6 @@ article.work h3 {
     width: 100%;
     height: 100%;
 
-    border-radius: var(--irregular-border-top);
+    /*border-radius: var(--irregular-border-top);*/
 
 }
