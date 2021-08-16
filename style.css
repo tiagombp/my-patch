@@ -561,6 +561,7 @@ article.work {
     font-family: 'Work Sans';
     line-height: 1.6;
     font-size: 18px;
+    margin-bottom: 3rem;
 
 }
 
@@ -572,23 +573,31 @@ article.work p, article.work h2 {
 
 article.work h2 {
 
-    position: relative;
     margin-bottom: 2rem;
+    display: inline-block;
+    padding: 0 .5rem;
+    background-color: var(--grad1);
+    position: relative;
 
 }
 
-/*
-article.work h2::after{
+article.work {
+
+    position: relative;
+
+}
+
+article.work::before{
 
     content: '';
     position: absolute;
     left: 0;
-    bottom: calc(-1rem + 5px);
-    width: 50%;
-    height: 5px;
-    background-color: currentColor;
+    top: 2.5rem;
+    width: 100%;
+    height: 8px;
+    background-color: var(--highlight);
 
-}*/
+}
 
 article.work h3 {
 
