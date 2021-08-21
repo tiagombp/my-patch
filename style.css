@@ -168,6 +168,47 @@ div.container {
 
 }
 
+/* --- header --- */
+
+header.header-home {
+
+    color: var(--text-color);
+    padding: 1rem;
+    font-size: 1rem;
+    letter-spacing: .2em;
+    font-family: 'Work Sans';
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: 800px;
+    width: 50%;
+    margin: 0rem 10vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+header.header-home .wrapper-social {
+
+    display: flex;
+
+}
+
+header.header-home .wrapper-social a {
+
+    margin-left: .75rem;
+
+}
+
+header.header-home .wrapper-social img, header.header-home .wrapper-social svg {
+    width: 1rem;
+    height: 1rem;
+    fill: var(--text-color);
+}
+
 /* --- tiles --- */
 
 .rect[data-color] { 
@@ -291,6 +332,7 @@ article.home.shrunk > * {
 article.home {
 
     /*box-shadow: 0 0 10px 10px transparent;*/
+    font-family: 'Work Sans';
     padding: 1rem;
     padding-top: 0;
     overflow: hidden;
@@ -306,7 +348,7 @@ article.home {
     width: 50%;
     max-width: 800px;
     color: var(--text-color);
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 
 }
 
@@ -317,6 +359,20 @@ article.home {
 
 }
 
+article.home h1 {
+
+    font-family: 'Lora';
+    margin-bottom: 0;
+
+}
+
+article.home p.main-text {
+
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    line-height: 1.4;
+}
+
 @media (max-width: 640px) {
 
     article.home {
@@ -324,6 +380,13 @@ article.home {
         height: 75%;
         margin-left: 0;
     }
+
+    header.header-home {
+        width: 100%;
+        margin-left: 0;
+    }
+
+
 
 }
 
@@ -576,6 +639,7 @@ article.work h2 {
     margin-bottom: 2rem;
     display: inline-block;
     padding: 0 .5rem;
+    margin-left: -.5rem;
     background-color: var(--grad1);
     position: relative;
 
