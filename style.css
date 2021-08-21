@@ -366,6 +366,19 @@ article.home h1 {
 
 }
 
+article.home a {
+
+    text-decoration: none;
+    color: inherit;
+
+}
+
+article.home a:visited {
+    
+    color: inherit;
+
+}
+
 article.home p.main-text {
 
     margin-top: 1.5em;
