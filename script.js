@@ -787,9 +787,35 @@ const js = {
               .style('transform', function(d) {
 
                 const sel = d3.select(this);
-                const original_transform = sel.attr('data-original-transform');
+
+                //let current_transform = sel.style('transform'); // "translate(1241px, 472px)"
+                let current_transform = sel.attr('data-original-transform');
+                current_transform = current_transform.split(','); // ["translate(1241px", " 472px)"]
+
+                const x = +current_transform[0].split('(')[1].slice(0,-2); 
+                const y = +current_transform[1].split(')')[0].slice(0,-2).trim();
+
+                const w = js.sizings.w;
+                const h = js.sizings.h;
+
+                const q_x = Math.floor(x / (w/3));
+                const q_y = Math.floor(y / (h/2));
+
+                let new_x, new_y;
+
+                if (q_x == 0) new_x = -0.1 * w;
+                else {
+                    if (q_x == 1) new_x = x;
+                    else new_x = 1.1*w;
+                }
+
+                if (q_y == 0) new_y = -0.1 * h;
+                else new_y = 1.1*h;
+
+                //console.log(x,y, q_x, q_y, new_x, new_y);
+                //const original_transform = sel.attr('data-original-transform');
                 
-                return original_transform.split(',')[0] + ',' + (js.sizings.h * 1.5) + 'px)';
+                return 'translate(' + new_x + 'px' + ',' + new_y + 'px)';
 
               })
 
