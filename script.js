@@ -447,7 +447,7 @@ const js = {
 
             // }
 
-        },
+        }, // @ for heart, _ for ...
 
         'hi' : {
 
@@ -481,9 +481,9 @@ const js = {
 
         },
 
-        'i-love' : {
+        'i-love' : { 
 
-            phrase1 : 'I @ _',
+            phrase1 : 'I @',
             phrase2 : null,
             drawing : null,
 
