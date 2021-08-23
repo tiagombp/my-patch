@@ -188,6 +188,13 @@ header.header-home {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: transform .3s 3s;
+
+}
+
+header.header-home.hidden {
+
+    transform: translateY(-100%);
 
 }
 
@@ -722,6 +729,7 @@ article.work h3::after {
 .work-screenshot {
 
     flex: 0 0 50%;
+    margin: 0 -100px;
 
 }
 
@@ -734,6 +742,16 @@ article.work h3::after {
     height: 100%;
 
     /*border-radius: var(--irregular-border-top);*/
+
+}
+
+@media (max-width: 890px) {
+
+    .work-screenshot {
+
+        margin: 0 calc(340px - 50vw);
+
+    }
 
 }
 
@@ -769,6 +787,12 @@ article.work h3::after {
     .subpage header .nav-main-link {
 
         display: none;
+
+    }
+
+    .work-screenshot {
+
+        margin: 0;
 
     }
 

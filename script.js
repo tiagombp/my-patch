@@ -800,10 +800,17 @@ const js = {
 
         },
 
+        show_header : () => {
+
+            document.querySelector('header.header-home').classList.remove('hidden');
+
+        },
+
         drop_and_show : function() {
 
             this.drop();
             this.show_text();
+            this.show_header();
 
         }
 
