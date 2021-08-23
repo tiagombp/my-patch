@@ -784,6 +784,8 @@ const js = {
             
             els
               .classed('active', false)
+              .transition()
+              .delay(100)
               .style('transform', function(d) {
 
                 const sel = d3.select(this);
