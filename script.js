@@ -52,7 +52,7 @@ const js = {
 
         nof_pixels : function(word) {
 
-            console.log(word.length);
+            //console.log(word.length);
 
             let sum = 0;
             
@@ -125,7 +125,7 @@ const js = {
 
             update : (e) => {
 
-                console.log(e.target.value);
+                //console.log(e.target.value);
 
                 const ref = js.interactions.theme.container_ref;
                 const option = e.target.value;
@@ -170,7 +170,7 @@ const js = {
 
         prepare : function() {
 
-            console.log('Prepare');
+            //console.log('Prepare');
 
             const data = {
                 
@@ -178,7 +178,7 @@ const js = {
 
             };
 
-            console.log(data);
+            //console.log(data);
 
             const w = js.sizings.w;
             const h = js.sizings.h;
@@ -296,7 +296,7 @@ const js = {
 
                 // initialize counter
 
-                console.log(p);
+                //console.log(p);
 
                 let n = 0;
 
@@ -306,7 +306,7 @@ const js = {
 
                 for (letter of p) {
 
-                    console.log(letter);
+                    //console.log(letter);
     
                     if (letter != ' ') {
     
@@ -407,7 +407,7 @@ const js = {
             }
 
 
-            console.log(positions);
+            //console.log(positions);
 
             // save positions to current state
 
@@ -808,9 +808,70 @@ const js = {
 
         drop_and_show : function() {
 
-            this.drop();
-            this.show_text();
-            this.show_header();
+            js.anims.drop();
+            js.anims.show_text();
+            js.anims.show_header();
+
+        },
+
+        timeline : {
+
+            play : () => {
+
+                let interval = 1000;
+
+                setTimeout(js.anims.dissolve, 0);
+
+                let steps = Object.keys(js.steps);
+                steps = steps.slice(1);
+
+                //steps.forEach( (step, i) => {
+
+                //    console.log(step, i, i * interval);
+
+                //    setTimeout(js.steps.compute_position(step), i * interval);
+
+                //})
+
+                setTimeout(() => {
+                    js.steps.compute_position(steps[0]);
+
+                    setTimeout(() => {
+                        js.steps.compute_position(steps[1]);
+
+                        setTimeout(() => {
+                            js.steps.compute_position(steps[2]);
+
+                            setTimeout(() => {
+                                js.steps.compute_position(steps[3]);
+
+                                setTimeout(() => {
+                                    js.steps.compute_position(steps[4]);
+
+                                    setTimeout(() => {
+                                        js.steps.compute_position(steps[5]);
+
+                                        setTimeout(() => {
+                                            js.steps.compute_position(steps[6]);
+
+                                            setTimeout(js.anims.drop_and_show, 8 * interval)
+                
+                                        }, 7 * interval)
+            
+                                    }, 6 * interval)
+        
+                                }, 5 * interval)
+    
+                            }, 4 * interval)
+
+                        }, 3 * interval)
+
+                    }, 2 * interval)
+
+                }, 1 * interval);
+
+
+            }
 
         }
 
