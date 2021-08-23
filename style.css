@@ -216,6 +216,10 @@ header.header-home .wrapper-social img, header.header-home .wrapper-social svg {
     fill: var(--text-color);
 }
 
+.wrapper-social a:hover svg {
+    fill: var(--highlight);
+}
+
 /* --- tiles --- */
 
 .rect[data-color] { 
@@ -250,7 +254,7 @@ header.header-home .wrapper-social img, header.header-home .wrapper-social svg {
 
 .rect[data-color].pixel {
 
-    transition: all 1s;
+    transition: all .4s;
     width: var(--cell-size);
     height: var(--cell-size);
     /*transform: translate(50vw,-10vh);*/
