@@ -12,3 +12,7 @@ https://www.behance.net/gallery/117432271/Marco-Polo-Festivals-Web
 
 Santuário
 
+
+# ideias
+
+Será que vale a pena armazenar as posições e aí usar gsap para mover?
