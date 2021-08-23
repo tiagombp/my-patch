@@ -515,19 +515,20 @@ const js = {
 
         },
 
+        /*
         'family' : {
 
             phrase1 : 'my',
-            phrase2 : 'family @',
+            phrase2 : 'family',
             drawing : 'family',
 
 
-        },
+        },*/
 
         'cookie' : {
 
             phrase1 : 'and',
-            phrase2 : 'cookies!',
+            phrase2 : 'cookies',
             drawing : 'cookie',
 
         }
@@ -850,15 +851,10 @@ const js = {
 
                                     setTimeout(() => {
                                         js.steps.compute_position(steps[5]);
-
-                                        setTimeout(() => {
-                                            js.steps.compute_position(steps[6]);
-
-                                            setTimeout(js.anims.drop_and_show, 8 * interval)
-                
-                                        }, 7 * interval)
+                                        
+                                        setTimeout(js.anims.drop_and_show, 7 * interval - 300)
             
-                                    }, 6 * interval)
+                                    }, 6 * interval - 300)
         
                                 }, 5 * interval)
     
@@ -869,7 +865,6 @@ const js = {
                     }, 2 * interval)
 
                 }, 1 * interval);
-
 
             }
 
@@ -947,8 +942,9 @@ const js = {
             js.data.grids = data;
             js.data.letters = data.letters;
 
-            js.interactions.theme.monitor_change();
-            js.interactions.temp_controls.monitor();
+            // commenting controls 
+            //js.interactions.theme.monitor_change();
+            //js.interactions.temp_controls.monitor();
 
             js.utils.set_ids();
 

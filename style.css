@@ -188,7 +188,7 @@ header.header-home {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: transform .3s 3s;
+    transition: transform 1s 3s;
 
 }
 
@@ -254,7 +254,7 @@ header.header-home .wrapper-social img, header.header-home .wrapper-social svg {
 
 .rect[data-color].pixel {
 
-    transition: all .4s;
+    transition: all .6s;
     width: var(--cell-size);
     height: var(--cell-size);
     /*transform: translate(50vw,-10vh);*/
@@ -265,10 +265,10 @@ header.header-home .wrapper-social img, header.header-home .wrapper-social svg {
 }
 
 .rect[data-color="color1"].pixel {transition-delay: 0;  }
-.rect[data-color="color2"].pixel {transition-delay: .2s;}
-.rect[data-color="color3"].pixel {transition-delay: .4s;}
-.rect[data-color="color4"].pixel {transition-delay: .5s;}
-.rect[data-color="color5"].pixel {transition-delay: .6s;}
+.rect[data-color="color2"].pixel {transition-delay: .1s;}
+.rect[data-color="color3"].pixel {transition-delay: .2s;}
+.rect[data-color="color4"].pixel {transition-delay: .3s;}
+.rect[data-color="color5"].pixel {transition-delay: .4s;}
 
 .rect.pixel[data-drawing="family"][data-color-drawing="1"] { background-color : var(--family1);}
 .rect.pixel[data-drawing="family"][data-color-drawing="2"] { background-color : var(--family2);}
@@ -416,7 +416,7 @@ article.home p.main-text {
 
 article.home > * {
 
-    transition: all 1s 2.5s;
+    transition: all 1s 3s;
     opacity: 1;
 
 }
