@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="style.css">
     <title>My patch</title>
 </head>
-<body>
+<body data-theme="santuario">
 
     <!--<div class="theme-selector">
         <select name="theme-selector" id="theme-selector">
@@ -36,6 +36,28 @@
     </header>
 
     <main>
+
+        <nav class="home-nav">
+
+            <!--<div class="theme-selector">
+                <label for="theme-selector">Pick a theme</label>
+                <select name="theme-selector" id="theme-selector">
+                    <option value="santuario">Santuário</option>
+                    <option value="andorinhas">Andorinhas</option>
+                </select>
+            </div>-->
+
+            <ul class="buttons-initial-controls">
+                <li>
+                    <button id="main-nav-start">
+                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 0 0 L 24 12 L 0 24 L 0 0"></path>
+                        </svg> 
+                        Start!
+                    </button></li>
+                <li><button id="main-nav-skip">Skip this... extravaganza.</button></li>
+            </ul>
+        </nav>
         
         <div class="container" data-theme="santuario">
 

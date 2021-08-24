@@ -163,7 +163,49 @@ const js = {
 
             }
 
+        },
+
+        controls : {
+
+            ref : '.buttons-initial-controls',
+
+            monitor : () => {
+
+                const cont = document.querySelector(js.interactions.controls.ref);
+
+                cont.addEventListener('click', js.interactions.controls.on_click);
+
+            },
+
+            on_click : function(e) {
+
+                const cont = document.querySelector(js.interactions.controls.ref);
+
+                if (e.target.tagName == 'BUTTON') {
+
+                    const action = e.target.id;
+
+                    console.log(action);
+
+                    if (action == 'main-nav-start') js.anims.timeline.play();
+
+                    else {
+
+                        js.anims.dissolve();
+                        js.anims.drop_and_show();
+
+                    }
+
+                    cont.classList.add('hidden');
+
+                }
+
+            }
+
+
+
         }
+
     },
 
     treemap : {
@@ -973,6 +1015,7 @@ const js = {
             // commenting controls 
             //js.interactions.theme.monitor_change();
             //js.interactions.temp_controls.monitor();
+            js.interactions.controls.monitor();
 
             js.utils.set_ids();
 
