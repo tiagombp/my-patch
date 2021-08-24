@@ -922,9 +922,9 @@ const js = {
                                     setTimeout(() => {
                                         js.steps.compute_position(steps[5]);
                                         
-                                        setTimeout(js.anims.drop_and_show, 7 * interval - 300)
+                                        setTimeout(js.anims.drop_and_show, 7 * interval - 800)
             
-                                    }, 6 * interval - 300)
+                                    }, 6 * interval - 600)
         
                                 }, 5 * interval)
     
