@@ -24,6 +24,9 @@
     --grad2 : var(--color5);
     */
 
+    /* cor legal para o fundo
+    #fbf6f3 */
+
     --grad1 : var(--color2);
     --grad2 : var(--color3);
 
@@ -864,6 +867,17 @@ article.work h3::after {
         color: var(--highlight);
 
     }
+
+    /*
+    article.work h2::before {
+        content: '';
+        position: absolute;
+        left: -10px;
+        top: 10px;
+        border: 10px solid;
+        border-color: transparent transparent transparent var(--highlight);
+    }
+    */
 
     article.work::before {
         height: 0;
