@@ -336,7 +336,7 @@ nav.home-nav li + li {
     opacity: 1;
     background-color : var(--pixels);
     z-index: 2;
-    border-radius: 50%;
+    /*border-radius: 50%;*/
 
 }
 
@@ -349,6 +349,7 @@ nav.home-nav li + li {
     opacity: 0.2;
     border: none;
     /*transition-timing-function: */
+    border: 1px solid var(--color3);
 
 }
 
