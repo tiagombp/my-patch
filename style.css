@@ -600,6 +600,12 @@ div.sections {
 
 }
 
+.subpage.words {
+
+    background-color: #D7E4FC;
+
+}
+
 /* header / nav */
 
 .subpage header {
@@ -650,7 +656,7 @@ div.sections {
     transition: all .3s;
     background: linear-gradient(
     	to right,
-	    var(--highlight-dim),
+	    black,
 	    var(--highlight-dim) 50%,
 	    var(--text-color) 50%);
     -webkit-background-clip: text;
@@ -734,13 +740,24 @@ div.sections {
     font-style: italic;
 }
 
-article.work {
+article.work, article.word {
 
     font-family: 'Work Sans';
     line-height: 1.6;
     font-size: 18px;
     margin-bottom: 3rem;
 
+}
+
+article.word li {
+
+    margin-bottom: 2rem;
+    list-style: none;
+
+}
+
+.under-construction {
+    width: 100%;
 }
 
 article.work p, article.work h2 {
