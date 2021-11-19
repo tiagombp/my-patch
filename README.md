@@ -25,6 +25,8 @@ Começar com uma cor só (Todos os retângulos e bordas). Aí gradativamente col
 
 aumentar fonte do h1 para 3 rem?
 
+fazer um scroller em cima de um mapa contando minha história
+
 
 # to-do
 
