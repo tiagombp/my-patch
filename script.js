@@ -18,7 +18,7 @@ const js = {
         'i am tiago',
         'i like...'
 
-        // make it work with capital letters to, later
+        // make it work with capital letters too, later
 
     ],
 
@@ -28,10 +28,41 @@ const js = {
         h : null,
         w : null,
 
+        // canvas
+        canvas: {
+
+            sel : 'canvas',
+
+            base_dim : 2000,
+            w : null,
+            h : null
+
+        },
+
         set : function() {
 
             this.h = window.innerHeight;
             this.w = window.innerWidth;
+
+            const larger_dimension = Math.max(this.w, this.h);
+
+            if (this.w > this.h) {
+
+                this.canvas.w = this.canvas.base_dim;
+                this.canvas.h = this.canvas.base_dim * this.h / this.w
+
+            } else {
+
+                this.canvas.h = this.canvas.base_dim;
+                this.canvas.w = this.canvas.base_dim * this.w / this.h
+
+            }
+
+            console.log(larger_dimension, this.canvas);
+
+            const canvas = document.querySelector(this.canvas.sel);
+            canvas.width = this.canvas.w;
+            canvas.height = this.canvas.h;
 
         },
 

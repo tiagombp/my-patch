@@ -181,6 +181,14 @@ div.container {
 
 }
 
+canvas {
+
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+
+}
+
 /* --- header --- */
 
 header.header-home {
