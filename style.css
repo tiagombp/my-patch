@@ -349,7 +349,8 @@ nav.home-nav li + li {
     opacity: 0.2;
     border: none;
     /*transition-timing-function: */
-    border: 1px solid var(--color3);
+    /*border: 1px solid var(--color3);*/
+    border-radius: 50%;
 
 }
 
