@@ -984,6 +984,10 @@ const js = {
 
         random : [],
 
+        root : null,
+
+        cells : null,
+
         load : function() {
 
             fetch('./prep/grid.json')
