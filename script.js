@@ -1035,7 +1035,7 @@ const js = {
 
             n : 800,
             
-            states : [],
+            params : [],
 
             make_grid : () => {
 
@@ -1043,9 +1043,11 @@ const js = {
 
                 for (let i = 0; i < n; i++) {
 
-                    js.canvas.points.states.push( 
+                    js.canvas.points.params.push( 
 
                         {
+
+                            // these are the current parameters, which will be updated by gsap
 
                             i : i,
                             value : Math.round(Math.random() * 100),
@@ -1053,8 +1055,12 @@ const js = {
                             y : null,
                             w : null,
                             h : null,
-                            l : null, // vai determinar se é círculo ou quadrado
-                            color : null
+                            m : null, // vai determinar se é círculo ou quadrado. 0 circle, 1, square
+                            color : null,
+                            line : null, // só para o treemap
+
+                            // we will later calculate the future parameters for each state (positions, sizes etc.) and store them here. Then, in the gsap call, we will retrieve and passa these future params to the gsap function
+                            future_states_params : {}
 
                         }
 
@@ -1062,13 +1068,102 @@ const js = {
     
                 }
 
-                js.utils.shuffle(js.canvas.points.states);
+                js.utils.shuffle(js.canvas.points.params);
 
-            }
+            },
+
+            get_future_value : (i, target, future_state, param ) => target.future_states_params[future_state][param]
 
         },
 
-        render : (x, y, w, h, l, color) => {
+        render : () => {
+
+            const [canvas_width, canvas_height] = [js.canvas.sizings.w, js.canvas.sizings.h];
+
+            const ctx = js.canvas.context;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const points = js.canvas.points.params;
+
+            points.forEach(point => {
+
+                // it will always render the parameters of the current state. The trick is to animate the values of the current state, which we'll do with gsap. When setting the animation, we will get the future parameters from the appropriate next_state.
+
+                const { x, y, w, h, m, color, line } = point;
+
+                ctx.fillStyle = color;
+                ctx.lineStyle = 'black';
+                ctx.lineWidth = line;
+
+                if (m == 0) {
+
+                    const r = w/2;
+    
+                    ctx.beginPath();
+                    ctx.arc(x + r, y + r, r, 0, Math.PI*2, true);
+                    ctx.fill();
+                    if (line) ctx.stroke();
+                       
+                  } else if (m == 1) {
+                    
+                    if (line) ctx.strokeRect(x - r, y - r, 2*r, 2*r);
+                    else ctx.fillRect(x - r, y - r, 2*r, 2*r);
+                  
+                  } else {
+                    
+                    const l = r * m;
+                    const R = Math.sqrt(l*l + r*r);
+                    const theta = Math.atan(l/r);
+                    
+                    ctx.beginPath();
+                    
+                    ctx.moveTo(x + r, y - l);
+                    ctx.lineTo(x + r, y + l);
+                    
+                    ctx.arc(x, 
+                            y, 
+                            R, 
+                            Math.PI * 2 - theta,
+                            Math.PI * 2 - (Math.PI/2 - theta), 
+                            true);
+                    
+                    ctx.lineTo(x - l, y - r);
+                    
+                    ctx.arc(x,
+                           y, 
+                           R,
+                           Math.PI * 2 - (Math.PI/2 + theta),
+                           Math.PI * 2 - (Math.PI - theta),
+                           true);
+                    
+                    ctx.lineTo(x - r, y + l);
+                    
+                    ctx.arc(x,
+                            y, 
+                            R,
+                            Math.PI * 2 - (Math.PI + theta),
+                            Math.PI * 2 - (Math.PI * 3/2 - theta),
+                            true);
+                    
+                    ctx.lineTo(x + l, y + r);
+                    
+                    ctx.arc(x,
+                            y, 
+                            R,
+                            Math.PI * 2 - (Math.PI * 3/2 + theta),
+                            Math.PI * 2 - (Math.PI * 2 - theta),
+                            true);
+                    
+                    if (line) ctx.stroke();
+                    ctx.fill();
+                   
+                }
+
+                
+            })
+
+    
 
         }
 
