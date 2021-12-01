@@ -14,73 +14,6 @@ const js = {
 
     },
 
-    phrases : [
-
-        'hi there',
-        'i am tiago',
-        'i like...'
-
-        // make it work with capital letters too, later
-
-    ],
-
-    sizings : {
-
-        // will be set by .set()
-        h : null,
-        w : null,
-
-        // canvas
-        canvas: {
-
-            sel : 'canvas',
-
-            base_dim : 2000,
-            w : null,
-            h : null
-
-        },
-
-        set : function() {
-
-            this.h = window.innerHeight;
-            this.w = window.innerWidth;
-
-            const larger_dimension = Math.max(this.w, this.h);
-
-            if (this.w > this.h) {
-
-                this.canvas.w = this.canvas.base_dim;
-                this.canvas.h = this.canvas.base_dim * this.h / this.w
-
-            } else {
-
-                this.canvas.h = this.canvas.base_dim;
-                this.canvas.w = this.canvas.base_dim * this.w / this.h
-
-            }
-
-            console.log(larger_dimension, this.canvas);
-
-            const canvas = document.querySelector(this.canvas.sel);
-            canvas.width = this.canvas.w;
-            canvas.height = this.canvas.h;
-
-        },
-
-        get : {
-
-            square_size : () => {
-
-                js.params.l = +window.getComputedStyle(document.documentElement).getPropertyValue('--cell-size').slice(0,-2)
-
-            }
-
-        }
-
-
-    },
-
     utils : {
 
         nof_pixels : function(word) {
@@ -119,22 +52,6 @@ const js = {
             }
           
             return array;
-
-        },
-
-        set_ids : function() {
-
-            let rects = document.querySelectorAll('div.rect');
-            
-            rects.forEach(div => {
-
-                let id = js.data.indexes.pop()
-
-                div.dataset.id = String(id);
-
-            })
-
-
 
         }
 
@@ -461,10 +378,6 @@ const js = {
                 }
 
             }
-
-            // save positions to current state
-
-            js.ctrl.current_state.positions = positions;
 
             // hide the rest, return to position
 
@@ -972,14 +885,6 @@ const js = {
         grids : null,
 
         letters : null,
-
-        indexes : [],
-
-        random : [],
-
-        root : null,
-
-        cells : null,
 
         load : function() {
 
