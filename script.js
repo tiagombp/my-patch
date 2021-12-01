@@ -7,6 +7,8 @@ const js = {
         ch : 8, // squares in each dimension of a letter
         sq : 40, // squares in each dimension of a drawing
 
+        colors : ["#BF2C62", "#F6E2DF", "#F2A007", "#D95407", "#1E5693"],
+
         symbols : ["@", "!", ":", "_"],
         symbols_refs : ["heart", "exclamation", "smile", "ellipsis"]
 
@@ -247,20 +249,40 @@ const js = {
 
             const data = {
                 
-                children : js.data.random
+                children : js.canvas.points.params.map(d => d.value)
 
             };
 
             //console.log(data);
 
-            const w = js.sizings.w;
-            const h = js.sizings.h;
+            const w = js.canvas.sizings.w;
+            const h = js.canvas.sizings.h;
 
-            js.data.root = d3.treemap()
+            const calculated_data = d3.treemap()
               .tile(d3.treemapBinary)
               .size([w, h])
               .round(true)
               (d3.hierarchy(data).sum(d => d))
+            ;
+
+            // bring the data to the points 'treemap' state
+
+            calculated_data.children.forEach( (leaf, i) => {
+
+                const point = js.canvas.points.params[i];
+
+                const x = leaf.x0;
+                const y = leaf.y0;
+                const w = leaf.x1 - leaf.x0;
+                const h = leaf.y1 - leaf.y0;
+
+                const m = 1;
+                const color_index = ( i % 5 );
+                const color = js.params.colors[color_index];
+
+                point.future_states_params['treemap'] = { x, y, w, h, m, color };
+
+            })
 
         },
 
@@ -316,28 +338,12 @@ const js = {
             //width = p2 ? Math.max(p1.length, p2.length) * ch * l : width;
             //width = dr ? Math.max(sq * l, width) : width;
 
-            let w_screen = js.sizings.w;
-            let h_screen = js.sizings.h;
+            let w_screen = js.canvas.sizings.w;
+            let h_screen = js.canvas.sizings.h;
 
             // initial positions in pixels
 
-            //const x0 = (w_screen - width)  / 2;
             const y0 = (h_screen - height) / 2;
-
-            // borda
-
-            /*d3.select('div.borda').remove();
-
-            const cont = d3.select('.container')
-              .append('div')
-              .classed('borda', true)
-              .style('position', 'absolute')
-              .style('top', y0 + 'px')
-              .style('left', x0 + 'px')
-              .style('width', width + 'px')
-              .style('height', height + 'px')
-              .style('background-color', 'transparent')
-              .style('border', "3px solid black");*/
 
             // initialize positions
 
@@ -399,32 +405,20 @@ const js = {
 
                         for (pos of this_letter_positions) {
 
-                            let current_square = d3.select('[data-id="' + general_index + '"]');
+                            let current_square = js.canvas.points.params[general_index];
+                            //d3.select('[data-id="' + general_index + '"]');
 
                             let x = ( ( (pos % ch)) * l ) + (n * l * ch) + x0;
                             let y = ( Math.floor( pos / ch ) * l ) + y_desloc + y0;
+                            const color = "#F6E2DF";
+                            const m = 0;
+                            const w = h = l;
 
-                            current_square
-                                .classed('active', true)
-                                .attr('data-color-drawing', '')
-                                .attr('data-drawing', '')
-                                .transition()
-                                .delay(1000)
-                                .duration(200)
-                                //.style('opacity', 1)
-                                //.style('width', l + 'px')
-                                //.style('height', l + 'px')
-                                .style('transform', `translate(${x}px,${y}px)`);
+                            current_square.future_states_params[step] = { x, y, w, h, m, color};
 
                             general_index++;
                         }
-    
-                        //console.log(n, n*last_index, this_letter_positions);
-        
-                        // phrase_positions = phrase_positions.concat(this_letter_positions);
 
-                        //console.log(phrase_positions);
-    
                     }
     
                     n++;
@@ -448,7 +442,7 @@ const js = {
 
                 for (unit of picture_data) {
 
-                    let current_square = d3.select('[data-id="' + general_index + '"]');
+                    let current_square = js.canvas.points.params[general_index];
 
                     const pos = unit.pos;
                     const color = unit.cor;
@@ -460,27 +454,12 @@ const js = {
                     let x = ( ( (pos % sq)) * l ) + x0;
                     let y = ( Math.floor( pos / sq ) * l ) + y_desloc + y0;
 
-                    current_square
-                        .classed('active', true)
-                        .attr('data-color-drawing', color)
-                        .attr('data-drawing', dr)
-                        .transition()
-                        .delay(1000)
-                        .duration(200)
-                        //.style('opacity', 1)
-                        //.style('width', l + 'px')
-                        //.style('height', l + 'px')
-                        .style('transform', `translate(${x}px,${y}px)`);
+                    current_square.future_states_params[step] = { x, y, w, h, m, color};
 
                     general_index++;
                 }
 
-
-
             }
-
-
-            //console.log(positions);
 
             // save positions to current state
 
@@ -488,37 +467,19 @@ const js = {
 
             // hide the rest, return to position
 
-            d3.selectAll('[data-id]')
-              .classed('active', function(d) {
+            for (let i = general_index; i++; i < js.canvas.points.n) {
 
-                const sel = d3.select(this);
-                  
-                const id = +sel.attr('data-id')
+                let current_square = js.canvas.points.params[i];
 
-                // retrieves and set original positions
-                if (id >= general_index) {
+                // reference params
 
-                    const original_transform = sel.attr('data-original-transform');
+                let reference_params = current_square.future_states_params['reference'];
 
-                    sel
-                      .style('transform', original_transform)
-                      .attr('data-color-drawing', '')
-                      .attr('data-drawing', '');
+                const { x, y, w, h, m, color} = reference_params;
 
-                }
+                current_square.future_states_params[step] = { x, y, w, h, m, color};
 
-                return !(id >= general_index);
-
-              });
-
-            // for (let id = general_index + 1; id <= js.data.random.length; id++) {
-
-            //     let current_square = d3.select('[data-id="' + id + '"]');
-
-            //     current_square
-            //         .classed('active', false);
-
-            // }
+            }
 
         }, // @ for heart, _ for ...
 
@@ -1059,6 +1020,8 @@ const js = {
                             color : null,
                             line : null, // só para o treemap
 
+                            p : Math.floor(Math.random() * 9), // vou usar esse valor para o delay e para o offset (na transiçào treemap > rects). Não preciso do render, só para preparar.
+
                             // we will later calculate the future parameters for each state (positions, sizes etc.) and store them here. Then, in the gsap call, we will retrieve and passa these future params to the gsap function
                             future_states_params : {}
 
@@ -1071,6 +1034,12 @@ const js = {
                 js.utils.shuffle(js.canvas.points.params);
 
             },
+
+            offset_vectors : [
+                [  0, 0], [  0, 0.5], [  0, 1 ],
+                [0.5, 0], [0.5, 0.5], [0.5, 1 ],
+                [1  , 0], [1  , 0.5], [1  , 1 ]
+            ],
 
             get_future_value : (i, target, future_state, param ) => target.future_states_params[future_state][param]
 
@@ -1225,11 +1194,14 @@ const js = {
 
             js.data.load();
 
-            js.data.create();
-            js.data.make_indexes();
-            js.utils.shuffle(js.data.indexes);
+            //js.data.create();
+            //js.data.make_indexes();
+            //js.utils.shuffle(js.data.indexes);
 
-            js.sizings.set();
+            js.canvas.sizings.get.square_size();
+            js.canvas.sizings.set();
+            js.canvas.points.make_grid();
+            //js.sizings.set();
 
             //js.ctrl.after_data();
 
@@ -1238,17 +1210,19 @@ const js = {
         after_data : function(data) {
 
             js.treemap.prepare();
-            js.treemap.draw();
+            //js.treemap.draw();
 
             js.data.grids = data;
             js.data.letters = data.letters;
 
+            //js.steps.compute_position('hi');
+
             // commenting controls 
             //js.interactions.theme.monitor_change();
             //js.interactions.temp_controls.monitor();
-            js.interactions.controls.monitor();
+            //js.interactions.controls.monitor();
 
-            js.utils.set_ids();
+            //js.utils.set_ids();
 
             //js.grid.mark_cells();
 
