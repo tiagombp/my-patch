@@ -973,6 +973,107 @@ const js = {
 
     },
 
+    canvas : {
+
+        sel : 'canvas',
+
+        context : null,
+
+        set_context : () => {
+
+            const canvas  = document.querySelector(js.canvas.sel);
+            js.canvas.context = canvas.getContext('2d');
+
+        },
+
+        sizings : {
+
+            // w and h will be set by .set()
+            h : null,
+            w : null,
+            base_dim : 2000,
+    
+            set : function() {
+    
+                this.h = window.innerHeight;
+                this.w = window.innerWidth;
+    
+                const larger_dimension = Math.max(this.w, this.h);
+    
+                if (this.w > this.h) {
+    
+                    js.canvas.sizings.w = this.base_dim;
+                    js.canvas.sizings.h = this.base_dim * this.h / this.w
+    
+                } else {
+    
+                    js.canvas.sizings.h = this.base_dim;
+                    js.canvas.sizings.w = this.base_dim * this.w / this.h
+    
+                }
+    
+                const canvas  = document.querySelector(js.canvas.sel);
+                canvas.width  = js.canvas.sizings.w;
+                canvas.height = js.canvas.sizings.h;
+    
+            },
+    
+            get : {
+    
+                square_size : () => {
+    
+                    js.params.l = +window.getComputedStyle(document.documentElement).getPropertyValue('--cell-size').slice(0,-2)
+    
+                }
+    
+            }
+    
+    
+        },
+
+        points : {
+
+            n : 800,
+            
+            states : [],
+
+            make_grid : () => {
+
+                const n = js.canvas.points.n;
+
+                for (let i = 0; i < n; i++) {
+
+                    js.canvas.points.states.push( 
+
+                        {
+
+                            i : i,
+                            value : Math.round(Math.random() * 100),
+                            x : null,
+                            y : null,
+                            w : null,
+                            h : null,
+                            l : null, // vai determinar se é círculo ou quadrado
+                            color : null
+
+                        }
+
+                    );
+    
+                }
+
+                js.utils.shuffle(js.canvas.points.states);
+
+            }
+
+        },
+
+        render : (x, y, w, h, l, color) => {
+
+        }
+
+    },
+
 
     data : {
 
