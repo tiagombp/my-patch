@@ -46,3 +46,9 @@ Words
 
  ```
 
+
+## summary
+
+0. generates the random data
+1. load data with the drawings and letters grid.
+2. 
