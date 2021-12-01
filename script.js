@@ -275,12 +275,13 @@ const js = {
                 const y = leaf.y0;
                 const w = leaf.x1 - leaf.x0;
                 const h = leaf.y1 - leaf.y0;
+                const line = 10; // setting the line width here
 
                 const m = 1;
                 const color_index = ( i % 5 );
                 const color = js.params.colors[color_index];
 
-                point.future_states_params['treemap'] = { x, y, w, h, m, color };
+                point.future_states_params['treemap'] = { x, y, w, h, m, color, line };
 
             })
 
@@ -569,222 +570,6 @@ const js = {
 
     },
 
-    /*
-
-    grid : {
-
-        ref : '.grid-container',
-
-        init : function() {
-
-            //const cont = document.querySelector(this.ref);
-
-            // for (let i = 1; i<=js.params.nof_letters; i++) {
-
-            //     const new_div = document.createElement('div');
-
-            //     new_div.classList.add('grid--letter');
-
-            //     cont.appendChild(new_div);
-
-            // }
-
-        },
-
-        mark_cells : function() {
-
-            const phrases = js.phrases;
-
-            const div_letters = document.querySelectorAll('.grid--letter');
-
-            console.log(phrases, div_letters);
-
-            phrases.forEach( (phrase, i_phrase) => {
-
-                const letters = phrase.split('');
-
-                console.log('Letters: ', letters);
-
-                letters.forEach((letter,i) => {
-
-                    const first_cell = div_letters[i].querySelector('.grid--cell');
-
-                    if (first_cell) div_letters[i].classList.add('has-cells');
-
-                    //if (i > js.params.nof_letters) continue;
-
-                    const letter_positions = js.data.letters[letter.toLowerCase()];
-
-                    for (let n = 0; n <= 63; n++) {
-
-                        //console.log(letter, i, n);
-
-                        let current_cell;
-
-                        const was_empty_div_letter = !div_letters[i].classList.contains('has-cells');
-
-                        if (!was_empty_div_letter) {
-
-                            current_cell = div_letters[i].querySelector('[data-cell-no="' + n + '"]');
-
-                        } else {
-
-                            current_cell = document.createElement('div');
-                            current_cell.classList.add('grid--cell');
-                            current_cell.dataset['cellNo'] = n;
-
-                        }
-
-                        if ( js.data.letters.hasOwnProperty(letter) ) {
-
-                            if ( letter_positions.includes(n)) {
-
-                                current_cell.classList.add('phrase' + i_phrase);
-
-                            } 
-
-                        }
-
-                        if (was_empty_div_letter) {
-
-                            div_letters[i].appendChild(current_cell);
-
-                        }
-                        
-                        
-
-                    }
-
-                })
-
-            })
-
-            const anim = new gsap.timeline({paused: true})
-
-            // gsap.to('[data-id]', {scale: 0,
-
-            //     stagger: {
-            //         from: "center",
-            //         amount: 2
-            //         }
-
-            //  });
-
-                //  .to('.grid--cell', {
-
-                //     borderColor : "#efefef"
-
-                //  })
-                 .to('.phrase0', {
-
-                    //rotationX: -90,
-                    z: 0,
-                    backgroundColor: "#333",
-                    //scale: 0,
-                    //opacity: 0,
-
-                    stagger: {
-                        grid: "auto",
-                        from: "start",
-                        each: 0.075
-                        }
-
-                 }, '+=.5')
-                 .to('.phrase0', {
-
-                    z : -1000,
-                    backgroundColor: "transparent",
-                    //rotationX: 0,
-                    //scale: 0,
-                    //opacity: 1,
-
-                    stagger: {
-                        grid: "auto",
-                        from: "edges",
-                        each: 0.025
-                        }
-
-                 }, '+=3')
-
-                 .to('.phrase1', {
-
-                    z: 0,
-                    backgroundColor: "#333",
-                    //scale: 0,
-                    //opacity: 0,
-
-                    stagger: {
-                        grid: "auto",
-                        from: "start",
-                        each: 0.075
-                        }
-
-                 }, '+=.5')
-
-            const anim2 = new gsap.timeline({paused: true})
-            //  .to('.grid--cell', {
-
-            //     borderColor : "#efefef"
-
-            //  })
-            .to('.phrase0', {
-
-                //rotationX: -90,
-                rotationY: 180,
-                backgroundColor: "#333",
-                //scale: 0,
-                //opacity: 0,
-
-                stagger: {
-                    grid: "auto",
-                    from: "start",
-                    each: 0.075
-                    }
-
-            }, '+=.5')
-            .to('.phrase0', {
-
-                rotationY: 0,
-                backgroundColor: "transparent",
-                //rotationX: 0,
-                //scale: 0,
-                //opacity: 1,
-
-                stagger: {
-                    grid: "auto",
-                    from: "end",
-                    each: 0.02
-                    }
-
-            }, '+=2')
-
-            .to('.phrase1', {
-
-                rotationY: 180,
-                backgroundColor: "#333",
-                //scale: 0,
-                //opacity: 0,
-
-                stagger: {
-                    grid: "auto",
-                    from: "start",
-                    each: 0.075
-                    }
-
-            }, '+=.5')
-            
-            anim2.play();
-
-
-            
-
-
-        }
-
-    },
-
-    */
-
     anims : {
         //let els = d3.selectAll('[data-color]').transition().duration(1000).delay((d,i)=>50+i*25).style('transform', 'translate(800px,0px) scale(0)')
 
@@ -976,6 +761,8 @@ const js = {
                 const canvas  = document.querySelector(js.canvas.sel);
                 canvas.width  = js.canvas.sizings.w;
                 canvas.height = js.canvas.sizings.h;
+
+                console.log(js.canvas.sizings.w, js.canvas.sizings.h);
     
             },
     
@@ -1045,25 +832,49 @@ const js = {
 
         },
 
+        set_current_state : (state) => {
+
+            const marks = js.canvas.points.params;
+
+            marks.forEach( mark => {
+
+                const { x, y, w, h, m, color, line } =  mark.future_states_params[state];
+                
+                mark.x = x;
+                mark.y = y;
+                mark.w = w;
+                mark.h = h;
+                mark.m = m;
+                mark.line = line;
+                mark.color = color;
+                
+            })
+
+        },
+
         render : () => {
 
             const [canvas_width, canvas_height] = [js.canvas.sizings.w, js.canvas.sizings.h];
 
+            console.log(canvas_width, canvas_height);
+
             const ctx = js.canvas.context;
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas_width, canvas_height);
 
-            const points = js.canvas.points.params;
+            const marks = js.canvas.points.params;
 
-            points.forEach(point => {
+            marks.forEach(mark => {
 
                 // it will always render the parameters of the current state. The trick is to animate the values of the current state, which we'll do with gsap. When setting the animation, we will get the future parameters from the appropriate next_state.
 
-                const { x, y, w, h, m, color, line } = point;
+                const { x, y, w, h, m, color, line } = mark;
 
                 ctx.fillStyle = color;
                 ctx.lineStyle = 'black';
                 ctx.lineWidth = line;
+
+                //console.log( line, m);
 
                 if (m == 0) {
 
@@ -1072,14 +883,31 @@ const js = {
                     ctx.beginPath();
                     ctx.arc(x + r, y + r, r, 0, Math.PI*2, true);
                     ctx.fill();
-                    if (line) ctx.stroke();
+
+                    if (line > 0) ctx.stroke();
                        
-                  } else if (m == 1) {
-                    
-                    if (line) ctx.strokeRect(x - r, y - r, 2*r, 2*r);
-                    else ctx.fillRect(x - r, y - r, 2*r, 2*r);
-                  
-                  } else {
+                } else if (m == 1) {
+
+                    if (line > 0) {
+
+                        //if (mark.i > 300) return
+
+                        ctx.beginPath();
+                        ctx.rect(x, y, w, h);//ctx.strokeRect(x - r, y - r, 2*r, 2*r);
+                        ctx.stroke();
+                        ctx.fill();
+                        ctx.closePath();
+                        
+                    } else {
+                        
+                        ctx.fillRect(x, y, w, h);
+                        console.log('nunca vim aqui');
+
+                    }
+
+                } else {
+
+                    console.log('to ali');
                     
                     const l = r * m;
                     const R = Math.sqrt(l*l + r*r);
@@ -1124,7 +952,7 @@ const js = {
                             Math.PI * 2 - (Math.PI * 2 - theta),
                             true);
                     
-                    if (line) ctx.stroke();
+                    if (line > 0) ctx.stroke();
                     ctx.fill();
                    
                 }
@@ -1194,37 +1022,27 @@ const js = {
 
             js.data.load();
 
-            //js.data.create();
-            //js.data.make_indexes();
             //js.utils.shuffle(js.data.indexes);
 
             js.canvas.sizings.get.square_size();
             js.canvas.sizings.set();
+            js.canvas.set_context();
             js.canvas.points.make_grid();
-            //js.sizings.set();
 
-            //js.ctrl.after_data();
 
         },
 
         after_data : function(data) {
 
             js.treemap.prepare();
-            //js.treemap.draw();
 
             js.data.grids = data;
             js.data.letters = data.letters;
 
+            //js.canvas.set_current_state('treemap')
+            //js.canvas.render();
+
             //js.steps.compute_position('hi');
-
-            // commenting controls 
-            //js.interactions.theme.monitor_change();
-            //js.interactions.temp_controls.monitor();
-            //js.interactions.controls.monitor();
-
-            //js.utils.set_ids();
-
-            //js.grid.mark_cells();
 
         }
     }
