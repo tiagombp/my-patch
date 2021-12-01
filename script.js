@@ -158,9 +158,9 @@ const js = {
 
     },
 
-    treemap : {
+    steps : {
 
-        prepare : function() {
+        prepare_treemap_positions : function() {
 
             //console.log('Prepare');
 
@@ -204,29 +204,12 @@ const js = {
 
         },
 
-        draw : function() {
+        // after the treemap
+        prepare_default_positions : () => {
 
-            const root = js.data.root;
+        },
 
-            const svg = d3.select(".container");
-
-            const leaf = svg.selectAll("div.rect")
-                .data(root.leaves())
-                .join("div")
-                .classed('rect', true)
-                .style("transform", d => `translate(${d.x0}px,${d.y0}px)`)
-                .attr('data-original-transform', d => `translate(${d.x0}px,${d.y0}px)`)
-                .attr('data-color', (d,i) => `color${(i % 5) + 1}`)
-                .style("width", d => (d.x1 - d.x0) + 'px')
-                .style("height", d => (d.y1 - d.y0) + 'px');
-
-        }
-
-    },
-
-    steps : {
-
-        compute_position: function(step) {
+        prepare_step_positions: function(step) {
 
             const ch = js.params.ch; 
             const sq = js.params.sq; // nof squares in each letter side -- 8
@@ -396,6 +379,8 @@ const js = {
             }
 
         }, // @ for heart, _ for ...
+
+
 
         'hi' : {
 
@@ -695,10 +680,17 @@ const js = {
         points : {
 
             n : 800,
+
+            offset_vectors : [
+                [  0, 0], [  0, 0.5], [  0, 1 ],
+                [0.5, 0], [0.5, 0.5], [0.5, 1 ],
+                [1  , 0], [1  , 0.5], [1  , 1 ]
+            ],
             
+            // coração do negócio, onde vão ficar todos os parâmetros necessários para desenhar na tela
             params : [],
 
-            make_grid : () => {
+            initialize_grid : () => {
 
                 const n = js.canvas.points.n;
 
@@ -734,12 +726,6 @@ const js = {
                 js.utils.shuffle(js.canvas.points.params);
 
             },
-
-            offset_vectors : [
-                [  0, 0], [  0, 0.5], [  0, 1 ],
-                [0.5, 0], [0.5, 0.5], [0.5, 1 ],
-                [1  , 0], [1  , 0.5], [1  , 1 ]
-            ],
 
             get_future_value : (i, target, future_state, param ) => target.future_states_params[future_state][param]
 
@@ -879,7 +865,6 @@ const js = {
 
     },
 
-
     data : {
 
         grids : null,
@@ -922,9 +907,6 @@ const js = {
 
         init : function() {
 
-            //js.grid.init();
-            js.sizings.get.square_size();
-
             js.data.load();
 
             //js.utils.shuffle(js.data.indexes);
@@ -932,14 +914,14 @@ const js = {
             js.canvas.sizings.get.square_size();
             js.canvas.sizings.set();
             js.canvas.set_context();
-            js.canvas.points.make_grid();
+            js.canvas.points.initialize_grid();
 
 
         },
 
         after_data : function(data) {
 
-            js.treemap.prepare();
+            js.steps.prepare_treemap_positions();
 
             js.data.grids = data;
             js.data.letters = data.letters;
