@@ -377,6 +377,8 @@ const js = {
 
                     const pos = unit.pos;
                     const color = unit.cor;
+                    const m = 0;
+                    const w = h = l;
 
                     const x0 = (w_screen - sq * l)  / 2;
 
@@ -394,13 +396,13 @@ const js = {
 
             // hide the rest, return to position
 
-            for (let i = general_index; i++; i < js.canvas.points.n) {
+            for (let i = general_index; i < js.canvas.points.n; i++) {
 
                 let current_square = js.canvas.points.params[i];
 
                 // reference params
 
-                let reference_params = current_square.future_states_params['reference'];
+                let reference_params = current_square.future_states_params['default'];
 
                 const { x, y, w, h, m, color} = reference_params;
 
@@ -672,19 +674,21 @@ const js = {
                 this.h = window.innerHeight;
                 this.w = window.innerWidth;
     
-                const larger_dimension = Math.max(this.w, this.h);
+                /*const larger_dimension = Math.max(this.w, this.h);
     
                 if (this.w > this.h) {
+
+                    console.log(this.h * this.base_dim / this.w);
     
-                    js.canvas.sizings.w = this.base_dim;
-                    js.canvas.sizings.h = this.base_dim * this.h / this.w
+                    this.w = this.base_dim;
+                    this.h = this.h * this.base_dim / this.w
     
                 } else {
     
                     js.canvas.sizings.h = this.base_dim;
-                    js.canvas.sizings.w = this.base_dim * this.w / this.h
+                    js.canvas.sizings.w = this.w * this.base_dim / this.h
     
-                }
+                } */
     
                 const canvas  = document.querySelector(js.canvas.sel);
                 canvas.width  = js.canvas.sizings.w;
@@ -753,8 +757,6 @@ const js = {
     
                 }
 
-                js.utils.shuffle(js.canvas.points.params);
-
             },
 
             get_future_value : (i, target, future_state, param ) => target.future_states_params[future_state][param]
@@ -785,8 +787,6 @@ const js = {
 
             const [canvas_width, canvas_height] = [js.canvas.sizings.w, js.canvas.sizings.h];
 
-            console.log(canvas_width, canvas_height);
-
             const ctx = js.canvas.context;
 
             ctx.clearRect(0, 0, canvas_width, canvas_height);
@@ -803,14 +803,14 @@ const js = {
                 ctx.lineStyle = 'black';
                 ctx.lineWidth = line;
 
+                const r = line > 0 ? 0 : w/2; // w só vai ser != de h no treemap, e aí nesse caso não quero atrapalhar a posição ali embaixo
+
                 //console.log( line, m);
 
                 if (m == 0) {
-
-                    const r = w/2;
     
                     ctx.beginPath();
-                    ctx.arc(x + r, y + r, r, 0, Math.PI*2, true);
+                    ctx.arc(x, y, r, 0, Math.PI*2, true);
                     ctx.fill();
 
                     if (line > 0) ctx.stroke();
@@ -830,13 +830,10 @@ const js = {
                     } else {
                         
                         ctx.fillRect(x, y, w, h);
-                        console.log('nunca vim aqui');
 
                     }
 
                 } else {
-
-                    console.log('to ali');
                     
                     const l = r * m;
                     const R = Math.sqrt(l*l + r*r);
@@ -907,22 +904,6 @@ const js = {
               .then(response => response.json())
               .then(data => js.ctrl.after_data(data));
 
-        },
-
-        create : function() {
-
-            for (let i = 0; i < 800; i++) {
-
-                js.data.random.push(Math.round(Math.random() * 100));
-
-            }
-
-        },
-
-        make_indexes : function() {
-
-            js.data.indexes = js.data.random.map((d,i) => i);
-
         }
 
     },
@@ -941,24 +922,26 @@ const js = {
 
             //js.utils.shuffle(js.data.indexes);
 
+        },
+
+        after_data : function(data) {
+
+            js.data.grids = data;
+            js.data.letters = data.letters;
+
             js.canvas.sizings.get.square_size();
             js.canvas.sizings.set();
             js.canvas.set_context();
             js.canvas.points.initialize_grid();
 
-
-        },
-
-        after_data : function(data) {
-
             js.steps.prepare_treemap_positions();
             js.steps.prepare_default_positions();
-
-            js.data.grids = data;
-            js.data.letters = data.letters;
+            js.utils.shuffle(js.canvas.points.params);
+            js.steps.prepare_step_positions('dataviz');
 
             js.canvas.set_current_state('treemap')
             js.canvas.render();
+
 
             //js.steps.compute_position('hi');
 
@@ -974,7 +957,23 @@ const js = {
                 line : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'line'),
                 onUpdate : js.canvas.render
 
-            })
+            });
+
+            gsap.to(js.canvas.points.params, {
+
+                delay: 6,
+                duration: 3,
+                ease: 'linear',
+                x : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'x'),
+                y : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'y'),
+                w : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'w'),
+                h : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'h'),
+                m : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'm'),
+                color : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'color'),
+                line : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'line'),
+                onUpdate : js.canvas.render
+
+            });
 
         }
     }
