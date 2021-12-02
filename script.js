@@ -207,6 +207,36 @@ const js = {
         // after the treemap
         prepare_default_positions : () => {
 
+            const points = js.canvas.points.params;
+
+            points.forEach( point => {
+
+                const treemap_params = point.future_states_params.treemap;
+
+                const offset_vector_index = point.p;
+                const offset_vector = js.canvas.points.offset_vectors[offset_vector_index];
+                const [ xo, yo ] = offset_vector;
+
+                const l = js.params.l;
+
+                let x = treemap_params.x + xo * ( treemap_params.w - l);
+                if (x < 0) x = treemap_params.x;
+
+                let y = treemap_params.y + yo * ( treemap_params.h - l);
+                if (y < 0) y = treemap_params.y;
+
+                const color = treemap_params.color;
+
+                const m = treemap_params.m;
+
+                const w = h = l;
+
+                const line = 0;
+
+                point.future_states_params['default'] = { x, y, w, h, m, color, line };
+
+            })
+
         },
 
         prepare_step_positions: function(step) {
@@ -922,14 +952,29 @@ const js = {
         after_data : function(data) {
 
             js.steps.prepare_treemap_positions();
+            js.steps.prepare_default_positions();
 
             js.data.grids = data;
             js.data.letters = data.letters;
 
-            //js.canvas.set_current_state('treemap')
-            //js.canvas.render();
+            js.canvas.set_current_state('treemap')
+            js.canvas.render();
 
             //js.steps.compute_position('hi');
+
+            gsap.to(js.canvas.points.params, {
+
+                delay: 2,
+                duration: 4,
+                x : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'x'),
+                y : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'y'),
+                w : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'w'),
+                h : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'h'),
+                m : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'm'),
+                line : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'line'),
+                onUpdate : js.canvas.render
+
+            })
 
         }
     }
