@@ -307,6 +307,8 @@ const js = {
 
             function evaluate_positions_and_move(ref) {
 
+                //const data = js.canvas.points.params.sort( (a,b) => a.i - b.i );
+
                 let phrase_positions = [];
 
                 const p = phrases[ref];
@@ -948,11 +950,13 @@ const js = {
 
             js.steps.prepare_treemap_positions();
             js.steps.prepare_default_positions();
-            js.utils.shuffle(js.canvas.points.params);
-            js.steps.prepare_step_positions('dataviz');
 
-            js.canvas.set_current_state('treemap')
+            js.steps.prepare_step_positions('dataviz', first = true);
+
+            js.canvas.set_current_state('treemap');
             js.canvas.render();
+            //js.utils.shuffle(js.canvas.points.params);
+            
 
 
             //js.steps.compute_position('hi');
@@ -961,7 +965,7 @@ const js = {
 
             gsap.to(js.canvas.points.params, {
 
-                delay: (i, target) => (i % 5) * 0.1,
+                delay: (i, target) => (i % 6) * 0.1 + 3,
                 duration: 1,
                 x : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'x'),
                 y : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'y'),
@@ -978,7 +982,7 @@ const js = {
 
             gsap.to(js.canvas.points.params, {
 
-                delay: (i, target) => (i % 5) * 0.1 + 2,
+                delay: (i, target) => (i % 6) * 0.1 + 5,
                 duration: 1,
                 x : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'x'),
                 y : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'y'),
