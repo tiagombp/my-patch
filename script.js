@@ -7,7 +7,12 @@ const js = {
         ch : 8, // squares in each dimension of a letter
         sq : 40, // squares in each dimension of a drawing
 
-        colors : ["#BF2C62", "#F6E2DF", "#F2A007", "#D95407", "#1E5693"],
+        colors : {
+            
+            'treemap': [ '#0D05F2', '#1B6DFD', '#030A8C', '#9DF0FF', '#161A59' ],
+            'dataviz' : ["#BF2C62", "#F6E2DF", "#F2A007", "#D95407", "#1E5693", "#161A59"]
+
+        },
 
         symbols : ["@", "!", ":", "_"],
         symbols_refs : ["heart", "exclamation", "smile", "ellipsis"]
@@ -196,9 +201,10 @@ const js = {
 
                 const m = 1;
                 const color_index = ( i % 5 );
-                const color = js.params.colors[color_index];
+                const color = js.params.colors.treemap[color_index];
+                const opacity = 1;
 
-                point.future_states_params['treemap'] = { x, y, w, h, m, color, line };
+                point.future_states_params['treemap'] = { x, y, w, h, m, color, line, opacity };
 
             })
 
@@ -233,13 +239,17 @@ const js = {
 
                 const line = 0;
 
-                point.future_states_params['default'] = { x, y, w, h, m, color, line };
+                const opacity = 0.2
+
+                point.future_states_params['default'] = { x, y, w, h, m, color, line, opacity };
 
             })
 
         },
 
         prepare_step_positions: function(step) {
+
+            const opacity = 1; // todos vao ter opacity 1
 
             const ch = js.params.ch; 
             const sq = js.params.sq; // nof squares in each letter side -- 8
@@ -345,7 +355,7 @@ const js = {
                             const m = 0;
                             const w = h = l;
 
-                            current_square.future_states_params[step] = { x, y, w, h, m, color};
+                            current_square.future_states_params[step] = { x, y, w, h, m, color, opacity};
 
                             general_index++;
                         }
@@ -376,7 +386,7 @@ const js = {
                     let current_square = js.canvas.points.params[general_index];
 
                     const pos = unit.pos;
-                    const color = unit.cor;
+                    const color = js.params.colors[step][unit.cor[0]-1];
                     const m = 0;
                     const w = h = l;
 
@@ -387,7 +397,7 @@ const js = {
                     let x = ( ( (pos % sq)) * l ) + x0;
                     let y = ( Math.floor( pos / sq ) * l ) + y_desloc + y0;
 
-                    current_square.future_states_params[step] = { x, y, w, h, m, color};
+                    current_square.future_states_params[step] = { x, y, w, h, m, color, opacity};
 
                     general_index++;
                 }
@@ -404,9 +414,9 @@ const js = {
 
                 let reference_params = current_square.future_states_params['default'];
 
-                const { x, y, w, h, m, color} = reference_params;
+                const { x, y, w, h, m, color, opacity} = reference_params;
 
-                current_square.future_states_params[step] = { x, y, w, h, m, color};
+                current_square.future_states_params[step] = { x, y, w, h, m, color, opacity};
 
             }
 
@@ -745,6 +755,7 @@ const js = {
                             m : null, // vai determinar se é círculo ou quadrado. 0 circle, 1, square
                             color : null,
                             line : null, // só para o treemap
+                            opacity : 1,
 
                             p : Math.floor(Math.random() * 9), // vou usar esse valor para o delay e para o offset (na transiçào treemap > rects). Não preciso do render, só para preparar.
 
@@ -793,15 +804,16 @@ const js = {
 
             const marks = js.canvas.points.params;
 
-            marks.forEach(mark => {
+            marks.forEach( (mark,i) => {
 
                 // it will always render the parameters of the current state. The trick is to animate the values of the current state, which we'll do with gsap. When setting the animation, we will get the future parameters from the appropriate next_state.
 
-                const { x, y, w, h, m, color, line } = mark;
+                const { x, y, w, h, m, color, line, opacity } = mark;
 
                 ctx.fillStyle = color;
                 ctx.lineStyle = 'black';
                 ctx.lineWidth = line;
+                ctx.globalAlpha = opacity;
 
                 const r = line > 0 ? 0 : w/2; // w só vai ser != de h no treemap, e aí nesse caso não quero atrapalhar a posição ali embaixo
 
@@ -945,25 +957,29 @@ const js = {
 
             //js.steps.compute_position('hi');
 
+            // observe que o gsap é quem vai ser o responsável por alterar os parametros em js.canvas.points.params, da mesma forma que o js.canvas.set_current_state. E o render no onUpdate vai desenhando esses valores intermediários.
+
             gsap.to(js.canvas.points.params, {
 
-                delay: 2,
-                duration: 4,
+                delay: (i, target) => (i % 5) * 0.1,
+                duration: 1,
                 x : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'x'),
                 y : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'y'),
                 w : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'w'),
                 h : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'h'),
                 m : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'm'),
                 line : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'line'),
-                onUpdate : js.canvas.render
+                opacity : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'opacity'),
+                onUpdate : js.canvas.render,
+
+                ease: 'power2'
 
             });
 
             gsap.to(js.canvas.points.params, {
 
-                delay: 6,
-                duration: 3,
-                ease: 'linear',
+                delay: (i, target) => (i % 5) * 0.1 + 2,
+                duration: 1,
                 x : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'x'),
                 y : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'y'),
                 w : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'w'),
@@ -971,7 +987,10 @@ const js = {
                 m : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'm'),
                 color : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'color'),
                 line : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'line'),
-                onUpdate : js.canvas.render
+                opacity : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'opacity'),
+                onUpdate : js.canvas.render,
+
+                ease: 'power2'
 
             });
 
