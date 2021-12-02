@@ -10,7 +10,8 @@ const js = {
         colors : {
             
             'treemap': [ '#0D05F2', '#1B6DFD', '#030A8C', '#9DF0FF', '#161A59' ],
-            'dataviz' : ["#BF2C62", "#F6E2DF", "#F2A007", "#D95407", "#1E5693", "#161A59"]
+            'dataviz' : ["#BF2C62", "#F6E2DF", "#F2A007", "#D95407", "#1E5693", "#161A59"],
+            'webdev' : ['#FCE4D6', 'blue']
 
         },
 
@@ -251,6 +252,8 @@ const js = {
 
             const opacity = 1; // todos vao ter opacity 1
 
+            const data = js.canvas.points.params;
+
             const ch = js.params.ch; 
             const sq = js.params.sq; // nof squares in each letter side -- 8
             const l  = js.params.l;
@@ -307,8 +310,6 @@ const js = {
 
             function evaluate_positions_and_move(ref) {
 
-                //const data = js.canvas.points.params.sort( (a,b) => a.i - b.i );
-
                 let phrase_positions = [];
 
                 const p = phrases[ref];
@@ -348,7 +349,7 @@ const js = {
 
                         for (pos of this_letter_positions) {
 
-                            let current_square = js.canvas.points.params[general_index];
+                            let current_square = data[general_index];//js.canvas.points.params[general_index];
                             //d3.select('[data-id="' + general_index + '"]');
 
                             let x = ( ( (pos % ch)) * l ) + (n * l * ch) + x0;
@@ -385,7 +386,7 @@ const js = {
 
                 for (unit of picture_data) {
 
-                    let current_square = js.canvas.points.params[general_index];
+                    let current_square = data[general_index];//js.canvas.points.params[general_index];
 
                     const pos = unit.pos;
                     const color = js.params.colors[step][unit.cor[0]-1];
@@ -410,7 +411,7 @@ const js = {
 
             for (let i = general_index; i < js.canvas.points.n; i++) {
 
-                let current_square = js.canvas.points.params[i];
+                let current_square = data[i];//js.canvas.points.params[i];
 
                 // reference params
 
@@ -951,7 +952,9 @@ const js = {
             js.steps.prepare_treemap_positions();
             js.steps.prepare_default_positions();
 
-            js.steps.prepare_step_positions('dataviz', first = true);
+            js.steps.prepare_step_positions('dataviz');
+            js.steps.prepare_step_positions('webdev');
+            //js.steps.prepare_step_positions('cookie');
 
             js.canvas.set_current_state('treemap');
             js.canvas.render();
@@ -992,6 +995,24 @@ const js = {
                 color : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'color'),
                 line : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'line'),
                 opacity : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'opacity'),
+                onUpdate : js.canvas.render,
+
+                ease: 'power2'
+
+            });
+
+            gsap.to(js.canvas.points.params, {
+
+                delay: (i, target) => (i % 6) * 0.1 + 7,
+                duration: 1,
+                x : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'x'),
+                y : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'y'),
+                w : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'w'),
+                h : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'h'),
+                m : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'm'),
+                color : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'color'),
+                line : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'line'),
+                opacity : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'opacity'),
                 onUpdate : js.canvas.render,
 
                 ease: 'power2'
