@@ -974,71 +974,7 @@ const js = {
 
             anims.make_tweens();
             anims.add_timelines();
-            anims.timeline.play();
-            
-
-
-            //js.steps.compute_position('hi');
-
-            // observe que o gsap é quem vai ser o responsável por alterar os parametros em js.canvas.points.params, da mesma forma que o js.canvas.set_current_state. E o render no onUpdate vai desenhando esses valores intermediários.
-
-            /*
-
-            gsap.to(js.canvas.points.params, {
-
-                delay: (i, target) => (i % 6) * 0.1,
-                duration: 1,
-                x : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'x'),
-                y : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'y'),
-                w : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'w'),
-                h : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'h'),
-                m : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'm'),
-                line : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'line'),
-                opacity : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'opacity'),
-                onUpdate : js.canvas.render,
-                paused: true,
-
-                ease: 'power2'
-
-            });
-
-            gsap.to(js.canvas.points.params, {
-
-                delay: (i, target) => (i % 6) * 0.1 + 5,
-                duration: 2,
-                x : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'x'),
-                y : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'y'),
-                w : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'w'),
-                h : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'h'),
-                m : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'm'),
-                color : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'color'),
-                line : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'line'),
-                opacity : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'opacity'),
-                onUpdate : js.canvas.render,
-
-                ease: 'power2'
-
-            });
-
-            
-
-            gsap.to(js.canvas.points.params, {
-
-                delay: (i, target) => (i % 6) * 0.1 + 8,
-                duration: 1,
-                x : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'x'),
-                y : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'y'),
-                w : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'w'),
-                h : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'h'),
-                m : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'm'),
-                color : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'color'),
-                line : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'line'),
-                opacity : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'opacity'),
-                onUpdate : js.canvas.render,
-
-                ease: 'power2'
-
-            });*/
+            anims.timeline.pause();
 
         }
     }
