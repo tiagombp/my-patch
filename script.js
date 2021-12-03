@@ -1044,6 +1044,13 @@ const anims = {
         const tweens = anims.tweens;
         tweens.forEach( tween => anims.timeline.add(tween(), "+=1") );
 
+        anims.timeline.add(
+            //() => gsap.set('article.home', {onComplete: () => document.querySelector('article.home').classList.remove('shrunk')})
+            () => gsap.set('article.home', {className:"home"}),
+            "-=1"
+
+        );
+
     }
 
 

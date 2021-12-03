@@ -439,6 +439,13 @@ article.home.shrunk > * {
 
 }
 
+article.home > * {
+
+    transition: all 1s 3s;
+    opacity: 1;
+
+}
+
 article.home {
 
     /*box-shadow: 0 0 10px 10px transparent;*/
@@ -446,7 +453,7 @@ article.home {
     padding: 1rem;
     padding-top: 0;
     overflow: hidden;
-    transition: all 1s 2s, background-color 1s 2.5s, opacity .2s, left 1s 1s, top 1s 1s, transform 1s 1s, height .5s 2s;
+    transition: all 1s 2s, background-color 1s 2.5s, opacity .2s, left 1s 1s, top 1s 1s, transform 1s 1s, height .5s 2s, box-shadow 1s 3s;
     position: absolute;
     left: 0;
     top: 50vh;
@@ -454,7 +461,7 @@ article.home {
     margin: 1rem;
     margin-top: 0;
     margin-left: 10vw;
-    height: 100%;
+    height: 99%;
     width: 50%;
     max-width: 800px;
     color: var(--text-color);
@@ -510,13 +517,6 @@ article.home p.main-text {
     }
 
 
-
-}
-
-article.home > * {
-
-    transition: all 1s 3s;
-    opacity: 1;
 
 }
 
