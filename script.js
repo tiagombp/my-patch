@@ -840,6 +840,7 @@ const js = {
                     if (line > 0) {
 
                         //if (mark.i > 300) return
+                        // line vai de 10 a 0. 10-line
 
                         ctx.beginPath();
                         ctx.rect(x - r, y - r, w, h);//ctx.strokeRect(x - r, y - r, 2*r, 2*r);
@@ -847,9 +848,13 @@ const js = {
                         ctx.fill();
                         ctx.closePath();
                         
+                    } else if (line == 0) { // isso aqui para evitar o saltinho que ele dava no começo do primeiro step após o default!
+
+                        ctx.fillRect(x , y , w, h);
+
                     } else {
-                        
-                        ctx.fillRect(x - r , y - r , w, h);
+
+                        ctx.fillRect(x - r, y - r, w, h);
 
                     }
 
@@ -908,7 +913,7 @@ const js = {
 
     
 
-        }
+        },
 
     },
 
@@ -993,7 +998,7 @@ const js = {
             gsap.to(js.canvas.points.params, {
 
                 delay: (i, target) => (i % 6) * 0.1 + 5,
-                duration: 10,
+                duration: 2,
                 x : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'x'),
                 y : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'y'),
                 w : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'w'),
@@ -1012,7 +1017,7 @@ const js = {
 
             gsap.to(js.canvas.points.params, {
 
-                delay: (i, target) => (i % 6) * 0.1 + 17,
+                delay: (i, target) => (i % 6) * 0.1 + 8,
                 duration: 1,
                 x : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'x'),
                 y : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'y'),
