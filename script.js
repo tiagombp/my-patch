@@ -1065,6 +1065,7 @@ const anims = {
                 w : (i, target) => js.canvas.points.get_future_value(i, target, state, 'w'),
                 h : (i, target) => js.canvas.points.get_future_value(i, target, state, 'h'),
                 m : (i, target) => js.canvas.points.get_future_value(i, target, state, 'm'),
+                color : (i, target) => js.canvas.points.get_future_value(i, target, state, 'color'),
                 line : (i, target) => js.canvas.points.get_future_value(i, target, state, 'line'),
                 opacity : (i, target) => js.canvas.points.get_future_value(i, target, state, 'opacity'),
                 onUpdate : js.canvas.render,
