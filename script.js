@@ -144,14 +144,9 @@ const js = {
 
                     console.log(action);
 
-                    if (action == 'main-nav-start') anims.timeline.play();
+                    if (action == 'main-nav-start') anims.timeline.main.play();
 
-                    else {
-
-                        js.anims.dissolve();
-                        js.anims.drop_and_show();
-
-                    }
+                    else anims.timeline.skip.play();
 
                     cont.classList.add('hidden');
 
@@ -855,7 +850,8 @@ const js = {
 
             anims.make_tweens();
             anims.add_tweens_to_timeline();
-            anims.timeline.pause();
+            anims.timeline.main.pause();
+            anims.timeline.skip.pause();
 
             js.interactions.controls.monitor();
 
@@ -899,14 +895,23 @@ const anims = {
 
     },
 
-    timeline: new gsap.timeline(),
+    timeline: {
+        
+        main: new gsap.timeline(),
+
+        skip : new gsap.timeline()
+
+    },
 
     add_tweens_to_timeline : () => {
 
         const tweens = anims.tweens;
-        tweens.forEach( tween => anims.timeline.add(tween(), "+=1") );
 
-        anims.timeline.add(
+        // main
+
+        tweens.forEach( tween => anims.timeline.main.add(tween(), "+=1") );
+
+        anims.timeline.main.add(
             //() => gsap.set('article.home', {onComplete: () => document.querySelector('article.home').classList.remove('shrunk')})
             () => gsap.set('article.home', {
 
@@ -916,6 +921,19 @@ const anims = {
             "-=1"
 
         );
+
+
+        // skip
+
+        const dissolve_tween = tweens[tweens.length - 1];
+
+        anims.timeline.skip.add( dissolve_tween() );
+        anims.timeline.skip.add( () => gsap.set('article.home', {
+
+            className:"home", 
+            onComplete : () => document.querySelector('header.header-home').classList.remove('hidden')
+        }),
+        "-=1");
 
 
         
