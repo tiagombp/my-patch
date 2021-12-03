@@ -143,7 +143,7 @@ const js = {
 
                     console.log(action);
 
-                    if (action == 'main-nav-start') js.anims.timeline.play();
+                    if (action == 'main-nav-start') anims.timeline.play();
 
                     else {
 
@@ -973,8 +973,10 @@ const js = {
             //js.utils.shuffle(js.canvas.points.params);
 
             anims.make_tweens();
-            anims.add_timelines();
+            anims.add_tweens_to_timeline();
             anims.timeline.pause();
+
+            js.interactions.controls.monitor();
 
         }
     }
@@ -1018,12 +1020,10 @@ const anims = {
 
     timeline: new gsap.timeline(),
 
-    add_timelines : () => {
+    add_tweens_to_timeline : () => {
 
         const tweens = anims.tweens;
         tweens.forEach( tween => anims.timeline.add(tween(), "+=1") );
-
-        console.log(anims.timeline);
 
     }
 
