@@ -380,7 +380,9 @@ const js = {
                             const m = 0;
                             const w = h = l;
 
-                            current_square.future_states_params[step] = { x, y, w, h, m, color, opacity};
+                            const line = 0;
+
+                            current_square.future_states_params[step] = { x, y, w, h, m, color, opacity, line };
 
                             general_index++;
                         }
@@ -422,7 +424,9 @@ const js = {
                     let x = ( ( (pos % sq)) * l ) + x0;
                     let y = ( Math.floor( pos / sq ) * l ) + y_desloc + y0;
 
-                    current_square.future_states_params[step] = { x, y, w, h, m, color, opacity};
+                    const line = 0;
+
+                    current_square.future_states_params[step] = { x, y, w, h, m, color, opacity, line };
 
                     general_index++;
                 }
@@ -441,7 +445,9 @@ const js = {
 
                 const { x, y, w, h, m, color, opacity} = reference_params;
 
-                current_square.future_states_params[step] = { x, y, w, h, m, color, opacity};
+                const line = 0;
+
+                current_square.future_states_params[step] = { x, y, w, h, m, color, opacity, line};
 
             }
 
