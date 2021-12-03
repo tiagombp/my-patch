@@ -823,7 +823,7 @@ const js = {
                 ctx.lineWidth = line;
                 ctx.globalAlpha = opacity;
 
-                const r = line > 0 ? 0 : w/2; // w só vai ser != de h no treemap, e aí nesse caso não quero atrapalhar a posição ali embaixo
+                let r = line > 0 ? 0 : w/2; // w só vai ser != de h no treemap, e aí nesse caso não quero atrapalhar a posição ali embaixo
 
                 //console.log( line, m);
 
@@ -849,7 +849,7 @@ const js = {
                         
                     } else {
                         
-                        ctx.fillRect(x - r, y - r, w, h);
+                        ctx.fillRect(x - r , y - r , w, h);
 
                     }
 
