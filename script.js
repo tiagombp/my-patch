@@ -983,6 +983,9 @@ const js = {
             //js.utils.shuffle(js.canvas.points.params);
 
             js.steps.prepare_dissolve_positions();
+            js.steps.prepare_step_positions('hi');
+            js.steps.prepare_step_positions('i-am');
+            js.steps.prepare_step_positions('i-love');
             js.steps.prepare_step_positions('dataviz');
             js.steps.prepare_step_positions('webdev');
             //js.steps.prepare_step_positions('cookie');
@@ -1010,7 +1013,7 @@ const anims = {
 
     make_tweens : () => {
 
-        const states = ['default', 'dataviz', 'webdev', 'dissolve'];
+        const states = ['default', 'hi', 'i-am', 'i-love', 'dataviz', 'webdev', 'dissolve'];
         anims.tweens = states.map(state => () => 
     
             gsap.to(js.canvas.points.params, {
@@ -1046,10 +1049,17 @@ const anims = {
 
         anims.timeline.add(
             //() => gsap.set('article.home', {onComplete: () => document.querySelector('article.home').classList.remove('shrunk')})
-            () => gsap.set('article.home', {className:"home"}),
+            () => gsap.set('article.home', {
+
+                className:"home", 
+                onComplete : () => document.querySelector('header.header-home').classList.remove('hidden')
+            }),
             "-=1"
 
         );
+
+
+        
 
     }
 
