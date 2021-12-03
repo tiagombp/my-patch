@@ -950,13 +950,15 @@ const js = {
             js.canvas.points.initialize_grid();
 
             js.steps.prepare_treemap_positions();
+            js.canvas.set_current_state('treemap');
+            js.utils.shuffle(js.canvas.points.params);
             js.steps.prepare_default_positions();
 
             js.steps.prepare_step_positions('dataviz');
             js.steps.prepare_step_positions('webdev');
             //js.steps.prepare_step_positions('cookie');
 
-            js.canvas.set_current_state('treemap');
+            //js.canvas.set_current_state('treemap');
             js.canvas.render();
             //js.utils.shuffle(js.canvas.points.params);
             
@@ -1001,6 +1003,8 @@ const js = {
 
             });
 
+            /*
+
             gsap.to(js.canvas.points.params, {
 
                 delay: (i, target) => (i % 6) * 0.1 + 7,
@@ -1017,7 +1021,7 @@ const js = {
 
                 ease: 'power2'
 
-            });
+            }); */
 
         }
     }

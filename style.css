@@ -245,6 +245,9 @@ header.header-home .wrapper-social img, header.header-home .wrapper-social svg {
 
 nav.home-nav {
 
+
+    display: none;
+
     position: absolute;
     z-index: 3;
     top: 50%;
