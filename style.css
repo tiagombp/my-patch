@@ -235,6 +235,21 @@ header.header-home .wrapper-social img, header.header-home .wrapper-social svg {
     width: 1rem;
     height: 1rem;
     fill: var(--text-color);
+    transition: fill .2s;
+}
+
+header.header-home a.back-home {
+
+    text-decoration: none;
+    color: inherit;
+    transition: color .2s;
+
+}
+
+header.header-home a.back-home:hover {
+
+    color: var(--highlight);
+
 }
 
 .wrapper-social a:hover svg {
