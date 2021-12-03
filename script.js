@@ -971,6 +971,10 @@ const js = {
             //js.canvas.set_current_state('treemap');
             js.canvas.render();
             //js.utils.shuffle(js.canvas.points.params);
+
+            anims.make_tweens();
+            anims.add_timelines();
+            anims.timeline.play();
             
 
 
@@ -978,9 +982,11 @@ const js = {
 
             // observe que o gsap é quem vai ser o responsável por alterar os parametros em js.canvas.points.params, da mesma forma que o js.canvas.set_current_state. E o render no onUpdate vai desenhando esses valores intermediários.
 
+            /*
+
             gsap.to(js.canvas.points.params, {
 
-                delay: (i, target) => (i % 6) * 0.1 + 3,
+                delay: (i, target) => (i % 6) * 0.1,
                 duration: 1,
                 x : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'x'),
                 y : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'y'),
@@ -990,6 +996,7 @@ const js = {
                 line : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'line'),
                 opacity : (i, target) => js.canvas.points.get_future_value(i, target, 'default', 'opacity'),
                 onUpdate : js.canvas.render,
+                paused: true,
 
                 ease: 'power2'
 
@@ -1031,7 +1038,7 @@ const js = {
 
                 ease: 'power2'
 
-            });
+            });*/
 
         }
     }
@@ -1039,5 +1046,53 @@ const js = {
 }
 
 js.ctrl.init();
+
+const anims = {
+
+    tweens : null,
+
+    make_tweens : () => {
+
+        const states = ['default', 'dataviz', 'webdev'];
+        anims.tweens = states.map(state => () => 
+    
+            gsap.to(js.canvas.points.params, {
+    
+                delay: (i, target) => (i % 6) * 0.1,
+                duration: 1,
+                x : (i, target) => js.canvas.points.get_future_value(i, target, state, 'x'),
+                y : (i, target) => js.canvas.points.get_future_value(i, target, state, 'y'),
+                w : (i, target) => js.canvas.points.get_future_value(i, target, state, 'w'),
+                h : (i, target) => js.canvas.points.get_future_value(i, target, state, 'h'),
+                m : (i, target) => js.canvas.points.get_future_value(i, target, state, 'm'),
+                line : (i, target) => js.canvas.points.get_future_value(i, target, state, 'line'),
+                opacity : (i, target) => js.canvas.points.get_future_value(i, target, state, 'opacity'),
+                onUpdate : js.canvas.render,
+                //paused: true,
+    
+                ease: 'power2'
+    
+            })
+    
+    
+        );
+
+    },
+
+    timeline: new gsap.timeline(),
+
+    add_timelines : () => {
+
+        const tweens = anims.tweens;
+        tweens.forEach( tween => anims.timeline.add(tween(), "+=1") );
+
+        console.log(anims.timeline);
+
+    }
+
+
+}
+
+
 
 
