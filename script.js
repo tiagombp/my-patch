@@ -251,6 +251,24 @@ const js = {
 
         },
 
+        prepare_dissolve_positions : () => {
+
+            const points = js.canvas.points.shuffled;
+            //const future_points = js.canvas.points.params;
+
+            points.forEach((point, i) => {
+
+                const { x, y, w, h, m, color } = point.future_states_params.treemap;
+
+                const opacity = 0;
+
+                point.future_states_params['dissolve'] = { x, y, w, h, m, color, opacity };       
+
+            })
+
+
+        },
+
         prepare_step_positions: function(step) {
 
             const opacity = 1; // todos vao ter opacity 1
@@ -964,6 +982,7 @@ const js = {
             js.canvas.set_current_state('treemap');
             //js.utils.shuffle(js.canvas.points.params);
 
+            js.steps.prepare_dissolve_positions();
             js.steps.prepare_step_positions('dataviz');
             js.steps.prepare_step_positions('webdev');
             //js.steps.prepare_step_positions('cookie');
@@ -991,7 +1010,7 @@ const anims = {
 
     make_tweens : () => {
 
-        const states = ['default', 'dataviz', 'webdev'];
+        const states = ['default', 'dataviz', 'webdev', 'dissolve'];
         anims.tweens = states.map(state => () => 
     
             gsap.to(js.canvas.points.params, {
