@@ -10,8 +10,9 @@ const js = {
         colors : {
             
             'treemap': [ '#0D05F2', '#1B6DFD', '#030A8C', '#9DF0FF', '#161A59' ],
-            'dataviz' : ["#BF2C62", "#F6E2DF", "#F2A007", "#D95407", "#1E5693", "#161A59"],
-            'webdev' : ['#FCE4D6', 'blue']
+            'dataviz' : ["#BF2C62", "#F6E2DF", "#F2A007", "#D95407", "#1E5693", "#F6E2DF"],
+            'webdev' : ['#FCE4D6', 'blue'],
+            'cookie' : ['#F6BF79','#DCA562','#B67A40','#633E2F','#080604']
 
         },
 
@@ -534,155 +535,6 @@ const js = {
 
     },
 
-    anims : {
-        //let els = d3.selectAll('[data-color]').transition().duration(1000).delay((d,i)=>50+i*25).style('transform', 'translate(800px,0px) scale(0)')
-
-        // duracao boa
-        // let els = d3.selectAll('[data-color]').transition().duration(1000).delay((d,i)=>50+i*5).style('transform', 'translate(800px,0px) scale(0)')
-
-        dissolve : function() {
-
-            let els = d3.selectAll('[data-id]')
-              .classed('pixel', true)
-              //.style('transform', null) // css will take care now
-              .style('width', null)
-              .style('height', null);
-              //.transition().duration(1000).delay((d,i)=>50+i*25).style('transform', 'translate(800px,0px) scale(0)')
-    
-    
-        },
-
-        prepare : function() {
-
-            let els = d3.selectAll('[data-id]')
-              .classed('pixel-start', false)
-              .classed('pixel', true);
-
-
-        },
-
-        drop : function() {
-
-            let els = d3.selectAll('[data-id]')
-            
-            els
-              .classed('active', false)
-              .transition()
-              .delay(100)
-              .style('transform', function(d) {
-
-                const sel = d3.select(this);
-
-                //let current_transform = sel.style('transform'); // "translate(1241px, 472px)"
-                let current_transform = sel.attr('data-original-transform');
-                current_transform = current_transform.split(','); // ["translate(1241px", " 472px)"]
-
-                const x = +current_transform[0].split('(')[1].slice(0,-2); 
-                const y = +current_transform[1].split(')')[0].slice(0,-2).trim();
-
-                const w = js.sizings.w;
-                const h = js.sizings.h;
-
-                const q_x = Math.floor(x / (w/3));
-                const q_y = Math.floor(y / (h/2));
-
-                let new_x, new_y;
-
-                if (q_x == 0) new_x = -0.1 * w;
-                else {
-                    if (q_x == 1) new_x = x;
-                    else new_x = 1.1*w;
-                }
-
-                if (q_y == 0) new_y = -0.1 * h;
-                else new_y = 1.1*h;
-
-                //console.log(x,y, q_x, q_y, new_x, new_y);
-                //const original_transform = sel.attr('data-original-transform');
-                
-                return 'translate(' + new_x + 'px' + ',' + new_y + 'px)';
-
-              })
-
-        },
-
-        show_text : () => {
-
-            document.querySelector('article').classList.remove('shrunk');
-
-        },
-
-        show_header : () => {
-
-            document.querySelector('header.header-home').classList.remove('hidden');
-
-        },
-
-        drop_and_show : function() {
-
-            js.anims.drop();
-            js.anims.show_text();
-            js.anims.show_header();
-
-        },
-
-        timeline : {
-
-            play : () => {
-
-                let interval = 1000;
-
-                setTimeout(js.anims.dissolve, 0);
-
-                let steps = Object.keys(js.steps);
-                steps = steps.slice(1);
-
-                //steps.forEach( (step, i) => {
-
-                //    console.log(step, i, i * interval);
-
-                //    setTimeout(js.steps.compute_position(step), i * interval);
-
-                //})
-
-                setTimeout(() => {
-                    js.steps.compute_position(steps[0]);
-
-                    setTimeout(() => {
-                        js.steps.compute_position(steps[1]);
-
-                        setTimeout(() => {
-                            js.steps.compute_position(steps[2]);
-
-                            setTimeout(() => {
-                                js.steps.compute_position(steps[3]);
-
-                                setTimeout(() => {
-                                    js.steps.compute_position(steps[4]);
-
-                                    setTimeout(() => {
-                                        js.steps.compute_position(steps[5]);
-                                        
-                                        setTimeout(js.anims.drop_and_show, 7 * interval - 800)
-            
-                                    }, 6 * interval - 600)
-        
-                                }, 5 * interval)
-    
-                            }, 4 * interval)
-
-                        }, 3 * interval)
-
-                    }, 2 * interval)
-
-                }, 1 * interval);
-
-            }
-
-        }
-
-    },
-
     canvas : {
 
         sel : 'canvas',
@@ -988,6 +840,7 @@ const js = {
             js.steps.prepare_step_positions('i-love');
             js.steps.prepare_step_positions('dataviz');
             js.steps.prepare_step_positions('webdev');
+            js.steps.prepare_step_positions('cookie');
             //js.steps.prepare_step_positions('cookie');
 
             //js.canvas.set_current_state('treemap');
@@ -1013,7 +866,7 @@ const anims = {
 
     make_tweens : () => {
 
-        const states = ['default', 'hi', 'i-am', 'i-love', 'dataviz', 'webdev', 'dissolve'];
+        const states = ['default', 'hi', 'i-am', 'i-love', 'dataviz', 'webdev', 'cookie', 'dissolve'];
         anims.tweens = states.map(state => () => 
     
             gsap.to(js.canvas.points.params, {
