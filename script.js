@@ -246,13 +246,16 @@ const js = {
 
             })
 
+            js.canvas.points.shuffled = js.utils.shuffle([...points]);
+            
+
         },
 
         prepare_step_positions: function(step) {
 
             const opacity = 1; // todos vao ter opacity 1
 
-            const data = js.canvas.points.params;
+            const data = js.canvas.points.shuffled;
 
             const ch = js.params.ch; 
             const sq = js.params.sq; // nof squares in each letter side -- 8
@@ -737,6 +740,8 @@ const js = {
             // coração do negócio, onde vão ficar todos os parâmetros necessários para desenhar na tela
             params : [],
 
+            shuffled : null, // aqui faço uma cópia de params depois de inicializar os valores do treemap e do default, e de dar um shuffle.
+
             initialize_grid : () => {
 
                 const n = js.canvas.points.n;
@@ -837,14 +842,14 @@ const js = {
                         //if (mark.i > 300) return
 
                         ctx.beginPath();
-                        ctx.rect(x, y, w, h);//ctx.strokeRect(x - r, y - r, 2*r, 2*r);
+                        ctx.rect(x - r, y - r, w, h);//ctx.strokeRect(x - r, y - r, 2*r, 2*r);
                         ctx.stroke();
                         ctx.fill();
                         ctx.closePath();
                         
                     } else {
                         
-                        ctx.fillRect(x, y, w, h);
+                        ctx.fillRect(x - r, y - r, w, h);
 
                     }
 
@@ -950,9 +955,9 @@ const js = {
             js.canvas.points.initialize_grid();
 
             js.steps.prepare_treemap_positions();
-            js.canvas.set_current_state('treemap');
-            js.utils.shuffle(js.canvas.points.params);
             js.steps.prepare_default_positions();
+            js.canvas.set_current_state('treemap');
+            //js.utils.shuffle(js.canvas.points.params);
 
             js.steps.prepare_step_positions('dataviz');
             js.steps.prepare_step_positions('webdev');
@@ -988,7 +993,7 @@ const js = {
             gsap.to(js.canvas.points.params, {
 
                 delay: (i, target) => (i % 6) * 0.1 + 5,
-                duration: 1,
+                duration: 10,
                 x : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'x'),
                 y : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'y'),
                 w : (i, target) => js.canvas.points.get_future_value(i, target, 'dataviz', 'w'),
@@ -1003,11 +1008,11 @@ const js = {
 
             });
 
-            /*
+            
 
             gsap.to(js.canvas.points.params, {
 
-                delay: (i, target) => (i % 6) * 0.1 + 7,
+                delay: (i, target) => (i % 6) * 0.1 + 17,
                 duration: 1,
                 x : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'x'),
                 y : (i, target) => js.canvas.points.get_future_value(i, target, 'webdev', 'y'),
@@ -1021,7 +1026,7 @@ const js = {
 
                 ease: 'power2'
 
-            }); */
+            });
 
         }
     }
