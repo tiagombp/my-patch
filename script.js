@@ -7,44 +7,17 @@ const js = {
         ch : 8, // squares in each dimension of a letter
         sq : 40, // squares in each dimension of a drawing
 
-        symbols : ["@", "!", ":", "_"],
-        symbols_refs : ["heart", "exclamation", "smile", "ellipsis"]
-
-    },
-
-    phrases : [
-
-        'hi there',
-        'i am tiago',
-        'i like...'
-
-        // make it work with capital letters to, later
-
-    ],
-
-    sizings : {
-
-        // will be set by .set()
-        h : null,
-        w : null,
-
-        set : function() {
-
-            this.h = window.innerHeight;
-            this.w = window.innerWidth;
+        colors : {
+            
+            'treemap': [ '#0D05F2', '#1B6DFD', '#030A8C', '#9DF0FF', '#161A59' ],
+            'dataviz' : ["#BF2C62", "#F6E2DF", "#F2A007", "#D95407", "#1E5693", "#F6E2DF"],
+            'webdev' : ['#FCE4D6', 'blue'],
+            'cookie' : ['#F6BF79','#DCA562','#B67A40','#633E2F','#080604']
 
         },
 
-        get : {
-
-            square_size : () => {
-
-                js.params.l = +window.getComputedStyle(document.documentElement).getPropertyValue('--cell-size').slice(0,-2)
-
-            }
-
-        }
-
+        symbols : ["@", "!", ":", "_"],
+        symbols_refs : ["heart", "exclamation", "smile", "ellipsis"]
 
     },
 
@@ -86,22 +59,6 @@ const js = {
             }
           
             return array;
-
-        },
-
-        set_ids : function() {
-
-            let rects = document.querySelectorAll('div.rect');
-            
-            rects.forEach(div => {
-
-                let id = js.data.indexes.pop()
-
-                div.dataset.id = String(id);
-
-            })
-
-
 
         }
 
@@ -187,14 +144,9 @@ const js = {
 
                     console.log(action);
 
-                    if (action == 'main-nav-start') js.anims.timeline.play();
+                    if (action == 'main-nav-start') anims.timeline.main.play();
 
-                    else {
-
-                        js.anims.dissolve();
-                        js.anims.drop_and_show();
-
-                    }
+                    else anims.timeline.skip.play();
 
                     cont.classList.add('hidden');
 
@@ -208,54 +160,116 @@ const js = {
 
     },
 
-    treemap : {
+    steps : {
 
-        prepare : function() {
+        prepare_treemap_positions : function() {
 
             //console.log('Prepare');
 
             const data = {
                 
-                children : js.data.random
+                children : js.canvas.points.params.map(d => d.value)
 
             };
 
             //console.log(data);
 
-            const w = js.sizings.w;
-            const h = js.sizings.h;
+            const w = js.canvas.sizings.w;
+            const h = js.canvas.sizings.h;
 
-            js.data.root = d3.treemap()
+            const calculated_data = d3.treemap()
               .tile(d3.treemapBinary)
               .size([w, h])
               .round(true)
               (d3.hierarchy(data).sum(d => d))
+            ;
+
+            // bring the data to the points 'treemap' state
+
+            calculated_data.children.forEach( (leaf, i) => {
+
+                const point = js.canvas.points.params[i];
+
+                const x = leaf.x0;
+                const y = leaf.y0;
+                const w = leaf.x1 - leaf.x0;
+                const h = leaf.y1 - leaf.y0;
+                const line = 10; // setting the line width here
+
+                const m = 1;
+                const color_index = ( i % 5 );
+                const color = js.params.colors.treemap[color_index];
+                const opacity = 1;
+
+                point.future_states_params['treemap'] = { x, y, w, h, m, color, line, opacity };
+
+            })
 
         },
 
-        draw : function() {
+        // after the treemap
+        prepare_default_positions : () => {
 
-            const root = js.data.root;
+            const points = js.canvas.points.params;
 
-            const svg = d3.select(".container");
+            points.forEach( point => {
 
-            const leaf = svg.selectAll("div.rect")
-                .data(root.leaves())
-                .join("div")
-                .classed('rect', true)
-                .style("transform", d => `translate(${d.x0}px,${d.y0}px)`)
-                .attr('data-original-transform', d => `translate(${d.x0}px,${d.y0}px)`)
-                .attr('data-color', (d,i) => `color${(i % 5) + 1}`)
-                .style("width", d => (d.x1 - d.x0) + 'px')
-                .style("height", d => (d.y1 - d.y0) + 'px');
+                const treemap_params = point.future_states_params.treemap;
 
-        }
+                const offset_vector_index = point.p;
+                const offset_vector = js.canvas.points.offset_vectors[offset_vector_index];
+                const [ xo, yo ] = offset_vector;
 
-    },
+                const l = js.params.l;
 
-    steps : {
+                let x = treemap_params.x + xo * ( treemap_params.w - l);
+                if (x < 0) x = treemap_params.x;
 
-        compute_position: function(step) {
+                let y = treemap_params.y + yo * ( treemap_params.h - l);
+                if (y < 0) y = treemap_params.y;
+
+                const color = treemap_params.color;
+
+                const m = treemap_params.m;
+
+                const w = h = l;
+
+                const line = 0;
+
+                const opacity = 0.2
+
+                point.future_states_params['default'] = { x, y, w, h, m, color, line, opacity };
+
+            })
+
+            js.canvas.points.shuffled = js.utils.shuffle([...points]);
+            
+
+        },
+
+        prepare_dissolve_positions : () => {
+
+            const points = js.canvas.points.shuffled;
+            //const future_points = js.canvas.points.params;
+
+            points.forEach((point, i) => {
+
+                const { x, y, w, h, m, color } = point.future_states_params.treemap;
+
+                const opacity = 0;
+
+                point.future_states_params['dissolve'] = { x, y, w, h, m, color, opacity };       
+
+            })
+
+
+        },
+
+        prepare_step_positions: function(step) {
+
+            const opacity = 1; // todos vao ter opacity 1
+
+            const data = js.canvas.points.shuffled;
 
             const ch = js.params.ch; 
             const sq = js.params.sq; // nof squares in each letter side -- 8
@@ -285,28 +299,12 @@ const js = {
             //width = p2 ? Math.max(p1.length, p2.length) * ch * l : width;
             //width = dr ? Math.max(sq * l, width) : width;
 
-            let w_screen = js.sizings.w;
-            let h_screen = js.sizings.h;
+            let w_screen = js.canvas.sizings.w;
+            let h_screen = js.canvas.sizings.h;
 
             // initial positions in pixels
 
-            //const x0 = (w_screen - width)  / 2;
             const y0 = (h_screen - height) / 2;
-
-            // borda
-
-            /*d3.select('div.borda').remove();
-
-            const cont = d3.select('.container')
-              .append('div')
-              .classed('borda', true)
-              .style('position', 'absolute')
-              .style('top', y0 + 'px')
-              .style('left', x0 + 'px')
-              .style('width', width + 'px')
-              .style('height', height + 'px')
-              .style('background-color', 'transparent')
-              .style('border', "3px solid black");*/
 
             // initialize positions
 
@@ -368,32 +366,22 @@ const js = {
 
                         for (pos of this_letter_positions) {
 
-                            let current_square = d3.select('[data-id="' + general_index + '"]');
+                            let current_square = data[general_index];//js.canvas.points.params[general_index];
+                            //d3.select('[data-id="' + general_index + '"]');
 
                             let x = ( ( (pos % ch)) * l ) + (n * l * ch) + x0;
                             let y = ( Math.floor( pos / ch ) * l ) + y_desloc + y0;
+                            const color = "#F6E2DF";
+                            const m = 0;
+                            const w = h = l;
 
-                            current_square
-                                .classed('active', true)
-                                .attr('data-color-drawing', '')
-                                .attr('data-drawing', '')
-                                .transition()
-                                .delay(1000)
-                                .duration(200)
-                                //.style('opacity', 1)
-                                //.style('width', l + 'px')
-                                //.style('height', l + 'px')
-                                .style('transform', `translate(${x}px,${y}px)`);
+                            const line = 0;
+
+                            current_square.future_states_params[step] = { x, y, w, h, m, color, opacity, line };
 
                             general_index++;
                         }
-    
-                        //console.log(n, n*last_index, this_letter_positions);
-        
-                        // phrase_positions = phrase_positions.concat(this_letter_positions);
 
-                        //console.log(phrase_positions);
-    
                     }
     
                     n++;
@@ -417,10 +405,12 @@ const js = {
 
                 for (unit of picture_data) {
 
-                    let current_square = d3.select('[data-id="' + general_index + '"]');
+                    let current_square = data[general_index];//js.canvas.points.params[general_index];
 
                     const pos = unit.pos;
-                    const color = unit.cor;
+                    const color = js.params.colors[step][unit.cor[0]-1];
+                    const m = 0;
+                    const w = h = l;
 
                     const x0 = (w_screen - sq * l)  / 2;
 
@@ -429,67 +419,36 @@ const js = {
                     let x = ( ( (pos % sq)) * l ) + x0;
                     let y = ( Math.floor( pos / sq ) * l ) + y_desloc + y0;
 
-                    current_square
-                        .classed('active', true)
-                        .attr('data-color-drawing', color)
-                        .attr('data-drawing', dr)
-                        .transition()
-                        .delay(1000)
-                        .duration(200)
-                        //.style('opacity', 1)
-                        //.style('width', l + 'px')
-                        //.style('height', l + 'px')
-                        .style('transform', `translate(${x}px,${y}px)`);
+                    const line = 0;
+
+                    current_square.future_states_params[step] = { x, y, w, h, m, color, opacity, line };
 
                     general_index++;
                 }
 
-
-
             }
-
-
-            //console.log(positions);
-
-            // save positions to current state
-
-            js.ctrl.current_state.positions = positions;
 
             // hide the rest, return to position
 
-            d3.selectAll('[data-id]')
-              .classed('active', function(d) {
+            for (let i = general_index; i < js.canvas.points.n; i++) {
 
-                const sel = d3.select(this);
-                  
-                const id = +sel.attr('data-id')
+                let current_square = data[i];//js.canvas.points.params[i];
 
-                // retrieves and set original positions
-                if (id >= general_index) {
+                // reference params
 
-                    const original_transform = sel.attr('data-original-transform');
+                let reference_params = current_square.future_states_params['default'];
 
-                    sel
-                      .style('transform', original_transform)
-                      .attr('data-color-drawing', '')
-                      .attr('data-drawing', '');
+                const { x, y, w, h, m, color, opacity} = reference_params;
 
-                }
+                const line = 0;
 
-                return !(id >= general_index);
+                current_square.future_states_params[step] = { x, y, w, h, m, color, opacity, line};
 
-              });
-
-            // for (let id = general_index + 1; id <= js.data.random.length; id++) {
-
-            //     let current_square = d3.select('[data-id="' + id + '"]');
-
-            //     current_square
-            //         .classed('active', false);
-
-            // }
+            }
 
         }, // @ for heart, _ for ...
+
+
 
         'hi' : {
 
@@ -577,371 +536,257 @@ const js = {
 
     },
 
-    /*
+    canvas : {
 
-    grid : {
+        sel : 'canvas',
 
-        ref : '.grid-container',
+        context : null,
 
-        init : function() {
+        set_context : () => {
 
-            //const cont = document.querySelector(this.ref);
-
-            // for (let i = 1; i<=js.params.nof_letters; i++) {
-
-            //     const new_div = document.createElement('div');
-
-            //     new_div.classList.add('grid--letter');
-
-            //     cont.appendChild(new_div);
-
-            // }
+            const canvas  = document.querySelector(js.canvas.sel);
+            js.canvas.context = canvas.getContext('2d');
 
         },
 
-        mark_cells : function() {
-
-            const phrases = js.phrases;
-
-            const div_letters = document.querySelectorAll('.grid--letter');
-
-            console.log(phrases, div_letters);
-
-            phrases.forEach( (phrase, i_phrase) => {
-
-                const letters = phrase.split('');
-
-                console.log('Letters: ', letters);
-
-                letters.forEach((letter,i) => {
-
-                    const first_cell = div_letters[i].querySelector('.grid--cell');
-
-                    if (first_cell) div_letters[i].classList.add('has-cells');
-
-                    //if (i > js.params.nof_letters) continue;
-
-                    const letter_positions = js.data.letters[letter.toLowerCase()];
-
-                    for (let n = 0; n <= 63; n++) {
-
-                        //console.log(letter, i, n);
-
-                        let current_cell;
-
-                        const was_empty_div_letter = !div_letters[i].classList.contains('has-cells');
-
-                        if (!was_empty_div_letter) {
-
-                            current_cell = div_letters[i].querySelector('[data-cell-no="' + n + '"]');
-
-                        } else {
-
-                            current_cell = document.createElement('div');
-                            current_cell.classList.add('grid--cell');
-                            current_cell.dataset['cellNo'] = n;
-
-                        }
-
-                        if ( js.data.letters.hasOwnProperty(letter) ) {
-
-                            if ( letter_positions.includes(n)) {
-
-                                current_cell.classList.add('phrase' + i_phrase);
-
-                            } 
-
-                        }
-
-                        if (was_empty_div_letter) {
-
-                            div_letters[i].appendChild(current_cell);
-
-                        }
-                        
-                        
-
-                    }
-
-                })
-
-            })
-
-            const anim = new gsap.timeline({paused: true})
-
-            // gsap.to('[data-id]', {scale: 0,
-
-            //     stagger: {
-            //         from: "center",
-            //         amount: 2
-            //         }
-
-            //  });
-
-                //  .to('.grid--cell', {
-
-                //     borderColor : "#efefef"
-
-                //  })
-                 .to('.phrase0', {
-
-                    //rotationX: -90,
-                    z: 0,
-                    backgroundColor: "#333",
-                    //scale: 0,
-                    //opacity: 0,
-
-                    stagger: {
-                        grid: "auto",
-                        from: "start",
-                        each: 0.075
-                        }
-
-                 }, '+=.5')
-                 .to('.phrase0', {
-
-                    z : -1000,
-                    backgroundColor: "transparent",
-                    //rotationX: 0,
-                    //scale: 0,
-                    //opacity: 1,
-
-                    stagger: {
-                        grid: "auto",
-                        from: "edges",
-                        each: 0.025
-                        }
-
-                 }, '+=3')
-
-                 .to('.phrase1', {
-
-                    z: 0,
-                    backgroundColor: "#333",
-                    //scale: 0,
-                    //opacity: 0,
-
-                    stagger: {
-                        grid: "auto",
-                        from: "start",
-                        each: 0.075
-                        }
-
-                 }, '+=.5')
-
-            const anim2 = new gsap.timeline({paused: true})
-            //  .to('.grid--cell', {
-
-            //     borderColor : "#efefef"
-
-            //  })
-            .to('.phrase0', {
-
-                //rotationX: -90,
-                rotationY: 180,
-                backgroundColor: "#333",
-                //scale: 0,
-                //opacity: 0,
-
-                stagger: {
-                    grid: "auto",
-                    from: "start",
-                    each: 0.075
-                    }
-
-            }, '+=.5')
-            .to('.phrase0', {
-
-                rotationY: 0,
-                backgroundColor: "transparent",
-                //rotationX: 0,
-                //scale: 0,
-                //opacity: 1,
-
-                stagger: {
-                    grid: "auto",
-                    from: "end",
-                    each: 0.02
-                    }
-
-            }, '+=2')
-
-            .to('.phrase1', {
-
-                rotationY: 180,
-                backgroundColor: "#333",
-                //scale: 0,
-                //opacity: 0,
-
-                stagger: {
-                    grid: "auto",
-                    from: "start",
-                    each: 0.075
-                    }
-
-            }, '+=.5')
-            
-            anim2.play();
-
-
-            
-
-
-        }
-
-    },
-
-    */
-
-    anims : {
-        //let els = d3.selectAll('[data-color]').transition().duration(1000).delay((d,i)=>50+i*25).style('transform', 'translate(800px,0px) scale(0)')
-
-        // duracao boa
-        // let els = d3.selectAll('[data-color]').transition().duration(1000).delay((d,i)=>50+i*5).style('transform', 'translate(800px,0px) scale(0)')
-
-        dissolve : function() {
-
-            let els = d3.selectAll('[data-id]')
-              .classed('pixel', true)
-              //.style('transform', null) // css will take care now
-              .style('width', null)
-              .style('height', null);
-              //.transition().duration(1000).delay((d,i)=>50+i*25).style('transform', 'translate(800px,0px) scale(0)')
+        sizings : {
+
+            // w and h will be set by .set()
+            h : null,
+            w : null,
+            base_dim : 2000,
+    
+            set : function() {
+    
+                this.h = window.innerHeight;
+                this.w = window.innerWidth;
+    
+                /*const larger_dimension = Math.max(this.w, this.h);
+    
+                if (this.w > this.h) {
+
+                    console.log(this.h * this.base_dim / this.w);
+    
+                    this.w = this.base_dim;
+                    this.h = this.h * this.base_dim / this.w
+    
+                } else {
+    
+                    js.canvas.sizings.h = this.base_dim;
+                    js.canvas.sizings.w = this.w * this.base_dim / this.h
+    
+                } */
+    
+                const canvas  = document.querySelector(js.canvas.sel);
+                canvas.width  = js.canvas.sizings.w;
+                canvas.height = js.canvas.sizings.h;
+
+                console.log(js.canvas.sizings.w, js.canvas.sizings.h);
+    
+            },
+    
+            get : {
+    
+                square_size : () => {
+    
+                    js.params.l = +window.getComputedStyle(document.documentElement).getPropertyValue('--cell-size').slice(0,-2)
+    
+                }
+    
+            }
     
     
         },
 
-        prepare : function() {
+        points : {
 
-            let els = d3.selectAll('[data-id]')
-              .classed('pixel-start', false)
-              .classed('pixel', true);
+            n : 800,
 
-
-        },
-
-        drop : function() {
-
-            let els = d3.selectAll('[data-id]')
+            offset_vectors : [
+                [  0, 0], [  0, 0.5], [  0, 1 ],
+                [0.5, 0], [0.5, 0.5], [0.5, 1 ],
+                [1  , 0], [1  , 0.5], [1  , 1 ]
+            ],
             
-            els
-              .classed('active', false)
-              .transition()
-              .delay(100)
-              .style('transform', function(d) {
+            // coração do negócio, onde vão ficar todos os parâmetros necessários para desenhar na tela
+            params : [],
 
-                const sel = d3.select(this);
+            shuffled : null, // aqui faço uma cópia de params depois de inicializar os valores do treemap e do default, e de dar um shuffle.
 
-                //let current_transform = sel.style('transform'); // "translate(1241px, 472px)"
-                let current_transform = sel.attr('data-original-transform');
-                current_transform = current_transform.split(','); // ["translate(1241px", " 472px)"]
+            initialize_grid : () => {
 
-                const x = +current_transform[0].split('(')[1].slice(0,-2); 
-                const y = +current_transform[1].split(')')[0].slice(0,-2).trim();
+                const n = js.canvas.points.n;
 
-                const w = js.sizings.w;
-                const h = js.sizings.h;
+                for (let i = 0; i < n; i++) {
 
-                const q_x = Math.floor(x / (w/3));
-                const q_y = Math.floor(y / (h/2));
+                    js.canvas.points.params.push( 
 
-                let new_x, new_y;
+                        {
 
-                if (q_x == 0) new_x = -0.1 * w;
-                else {
-                    if (q_x == 1) new_x = x;
-                    else new_x = 1.1*w;
+                            // these are the current parameters, which will be updated by gsap
+
+                            i : i,
+                            value : Math.round(Math.random() * 100),
+                            x : null,
+                            y : null,
+                            w : null,
+                            h : null,
+                            m : null, // vai determinar se é círculo ou quadrado. 0 circle, 1, square
+                            color : null,
+                            line : null, // só para o treemap
+                            opacity : 1,
+
+                            p : Math.floor(Math.random() * 9), // vou usar esse valor para o delay e para o offset (na transiçào treemap > rects). Não preciso do render, só para preparar.
+
+                            // we will later calculate the future parameters for each state (positions, sizes etc.) and store them here. Then, in the gsap call, we will retrieve and passa these future params to the gsap function
+                            future_states_params : {}
+
+                        }
+
+                    );
+    
                 }
 
-                if (q_y == 0) new_y = -0.1 * h;
-                else new_y = 1.1*h;
+            },
 
-                //console.log(x,y, q_x, q_y, new_x, new_y);
-                //const original_transform = sel.attr('data-original-transform');
+            get_future_value : (i, target, future_state, param ) => target.future_states_params[future_state][param]
+
+        },
+
+        set_current_state : (state) => {
+
+            const marks = js.canvas.points.params;
+
+            marks.forEach( mark => {
+
+                const { x, y, w, h, m, color, line } =  mark.future_states_params[state];
                 
-                return 'translate(' + new_x + 'px' + ',' + new_y + 'px)';
-
-              })
-
-        },
-
-        show_text : () => {
-
-            document.querySelector('article').classList.remove('shrunk');
-
-        },
-
-        show_header : () => {
-
-            document.querySelector('header.header-home').classList.remove('hidden');
+                mark.x = x;
+                mark.y = y;
+                mark.w = w;
+                mark.h = h;
+                mark.m = m;
+                mark.line = line;
+                mark.color = color;
+                
+            })
 
         },
 
-        drop_and_show : function() {
+        render : () => {
 
-            js.anims.drop();
-            js.anims.show_text();
-            js.anims.show_header();
+            const [canvas_width, canvas_height] = [js.canvas.sizings.w, js.canvas.sizings.h];
 
-        },
+            const ctx = js.canvas.context;
 
-        timeline : {
+            ctx.clearRect(0, 0, canvas_width, canvas_height);
 
-            play : () => {
+            const marks = js.canvas.points.params;
 
-                let interval = 1000;
+            marks.forEach( (mark,i) => {
 
-                setTimeout(js.anims.dissolve, 0);
+                // it will always render the parameters of the current state. The trick is to animate the values of the current state, which we'll do with gsap. When setting the animation, we will get the future parameters from the appropriate next_state.
 
-                let steps = Object.keys(js.steps);
-                steps = steps.slice(1);
+                const { x, y, w, h, m, color, line, opacity } = mark;
 
-                //steps.forEach( (step, i) => {
+                ctx.fillStyle = color;
+                ctx.lineStyle = 'black';
+                ctx.lineWidth = line;
+                ctx.globalAlpha = opacity;
 
-                //    console.log(step, i, i * interval);
+                let r = line > 0 ? 0 : w/2; // w só vai ser != de h no treemap, e aí nesse caso não quero atrapalhar a posição ali embaixo
 
-                //    setTimeout(js.steps.compute_position(step), i * interval);
+                //console.log( line, m);
 
-                //})
-
-                setTimeout(() => {
-                    js.steps.compute_position(steps[0]);
-
-                    setTimeout(() => {
-                        js.steps.compute_position(steps[1]);
-
-                        setTimeout(() => {
-                            js.steps.compute_position(steps[2]);
-
-                            setTimeout(() => {
-                                js.steps.compute_position(steps[3]);
-
-                                setTimeout(() => {
-                                    js.steps.compute_position(steps[4]);
-
-                                    setTimeout(() => {
-                                        js.steps.compute_position(steps[5]);
-                                        
-                                        setTimeout(js.anims.drop_and_show, 7 * interval - 800)
-            
-                                    }, 6 * interval - 600)
-        
-                                }, 5 * interval)
+                if (m == 0) {
     
-                            }, 4 * interval)
+                    ctx.beginPath();
+                    ctx.arc(x, y, r, 0, Math.PI*2, true);
+                    ctx.fill();
 
-                        }, 3 * interval)
+                    if (line > 0) ctx.stroke();
+                       
+                } else if (m == 1) {
 
-                    }, 2 * interval)
+                    if (line > 0) {
 
-                }, 1 * interval);
+                        //if (mark.i > 300) return
+                        // line vai de 10 a 0. 10-line
 
-            }
+                        ctx.beginPath();
+                        ctx.rect(x - r, y - r, w, h);//ctx.strokeRect(x - r, y - r, 2*r, 2*r);
+                        ctx.stroke();
+                        ctx.fill();
+                        ctx.closePath();
+                        
+                    } else if (line == 0) { // isso aqui para evitar o saltinho que ele dava no começo do primeiro step após o default!
 
-        }
+                        ctx.fillRect(x , y , w, h);
+
+                    } else {
+
+                        ctx.fillRect(x - r, y - r, w, h);
+
+                    }
+
+                } else {
+                    
+                    const l = r * m;
+                    const R = Math.sqrt(l*l + r*r);
+                    const theta = Math.atan(l/r);
+                    
+                    ctx.beginPath();
+                    
+                    ctx.moveTo(x + r, y - l);
+                    ctx.lineTo(x + r, y + l);
+                    
+                    ctx.arc(x, 
+                            y, 
+                            R, 
+                            Math.PI * 2 - theta,
+                            Math.PI * 2 - (Math.PI/2 - theta), 
+                            true);
+                    
+                    ctx.lineTo(x - l, y - r);
+                    
+                    ctx.arc(x,
+                           y, 
+                           R,
+                           Math.PI * 2 - (Math.PI/2 + theta),
+                           Math.PI * 2 - (Math.PI - theta),
+                           true);
+                    
+                    ctx.lineTo(x - r, y + l);
+                    
+                    ctx.arc(x,
+                            y, 
+                            R,
+                            Math.PI * 2 - (Math.PI + theta),
+                            Math.PI * 2 - (Math.PI * 3/2 - theta),
+                            true);
+                    
+                    ctx.lineTo(x + l, y + r);
+                    
+                    ctx.arc(x,
+                            y, 
+                            R,
+                            Math.PI * 2 - (Math.PI * 3/2 + theta),
+                            Math.PI * 2 - (Math.PI * 2 - theta),
+                            true);
+                    
+                    if (line > 0) ctx.stroke();
+                    ctx.fill();
+                   
+                }
+
+                
+            })
+
+    
+
+        },
 
     },
-
 
     data : {
 
@@ -949,31 +794,11 @@ const js = {
 
         letters : null,
 
-        indexes : [],
-
-        random : [],
-
         load : function() {
 
             fetch('./prep/grid.json')
               .then(response => response.json())
               .then(data => js.ctrl.after_data(data));
-
-        },
-
-        create : function() {
-
-            for (let i = 0; i < 800; i++) {
-
-                js.data.random.push(Math.round(Math.random() * 100));
-
-            }
-
-        },
-
-        make_indexes : function() {
-
-            js.data.indexes = js.data.random.map((d,i) => i);
 
         }
 
@@ -989,37 +814,46 @@ const js = {
 
         init : function() {
 
-            //js.grid.init();
-            js.sizings.get.square_size();
-
             js.data.load();
 
-            js.data.create();
-            js.data.make_indexes();
-            js.utils.shuffle(js.data.indexes);
-
-            js.sizings.set();
-
-            //js.ctrl.after_data();
+            //js.utils.shuffle(js.data.indexes);
 
         },
 
         after_data : function(data) {
 
-            js.treemap.prepare();
-            js.treemap.draw();
-
             js.data.grids = data;
             js.data.letters = data.letters;
 
-            // commenting controls 
-            //js.interactions.theme.monitor_change();
-            //js.interactions.temp_controls.monitor();
+            js.canvas.sizings.get.square_size();
+            js.canvas.sizings.set();
+            js.canvas.set_context();
+            js.canvas.points.initialize_grid();
+
+            js.steps.prepare_treemap_positions();
+            js.steps.prepare_default_positions();
+            js.canvas.set_current_state('treemap');
+            //js.utils.shuffle(js.canvas.points.params);
+
+            js.steps.prepare_dissolve_positions();
+            js.steps.prepare_step_positions('hi');
+            js.steps.prepare_step_positions('i-am');
+            js.steps.prepare_step_positions('i-love');
+            js.steps.prepare_step_positions('dataviz');
+            js.steps.prepare_step_positions('webdev');
+            js.steps.prepare_step_positions('cookie');
+            //js.steps.prepare_step_positions('cookie');
+
+            //js.canvas.set_current_state('treemap');
+            js.canvas.render();
+            //js.utils.shuffle(js.canvas.points.params);
+
+            anims.make_tweens();
+            anims.add_tweens_to_timeline();
+            anims.timeline.main.pause();
+            anims.timeline.skip.pause();
+
             js.interactions.controls.monitor();
-
-            js.utils.set_ids();
-
-            //js.grid.mark_cells();
 
         }
     }
@@ -1027,5 +861,88 @@ const js = {
 }
 
 js.ctrl.init();
+
+const anims = {
+
+    tweens : null,
+
+    make_tweens : () => {
+
+        const states = ['default', 'hi', 'i-am', 'i-love', 'dataviz', 'webdev', 'cookie', 'dissolve'];
+        anims.tweens = states.map(state => () => 
+    
+            gsap.to(js.canvas.points.params, {
+    
+                delay: (i, target) => (i % 6) * 0.1,
+                duration: 1,
+                x : (i, target) => js.canvas.points.get_future_value(i, target, state, 'x'),
+                y : (i, target) => js.canvas.points.get_future_value(i, target, state, 'y'),
+                w : (i, target) => js.canvas.points.get_future_value(i, target, state, 'w'),
+                h : (i, target) => js.canvas.points.get_future_value(i, target, state, 'h'),
+                m : (i, target) => js.canvas.points.get_future_value(i, target, state, 'm'),
+                color : (i, target) => js.canvas.points.get_future_value(i, target, state, 'color'),
+                line : (i, target) => js.canvas.points.get_future_value(i, target, state, 'line'),
+                opacity : (i, target) => js.canvas.points.get_future_value(i, target, state, 'opacity'),
+                onUpdate : js.canvas.render,
+                //paused: true,
+    
+                ease: 'power2'
+    
+            })
+    
+    
+        );
+
+    },
+
+    timeline: {
+        
+        main: new gsap.timeline(),
+
+        skip : new gsap.timeline()
+
+    },
+
+    add_tweens_to_timeline : () => {
+
+        const tweens = anims.tweens;
+
+        // main
+
+        tweens.forEach( tween => anims.timeline.main.add(tween(), "+=1") );
+
+        anims.timeline.main.add(
+            //() => gsap.set('article.home', {onComplete: () => document.querySelector('article.home').classList.remove('shrunk')})
+            () => gsap.set('article.home', {
+
+                className:"home", 
+                onComplete : () => document.querySelector('header.header-home').classList.remove('hidden')
+            }),
+            "-=1"
+
+        );
+
+
+        // skip
+
+        const dissolve_tween = tweens[tweens.length - 1];
+
+        anims.timeline.skip.add( dissolve_tween() );
+        anims.timeline.skip.add( () => gsap.set('article.home', {
+
+            className:"home", 
+            onComplete : () => document.querySelector('header.header-home').classList.remove('hidden')
+        }),
+        "-=1");
+
+
+        
+
+    }
+
+
+}
+
+
 
 
