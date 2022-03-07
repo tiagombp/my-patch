@@ -1,5 +1,6 @@
 library(tidyverse)
 library(readxl)
+library(jsonlite)
 
 grid1 <- read_excel('grids.xlsx', sheet = 1)
 grid2 <- read_excel('grids.xlsx', sheet = 2)
@@ -36,7 +37,7 @@ for (j in 1:grid_h) {
         i = n,
         x = i,
         y = j,
-        st1 = unlist(estado1),
+        st1 = estado1,
         st2 = estado2,
         st3 = estado3
       )
@@ -50,3 +51,5 @@ for (j in 1:grid_h) {
   }
   
 }
+
+write_json(output, 'grid.json')
