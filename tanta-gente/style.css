@@ -1,0 +1,37 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --colunas: 49;
+    --linhas: 45;
+}
+
+.container  {
+    display: grid;
+    gap: 1px;
+    grid-template-columns: repeat(49, 1fr);
+
+    max-width: 95vmin;
+    margin: 2.5vh auto;
+    perspective: 600px;
+    perspective-origin: 50vw 50vh;
+
+
+}
+
+.grid-cell {
+
+    background-color: hotpink;
+    aspect-ratio: 1;
+
+    transition: transform 1s;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+    
+.flipped {
+
+    transform: rotateY(180deg);
+
+}
