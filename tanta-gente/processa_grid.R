@@ -19,9 +19,9 @@ n <- 1
 indice <- 1
 output <- list()
 
-for (j in 1:grid_h) {
+for (i in 1:grid_h) {
   
-  for (i in 1:grid_w) {
+  for (j in 1:grid_w) {
     
     estado1 <- ifelse(is.na(as.data.frame(grid1)[i,j]), 0, 1)
     estado2 <- ifelse(is.na(as.data.frame(grid2)[i,j]), 0, 1)
@@ -31,7 +31,7 @@ for (j in 1:grid_h) {
 
     } else {
       
-      print(paste(i, j, estado1, estado2, estado3))
+      print(paste(i, j, n%/%49, estado1, estado2, estado3))
       
       output[[indice]] <- list(
         i = n,
@@ -74,8 +74,8 @@ nn <- 1
 
 for (el in output) {
   
-  grid[nn,'x'] = el$y
-  grid[nn,'y'] = el$x
+  grid[nn,'x'] = el$x
+  grid[nn,'y'] = el$y
   grid[nn,'st1'] = el$st1
   
   nn <- nn+1
