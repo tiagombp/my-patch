@@ -103,6 +103,8 @@ s.data.read();
 s.cria_divs();
 s.monitora();
 
+/*
+
 setTimeout(
 
     () => {
@@ -111,7 +113,7 @@ setTimeout(
         
             rotateY: (i) => (s.data.raw[i]['st1'][0] == 1) & (i % 2 == 1) ? '180deg' : '0',
             rotateX: (i) => (s.data.raw[i]['st1'][0] == 1) & (i % 2 == 0) ? '180deg' : '0',
-            delay : (i) => (i % 6) * 0.1,
+            //delay : (i) => (i % 6) * 0.1,
             duration : 2//(i) => (i % 3) * 0.5
         
         })
@@ -119,7 +121,7 @@ setTimeout(
         
             rotateY: (i) => (s.data.raw[i]['st2'][0] == 1) & (i % 2 == 1) ? '180deg' : '0',
             rotateX: (i) => (s.data.raw[i]['st2'][0] == 1) & (i % 2 == 0) ? '180deg' : '0',
-            delay : (i) => (i % 6) * 0.1,
+            //delay : (i) => (i % 6) * 0.1,
             duration : 2//(i) => (i % 3) * 0.5
         
         })
@@ -127,7 +129,7 @@ setTimeout(
         
             rotateY: (i) => (s.data.raw[i]['st3'][0] == 1) & (i % 2 == 1) ? '180deg' : '0',
             rotateX: (i) => (s.data.raw[i]['st3'][0] == 1) & (i % 2 == 0) ? '180deg' : '0',
-            delay : (i) => (i % 6) * 0.1,
+            //delay : (i) => (i % 6) * 0.1,
             duration : 2//(i) => (i % 3) * 0.5
         
         })
@@ -137,6 +139,42 @@ setTimeout(
     2000
 
 ) 
+
+*/
+
+setTimeout(
+
+    () => {
+
+        s.anims.tl.to(s.data.grid_filtered, {
+        
+            rotateX: (i) => (s.data.raw[i]['st1'][0] == 1) ? '180deg' : '0',
+            //delay : (i) => (i % 6) * 0.1,
+            duration : 2//(i) => (i % 3) * 0.5
+        
+        })
+        .to(s.data.grid_filtered, {
+        
+            rotateX: (i) => (s.data.raw[i]['st2'][0] == 1) ? '180deg' : '0',
+            //delay : (i) => (i % 6) * 0.1,
+            duration : 2//(i) => (i % 3) * 0.5
+        
+        })
+        .to(s.data.grid_filtered, {
+        
+            rotateX: (i) => (s.data.raw[i]['st3'][0] == 1) ? '180deg' : '0',
+            //delay : (i) => (i % 6) * 0.1,
+            duration : 2//(i) => (i % 3) * 0.5
+        
+        })
+
+    },
+
+    2000
+
+) 
+
+
 
 
 
