@@ -31,6 +31,12 @@ const s = {
 
     },
 
+    unflip : (target) => {
+
+        target.classList.remove("flipped");
+
+    },
+
     monitora: () => {
 
         const container = document.querySelector('.container');
@@ -62,6 +68,7 @@ const s = {
         data.forEach(d => {
             console.log(d[state][0], d.i[0]);
             if (d[state][0] == 1) s.flip(s.data.grid[d.i[0] - 1]);
+            else s.unflip(s.data.grid[d.i[0] - 1]);
         })
 
     }
