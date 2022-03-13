@@ -53,3 +53,34 @@ for (j in 1:grid_h) {
 }
 
 write_json(output, 'grid.json')
+
+
+plot_grid <- grid1 %>%
+  gather(key = "col", value = "valor") %>%
+  mutate(x = as.numeric(str_sub(col,4))) %>%
+  group_by(col) %>%
+  mutate(y = row_number())
+
+ggplot(plot_grid) + geom_point(aes(x = x, y = -y, size = valor))
+
+
+tam <- length(output)
+grid <- data.frame(
+  x = rep(0, tam),
+  y = rep(0, tam),
+  st1 = rep(0, tam))
+
+nn <- 1
+
+for (el in output) {
+  
+  grid[nn,'x'] = el$y
+  grid[nn,'y'] = el$x
+  grid[nn,'st1'] = el$st1
+  
+  nn <- nn+1
+  
+  
+}
+
+ggplot(grid) + geom_point(aes(x = x, y = -y, size = st1))
