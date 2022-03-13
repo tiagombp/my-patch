@@ -21,6 +21,8 @@ const s = {
 
         }
 
+        s.data.grid = document.querySelectorAll('.grid-cell');
+
     },
 
     flip : (target) => {
@@ -35,9 +37,37 @@ const s = {
 
         container.addEventListener('click', e => s.flip(e.target));
 
+    },
+
+    data :  {
+
+        raw : null,
+
+        grid : null,
+
+        read : () => {
+
+            fetch('grid.json').then(response => response.json()).then(data => {
+                s.data.raw = data;
+            })
+
+        }
+
+    },
+
+    write : (state) => {
+
+        const data = s.data.raw;
+
+        data.forEach(d => {
+            console.log(d[state][0], d.i[0]);
+            if (d[state][0] == 1) s.flip(s.data.grid[d.i[0] - 1]);
+        })
+
     }
 
 } 
 
 s.cria_divs();
 s.monitora();
+s.data.read();
