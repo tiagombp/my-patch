@@ -49,12 +49,18 @@ const s = {
 
         raw : null,
 
+        grid_filtered : null,
+
         grid : null,
 
         read : () => {
 
             fetch('grid.json').then(response => response.json()).then(data => {
+
                 s.data.raw = data;
+                const indices = data.map(d => d.i[0] - 1);
+                s.data.grid_filtered = Array.from(s.data.grid).filter((d,i) => indices.includes(i));
+
             })
 
         }
@@ -71,10 +77,68 @@ const s = {
             else s.unflip(s.data.grid[d.i[0] - 1]);
         })
 
+    },
+
+    anims : {
+
+        tl : new gsap.timeline()
+
+        /*
+
+        add : () => s.anims.tl.add(
+            gsap.to(s.data.grid_filtered, {
+        
+                rotateY: (i,target) => s.data.raw[i]['st1'][0] == 1 ? '180deg' : '0',
+                paused : true
+            
+            })
+        )
+        */
+
     }
 
 } 
 
+s.data.read();
 s.cria_divs();
 s.monitora();
-s.data.read();
+
+setTimeout(
+
+    () => {
+
+        s.anims.tl.to(s.data.grid_filtered, {
+        
+            rotateY: (i) => (s.data.raw[i]['st1'][0] == 1) & (i % 2 == 1) ? '180deg' : '0',
+            rotateX: (i) => (s.data.raw[i]['st1'][0] == 1) & (i % 2 == 0) ? '180deg' : '0',
+            delay : (i) => (i % 6) * 0.1,
+            duration : 2//(i) => (i % 3) * 0.5
+        
+        })
+        .to(s.data.grid_filtered, {
+        
+            rotateY: (i) => (s.data.raw[i]['st2'][0] == 1) & (i % 2 == 1) ? '180deg' : '0',
+            rotateX: (i) => (s.data.raw[i]['st2'][0] == 1) & (i % 2 == 0) ? '180deg' : '0',
+            delay : (i) => (i % 6) * 0.1,
+            duration : 2//(i) => (i % 3) * 0.5
+        
+        })
+        .to(s.data.grid_filtered, {
+        
+            rotateY: (i) => (s.data.raw[i]['st3'][0] == 1) & (i % 2 == 1) ? '180deg' : '0',
+            rotateX: (i) => (s.data.raw[i]['st3'][0] == 1) & (i % 2 == 0) ? '180deg' : '0',
+            delay : (i) => (i % 6) * 0.1,
+            duration : 2//(i) => (i % 3) * 0.5
+        
+        })
+
+    },
+
+    2000
+
+) 
+
+
+
+
+

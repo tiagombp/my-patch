@@ -17,6 +17,8 @@
     perspective: 600px;
     perspective-origin: 50vw 50vh;
 
+    background: linear-gradient(white, orange);
+
 
 }
 
