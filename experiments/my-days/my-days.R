@@ -27,5 +27,5 @@ dataset <- data.frame(datas = dias) %>%
   left_join(datas)
 
 ggplot(dataset) + 
-  geom_tile(aes(x = week, y = -ano, fill = marcos), height = 1, width = 1, color = 'white') +
+  geom_tile(aes(x = week, y = -ano, fill = marcos), height = .7, width = .7, color = 'white') +
   theme_void() + theme(legend.position = 'none')
