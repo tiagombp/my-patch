@@ -32,6 +32,7 @@ ctx.stroke();
 //const posicoes = 
 
 const nodes = [];
+let k = 0;
 
 for (let j = 0; j < ncol; j++) {
 
@@ -39,12 +40,22 @@ for (let j = 0; j < ncol; j++) {
 
         const point = {
 
+            n : k,
+
             x : i * gap + x0,
             y : j * gap + y0,
-            angulo_segmento1: 0,
-            angulo_segmento2: 4
+
+            a1 : null,
+            a2 : null,
+
+            angulos : {
+                inicial : [i % 2 == 0 ? 0 : 4, j % 2 == 0 ? 2 : 6],
+                primeira : null
+            }
 
         }
+
+        k++;
 
         nodes.push(point);
 
@@ -52,16 +63,87 @@ for (let j = 0; j < ncol; j++) {
 
 }
 
-const posicoes = {
-    iniciais : [
-        [0,0],
-    ]
-}
+/*
+ 
+  5 6 7
+   \|/
+ 4 -+- 0
+   /|\
+  3 2 1
+
+*/
+
+
+const posicoes_primeira = [
+    // [[i,j], [a1, a2]]
+    [ [0, 7],  [2, 0] ],
+    [ [1, 7],  [4, 0] ],
+    [ [2, 7],  [4, 0] ],
+    [ [3, 7],  [4, 0] ],
+    [ [4, 7],  [4, 0] ],
+    [ [5, 7],  [4, 2] ],
+
+    [ [0, 8],  [6, 0] ],
+    [ [1, 8],  [4, 0] ],
+    [ [2, 8],  [4, 2] ],
+    [ [2, 9],  [6, 2] ],
+    [ [2, 10], [6, 2] ],
+    [ [2, 11], [6, 2] ],
+    [ [2, 12], [6, 0] ],
+    [ [3, 12], [4, 6] ],
+    [ [3, 11], [6, 2] ],
+    [ [3, 10], [6, 2] ],
+    [ [3,  9], [6, 2] ],
+    [ [3,  8], [0, 2] ],
+    [ [4,  8], [0, 4] ],
+    [ [5,  8], [6, 4] ]
+
+]
+
+posicoes_primeira.forEach(elemento => {
+
+    const [pos, ang] = elemento;
+
+    const [i,j] = pos;
+
+    const n = j * nrow + i;
+
+    console.log(n);
+
+    nodes[n].angulos.primeira = ang;
+
+})
 
 ctx.strokeStyle = 'yellow';
 ctx.fillStyle = 'yellow';
 
 const teta = Math.PI / 4;
+
+//seta estado inicial
+nodes.forEach(point => {
+    point.a1 = point.angulos.inicial[0];
+    point.a2 = point.angulos.inicial[1];
+});
+
+//console.log(nodes.map(d => [d.a1, d.a2]));
+
+function pega_valor_futuro(target, estado) {
+
+    let valores = [target.a1, target.a2];
+
+    if (target.angulos[estado]) {
+
+        valores = target.angulos[estado]
+
+    }
+
+    //console.log(estado, target.angulos[estado], valores[0], valores[1]);
+
+    return valores;
+
+}
+
+
 
 function render() {
 
@@ -69,9 +151,11 @@ function render() {
     ctx.fillStyle = '#333';
     ctx.fillRect(0, 0, w, h);
 
-    nodes.forEach((point) => {
+    nodes.forEach(point => {
 
-        const { x, y, angulo_segmento1, angulo_segmento2 } = point
+        const { n, x, y, a1, a2 } = point;
+
+        //if (n == 175) console.log(a1, a2);
 
         ctx.strokeStyle = 'yellow';
         ctx.fillStyle = 'yellow';
@@ -84,7 +168,7 @@ function render() {
     
         ctx.save();
         ctx.translate(x,y);
-        ctx.rotate(teta * angulo_segmento1);
+        ctx.rotate(teta * a1);
         ctx.beginPath();
         ctx.moveTo(0,0);
         ctx.lineTo(gap,0);
@@ -94,7 +178,7 @@ function render() {
 
         ctx.save();
         ctx.translate(x,y);
-        ctx.rotate(teta * angulo_segmento2);
+        ctx.rotate(teta * a2);
         ctx.beginPath();
         ctx.moveTo(0,0);
         ctx.lineTo(gap,0);
@@ -106,17 +190,20 @@ function render() {
 
 }
 
+render();
+
+
 gsap.to(nodes, {
 
     delay : 1,
-    duration: 2,
-    angulo_segmento1: 8,
-    angulo_segmento2: -8,
+    duration: 5,
+    a1: (i, target) => pega_valor_futuro(target, 'primeira')[0],
+    a2: (i, target) => pega_valor_futuro(target, 'primeira')[1],
     onUpdate: render,
     yoyo: true,
-    repeat: 2
+    repeat: 0,
+
+    ease: 'linear'
 
 })
-
-
 
