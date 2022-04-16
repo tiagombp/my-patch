@@ -1,0 +1,14 @@
+body {
+
+    display: grid;
+    place-content: center;
+
+}
+
+canvas {
+
+    width: 90vmin;
+    height: 90vmin;
+    border: 4px dotted coral;
+    
+}
