@@ -41,7 +41,9 @@ for (let j = 0; j < ncol; j++) {
 
             x : i * gap + x0,
             y : j * gap + y0,
-            
+            angulo_segmento1: 0,
+            angulo_segmento2: 4
+
         }
 
         nodes.push(point);
@@ -50,31 +52,71 @@ for (let j = 0; j < ncol; j++) {
 
 }
 
+const posicoes = {
+    iniciais : [
+        [0,0],
+    ]
+}
+
 ctx.strokeStyle = 'yellow';
 ctx.fillStyle = 'yellow';
 
 const teta = Math.PI / 4;
 
-nodes.forEach((point,i) => {
+function render() {
 
-    const { x, y } = point
+    // clear
+    ctx.fillStyle = '#333';
+    ctx.fillRect(0, 0, w, h);
 
-    ctx.beginPath();
-    ctx.arc(x, y, 5, 0, Math.PI*2);
-    ctx.closePath();
-    ctx.stroke();
-    ctx.fill();
+    nodes.forEach((point) => {
 
-    ctx.save();
-    ctx.translate(x,y);
-    ctx.rotate(teta * i);
-    ctx.beginPath();
-    ctx.moveTo(0,0);
-    ctx.lineTo(gap,0);
-    ctx.closePath();
-    ctx.stroke();
-    ctx.restore();
+        const { x, y, angulo_segmento1, angulo_segmento2 } = point
 
+        ctx.strokeStyle = 'yellow';
+        ctx.fillStyle = 'yellow';
+    
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, Math.PI*2);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
+    
+        ctx.save();
+        ctx.translate(x,y);
+        ctx.rotate(teta * angulo_segmento1);
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.lineTo(gap,0);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(x,y);
+        ctx.rotate(teta * angulo_segmento2);
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.lineTo(gap,0);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore();
+    
+    })
+
+}
+
+gsap.to(nodes, {
+
+    delay : 1,
+    duration: 2,
+    angulo_segmento1: 8,
+    angulo_segmento2: -8,
+    onUpdate: render,
+    yoyo: true,
+    repeat: 2
 
 })
+
+
 
