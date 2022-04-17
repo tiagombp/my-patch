@@ -54,7 +54,7 @@ for (let j = 0; j < ncol; j++) {
             a1 : 4,
             a2 : 4,
 
-            l : gap,
+            l : gap - 20,
 
             angulos : {
                 inicial : [noise.perlin2(i/nrow, j/ncol), -noise.perlin2(i/nrow, j/ncol) ],
@@ -1269,8 +1269,19 @@ gsap.timeline()
 
         duration: 2,
         delay : (i, target) => (target.i + target.j) * .05,
-        color: 'green',
+        color: 'gray',
         a2: 8,
+        onUpdate: render,
+        ease: 'linear'
+
+    })
+    .to(nodes, {
+
+        duration: 2,
+        delay : (i, target) => (target.i + target.j) * .05,
+        color: 'gray',
+        a1: 4,
+        a2: 6,
         onUpdate: render,
         ease: 'linear'
 
@@ -1295,4 +1306,5 @@ gsap.timeline()
         onUpdate: render,
 
     })
+
 
