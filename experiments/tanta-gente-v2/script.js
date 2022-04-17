@@ -1248,9 +1248,19 @@ gsap.timeline()
     .to(nodes, {
 
         duration: 2,
+        color: 'green',
+        a1 : (i, target) => target.angulos.inicial[0],
+        a2 : (i, target) => target.angulos.inicial[1],
+        onUpdate: render,
+        ease: 'linear'
+
+    })
+    .to(nodes, {
+
+        duration: 2,
         delay : (i, target) => ( (nrow + ncol) - (target.i + target.j) ) * .05,
         a1: 2,
-        color: 'coral',
+        color: 'yellow',
         onUpdate: render,
         ease: 'linear'
 
@@ -1261,16 +1271,6 @@ gsap.timeline()
         delay : (i, target) => (target.i + target.j) * .05,
         color: 'green',
         a2: 8,
-        onUpdate: render,
-        ease: 'linear'
-
-    })
-    .to(nodes, {
-
-        duration: 2,
-        color: 'yellow',
-        a1 : (i, target) => target.angulos.inicial[0],
-        a2 : (i, target) => target.angulos.inicial[1],
         onUpdate: render,
         ease: 'linear'
 
