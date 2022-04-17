@@ -54,7 +54,7 @@ for (let j = 0; j < ncol; j++) {
             a1 : 4,
             a2 : 4,
 
-            l : gap - 20,
+            l : Math.sqrt(2) * gap/2, //- 20,
 
             angulos : {
                 inicial : [noise.perlin2(i/nrow, j/ncol), -noise.perlin2(i/nrow, j/ncol) ],
