@@ -30,7 +30,7 @@ const y0 = h * 0.1 + margin/2;
 ctx.rect(x0, y0, (nrow-1) * gap, (ncol-1)*gap);
 ctx.stroke();
 
-//const posicoes = 
+const posicoes = [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8]
 
 const nodes = [];
 let k = 0;
@@ -38,6 +38,9 @@ let k = 0;
 for (let j = 0; j < ncol; j++) {
 
     for (let i = 0; i < nrow; i++) {
+
+        const v = Math.floor(noise.perlin2(i/nrow, j/ncol) * 8);
+        console.log(v);
 
         const point = {
 
@@ -54,10 +57,12 @@ for (let j = 0; j < ncol; j++) {
             a1 : 4,
             a2 : 4,
 
-            l : Math.sqrt(2) * gap/2, //- 20,
+            l : Math.sqrt(2) * gap/2, 
+            //l: gap - 20,
 
             angulos : {
-                inicial : [noise.perlin2(i/nrow, j/ncol), -noise.perlin2(i/nrow, j/ncol) ],
+                inicial : [v, 8-v],
+                //inicial : [noise.perlin2(i/nrow, j/ncol), -noise.perlin2(i/nrow, j/ncol) ],
                 //inicial1 : [4, 0], //[i % 2 == 0 ? 0 : 4, j % 2 == 0 ? 2 : 6],
                 //inicial2 : [0, 0],
                 primeira : null,
@@ -1169,9 +1174,14 @@ function pega_valor_futuro(target, estado) {
 
     let valores = [target.a1, target.a2];
 
+    let n = target.n;
+
+    //let par = n % 3;
+
     if (target.angulos[estado]) {
 
-        valores = target.angulos[estado]
+        valores = target.angulos[estado];
+        //if (par) valores[0] = valores[0] - 8;
 
     }
 
@@ -1247,7 +1257,8 @@ render();
 gsap.timeline()
     .to(nodes, {
 
-        duration: 2,
+        delay: 1,
+        duration: 4,
         color: 'green',
         a1 : (i, target) => target.angulos.inicial[0],
         a2 : (i, target) => target.angulos.inicial[1],
@@ -1260,6 +1271,7 @@ gsap.timeline()
         duration: 2,
         delay : (i, target) => ( (nrow + ncol) - (target.i + target.j) ) * .05,
         a1: 2,
+        a2: 0,
         color: 'yellow',
         onUpdate: render,
         ease: 'linear'
@@ -1277,7 +1289,7 @@ gsap.timeline()
     })
     .to(nodes, {
 
-        duration: 2,
+        duration: 1,
         delay : (i, target) => (target.i + target.j) * .05,
         color: 'gray',
         a1: 4,
@@ -1288,7 +1300,7 @@ gsap.timeline()
     })
     .to(nodes, {
 
-        delay : 1,
+        delay : (i, target) => (i % 10) * 0.1,
         duration: 2,
         a1: (i, target) => pega_valor_futuro(target, 'primeira')[0],
         a2: (i, target) => pega_valor_futuro(target, 'primeira')[1],
@@ -1298,8 +1310,8 @@ gsap.timeline()
     })
     .to(nodes, {
 
-        delay : 1,
-        duration: 2,
+        delay : 0,
+        duration: (i, target) => (i % 10) * 0.5,
         a1: (i, target) => pega_valor_futuro(target, 'segunda')[0],
         a2: (i, target) => pega_valor_futuro(target, 'segunda')[1],
         color: (i, target) => pega_valor_futuro_l(target, 'segunda'),
