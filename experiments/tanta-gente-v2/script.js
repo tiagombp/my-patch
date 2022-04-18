@@ -16,7 +16,7 @@ const gap = w * 0.8 / (nrow - 1);
 
 const margin = (h * 0.8) - ( (ncol - 1) * gap );
 
-console.log(gap, margin);
+//console.log(gap, margin);
 
 ctx.fillStyle = '#333';
 ctx.fillRect(0, 0, w, h);
@@ -1155,7 +1155,7 @@ posicoes_primeira.forEach(elemento => {
 
     const n = j * nrow + i;
 
-    console.log(n);
+    //console.log(n);
 
     nodes[n].angulos.primeira = ang;
 
@@ -1169,7 +1169,7 @@ posicoes_segunda.forEach(elemento => {
 
     const n = j * nrow + i;
 
-    console.log(n);
+    //console.log(n);
 
     nodes[n].angulos.segunda = ang;
 
@@ -1177,7 +1177,7 @@ posicoes_segunda.forEach(elemento => {
 
 posicoes_terceira.forEach(elemento => {
 
-    console.log(elemento);
+    //console.log(elemento);
 
     const [pos, ang] = elemento;
 
@@ -1185,7 +1185,7 @@ posicoes_terceira.forEach(elemento => {
 
     const n = j * nrow + i;
 
-    console.log(n);
+    //console.log(n);
 
     nodes[n].angulos.terceira = ang;
 
@@ -1196,12 +1196,7 @@ ctx.fillStyle = 'yellow';
 
 const teta = Math.PI / 4;
 
-//seta estado inicial
-/*
-nodes.forEach(point => {
-    point.a1 = point.angulos.inicial[0];
-    point.a2 = point.angulos.inicial[1];
-});*/
+
 
 //console.log(nodes.map(d => [d.a1, d.a2]));
 
@@ -1226,7 +1221,7 @@ function pega_valor_futuro(target, estado) {
 
 }
 
-function pega_valor_futuro_l(target, estado) {
+function pega_valor_futuro_color(target, estado) {
     
     if (target.angulos[estado]) {
 
@@ -1289,27 +1284,46 @@ function render() {
 
 render();
 
+function renderiza_estado_inicial() {
+    //seta estado inicial
+    palette = ['#ff0000','#ffa500','#ffff00','#008000','#0000ff','#4b0082','#ee82ee'];
+
+    //palette = ['#c0a8ff', '#c0ffa8', '#ffc0a8', '#ffa8c0', '#c0d8ff', '#f0ffa8'];
+
+    nodes.forEach(point => {
+        point.a1 = point.angulos.inicial[0];
+        point.a2 = point.angulos.inicial[1];
+        point.color = palette[Math.floor(Math.random() * palette.length)];
+    });
+
+    render();
+
+}
+
+//renderiza_estado_inicial();
+
+
 gsap.timeline()
     .to(nodes, {
 
-        delay: 1,
+        delay: 2,
         duration: 4,
         color: 'cyan',
         a1 : (i, target) => target.angulos.inicial[0],
         a2 : (i, target) => target.angulos.inicial[1],
         onUpdate: render,
-        ease: 'linear'
+        ease: 'sine'
 
     })
     .to(nodes, {
 
         duration: 2,
-        delay : (i, target) => ( (nrow + ncol) - (target.i + target.j) ) * .05,
+        delay : (i, target) => 1 + ( (nrow + ncol) - (target.i + target.j) ) * .05,
         a1: 2,
         a2: 0,
         color: 'green',
         onUpdate: render,
-        ease: 'linear'
+        ease: 'sine'
 
     })
     .to(nodes, {
@@ -1319,7 +1333,7 @@ gsap.timeline()
         a2: 8,
         color: 'orange',
         onUpdate: render,
-        ease: 'linear'
+        ease: 'sine'
 
     })
     .to(nodes, {
@@ -1330,7 +1344,7 @@ gsap.timeline()
         a2: 6,
         color: 'yellow',
         onUpdate: render,
-        ease: 'linear'
+        ease: 'sine'
 
     })
     .to(nodes, {
@@ -1339,18 +1353,20 @@ gsap.timeline()
         duration: 2,
         a1: (i, target) => pega_valor_futuro(target, 'primeira')[0],
         a2: (i, target) => pega_valor_futuro(target, 'primeira')[1],
-        color: (i, target) => pega_valor_futuro_l(target, 'primeira'),
+        color: (i, target) => pega_valor_futuro_color(target, 'primeira'),
         onUpdate: render,
+        ease: 'sine'
 
     })
     .to(nodes, {
 
-        delay : 2,
+        delay : (i, target) => (i % 10) * 0.1 + 2,
         duration: 2,
         a1: (i, target) => pega_valor_futuro(target, 'segunda')[0],
         a2: (i, target) => pega_valor_futuro(target, 'segunda')[1],
-        color: (i, target) => pega_valor_futuro_l(target, 'segunda'),
+        color: (i, target) => pega_valor_futuro_color(target, 'segunda'),
         onUpdate: render,
+        ease: 'sine'
 
     })
     .to(nodes, {
@@ -1359,9 +1375,36 @@ gsap.timeline()
         duration: 2,
         a1: (i, target) => pega_valor_futuro(target, 'terceira')[0],
         a2: (i, target) => pega_valor_futuro(target, 'terceira')[1],
-        color: (i, target) => pega_valor_futuro_l(target, 'terceira'),
+        color: (i, target) => pega_valor_futuro_color(target, 'terceira'),
         onUpdate: render,
+        ease: 'sine'
 
     })
+    .to(nodes, {
+
+        delay: 2,
+        duration: 4,
+        color: 'cyan',
+        a1 : (i, target) => target.angulos.inicial[0],
+        a2 : (i, target) => target.angulos.inicial[1],
+        onUpdate: render,
+        ease: 'sine'
+
+    })
+    .to(nodes, {
+
+        delay: 1,
+        duration: 4,
+        color: 'white',
+        a1 : 4,
+        a2 : 4,
+        onUpdate: render,
+        ease: 'sine'
+
+    })
+    
+console.log('Inspirado por NO REASON.')
+
+
 
 
