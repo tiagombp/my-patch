@@ -36,6 +36,7 @@ const nodes = [];
 let k = 0;
 
 const dimcolor = '#555';
+palette = ['#c0a8ff', '#c0ffa8', '#ffc0a8', '#ffa8c0', '#c0d8ff', '#f0ffa8']
 
 for (let j = 0; j < ncol; j++) {
 
@@ -50,6 +51,8 @@ for (let j = 0; j < ncol; j++) {
             n : k,
 
             color: 'white',
+
+            color_random : palette[Math.floor(Math.random() * palette.length)],
 
             i : i,
             j : j,
@@ -103,13 +106,13 @@ const T_2_j = 6;
 const A_2_i = 21;
 const A_2_j = 6;
 
-const G_1_i = 0;
+const G_1_i = 3;
 const G_1_j = 12;
-const E_1_i = 6;
+const E_1_i = 8;
 const E_1_j = 12;
-const N_2_i = 10;
+const N_2_i = 12;
 const N_2_j = 12;
-const T_3_i = 15;
+const T_3_i = 17;
 const T_3_j = 12;
 const E_2_i = 21;
 const E_2_j = 12;
@@ -288,36 +291,32 @@ const posicoes_primeira = [
     [ [1 + G_1_i, 0 + G_1_j],  [4, 0] ],
     [ [2 + G_1_i, 0 + G_1_j],  [4, 0] ],
     [ [3 + G_1_i, 0 + G_1_j],  [4, 0] ],
-    [ [4 + G_1_i, 0 + G_1_j],  [4, 0] ],
-    [ [5 + G_1_i, 0 + G_1_j],  [4, 2] ],
+    [ [4 + G_1_i, 0 + G_1_j],  [4, 2] ],
     [ [0 + G_1_i, 1 + G_1_j],  [2, 6] ],
     [ [1 + G_1_i, 1 + G_1_j],  [2, 0] ],
     [ [2 + G_1_i, 1 + G_1_j],  [4, 0] ],
     [ [3 + G_1_i, 1 + G_1_j],  [4, 0] ],
-    [ [4 + G_1_i, 1 + G_1_j],  [4, 0] ],
-    [ [5 + G_1_i, 1 + G_1_j],  [4, 6] ],
+    [ [4 + G_1_i, 1 + G_1_j],  [4, 6] ],
     [ [0 + G_1_i, 2 + G_1_j],  [2, 6] ],
     [ [1 + G_1_i, 2 + G_1_j],  [2, 6] ],
-    [ [3 + G_1_i, 2 + G_1_j],  [2, 0] ],
-    [ [4 + G_1_i, 2 + G_1_j],  [4, 0] ],
-    [ [5 + G_1_i, 2 + G_1_j],  [4, 2] ],
+    [ [2 + G_1_i, 2 + G_1_j],  [2, 0] ],
+    [ [3 + G_1_i, 2 + G_1_j],  [4, 0] ],
+    [ [4 + G_1_i, 2 + G_1_j],  [4, 2] ],
     [ [0 + G_1_i, 3 + G_1_j],  [2, 6] ],
     [ [1 + G_1_i, 3 + G_1_j],  [2, 6] ],
-    [ [3 + G_1_i, 3 + G_1_j],  [6, 0] ],
-    [ [4 + G_1_i, 3 + G_1_j],  [4, 2] ],
-    [ [5 + G_1_i, 3 + G_1_j],  [6, 2] ],
+    [ [2 + G_1_i, 3 + G_1_j],  [6, 0] ],
+    [ [3 + G_1_i, 3 + G_1_j],  [4, 2] ],
+    [ [4 + G_1_i, 3 + G_1_j],  [6, 2] ],
     [ [0 + G_1_i, 4 + G_1_j],  [2, 6] ],
     [ [1 + G_1_i, 4 + G_1_j],  [0, 6] ],
     [ [2 + G_1_i, 4 + G_1_j],  [4, 0] ],
-    [ [3 + G_1_i, 4 + G_1_j],  [4, 0] ],
-    [ [4 + G_1_i, 4 + G_1_j],  [4, 6] ],
-    [ [5 + G_1_i, 4 + G_1_j],  [6, 2] ],
+    [ [3 + G_1_i, 4 + G_1_j],  [4, 6] ],
+    [ [4 + G_1_i, 4 + G_1_j],  [6, 2] ],
     [ [0 + G_1_i, 5 + G_1_j],  [0, 6] ],
     [ [1 + G_1_i, 5 + G_1_j],  [0, 4] ],
     [ [2 + G_1_i, 5 + G_1_j],  [4, 0] ],
     [ [3 + G_1_i, 5 + G_1_j],  [4, 0] ],
-    [ [4 + G_1_i, 5 + G_1_j],  [4, 0] ],
-    [ [5 + G_1_i, 5 + G_1_j],  [6, 4] ],
+    [ [4 + G_1_i, 5 + G_1_j],  [6, 4] ],
 
     // E
     [ [0 + E_1_i, 0 + E_1_j],  [2, 0] ],
@@ -371,23 +370,19 @@ const posicoes_primeira = [
     [ [0 + T_3_i, 0 + T_3_j],  [2, 0] ],
     [ [1 + T_3_i, 0 + T_3_j],  [4, 0] ],
     [ [2 + T_3_i, 0 + T_3_j],  [4, 0] ],
-    [ [3 + T_3_i, 0 + T_3_j],  [4, 0] ],
-    [ [4 + T_3_i, 0 + T_3_j],  [4, 0] ],
-    [ [5 + T_3_i, 0 + T_3_j],  [4, 2] ],
+    [ [3 + T_3_i, 0 + T_3_j],  [4, 2] ],
     [ [0 + T_3_i, 1 + T_3_j],  [6, 0] ],
-    [ [1 + T_3_i, 1 + T_3_j],  [4, 0] ],
-    [ [2 + T_3_i, 1 + T_3_j],  [4, 2] ],
-    [ [2 + T_3_i, 2 + T_3_j],  [6, 2] ],
-    [ [2 + T_3_i, 3 + T_3_j], [6, 2] ],
+    [ [1 + T_3_i, 1 + T_3_j],  [4, 2] ],
+    [ [1 + T_3_i, 2 + T_3_j],  [6, 2] ],
+    [ [1 + T_3_i, 3 + T_3_j], [6, 2] ],
+    [ [1 + T_3_i, 4 + T_3_j], [6, 2] ],
+    [ [1 + T_3_i, 5 + T_3_j], [6, 0] ],
+    [ [2 + T_3_i, 5 + T_3_j], [4, 6] ],
     [ [2 + T_3_i, 4 + T_3_j], [6, 2] ],
-    [ [2 + T_3_i, 5 + T_3_j], [6, 0] ],
-    [ [3 + T_3_i, 5 + T_3_j], [4, 6] ],
-    [ [3 + T_3_i, 4 + T_3_j], [6, 2] ],
-    [ [3 + T_3_i, 3 + T_3_j], [6, 2] ],
-    [ [3 + T_3_i, 2 + T_3_j], [6, 2] ],
-    [ [3 + T_3_i, 1 + T_3_j], [0, 2] ],
-    [ [4 + T_3_i, 1 + T_3_j], [0, 4] ],
-    [ [5 + T_3_i, 1 + T_3_j], [6, 4] ],
+    [ [2 + T_3_i, 3 + T_3_j], [6, 2] ],
+    [ [2 + T_3_i, 2 + T_3_j], [6, 2] ],
+    [ [2 + T_3_i, 1 + T_3_j], [0, 2] ],
+    [ [3 + T_3_i, 1 + T_3_j], [6, 4] ],
 
     // E
     [ [0 + E_2_i, 0 + E_2_j],  [2, 0] ],
@@ -1307,8 +1302,8 @@ gsap.timeline()
     .to(nodes, {
 
         delay: 2,
-        duration: 4,
-        color: 'cyan',
+        duration: 2.5,
+        color: (i, target) => target.color_random,
         a1 : (i, target) => target.angulos.inicial[0],
         a2 : (i, target) => target.angulos.inicial[1],
         onUpdate: render,
@@ -1331,7 +1326,7 @@ gsap.timeline()
         duration: 2,
         delay : (i, target) => (target.i + target.j) * .05,
         a2: 8,
-        color: 'orange',
+        color: 'cyan',
         onUpdate: render,
         ease: 'sine'
 
@@ -1350,7 +1345,7 @@ gsap.timeline()
     .to(nodes, {
 
         delay : (i, target) => (i % 10) * 0.1,
-        duration: 2,
+        duration: 1.75,
         a1: (i, target) => pega_valor_futuro(target, 'primeira')[0],
         a2: (i, target) => pega_valor_futuro(target, 'primeira')[1],
         color: (i, target) => pega_valor_futuro_color(target, 'primeira'),
@@ -1360,8 +1355,8 @@ gsap.timeline()
     })
     .to(nodes, {
 
-        delay : (i, target) => (i % 10) * 0.1 + 2,
-        duration: 2,
+        delay : (i, target) => (i % 10) * 0.1 + 1.5,
+        duration: 1.75,
         a1: (i, target) => pega_valor_futuro(target, 'segunda')[0],
         a2: (i, target) => pega_valor_futuro(target, 'segunda')[1],
         color: (i, target) => pega_valor_futuro_color(target, 'segunda'),
@@ -1371,8 +1366,8 @@ gsap.timeline()
     })
     .to(nodes, {
 
-        delay : 2,
-        duration: 2,
+        delay : (i, target) => (i % 10) * 0.1 + 1.5,
+        duration: 1.75,
         a1: (i, target) => pega_valor_futuro(target, 'terceira')[0],
         a2: (i, target) => pega_valor_futuro(target, 'terceira')[1],
         color: (i, target) => pega_valor_futuro_color(target, 'terceira'),
@@ -1383,7 +1378,7 @@ gsap.timeline()
     .to(nodes, {
 
         delay: 2,
-        duration: 4,
+        duration: 2.5,
         color: 'cyan',
         a1 : (i, target) => target.angulos.inicial[0],
         a2 : (i, target) => target.angulos.inicial[1],
@@ -1394,7 +1389,7 @@ gsap.timeline()
     .to(nodes, {
 
         delay: 1,
-        duration: 4,
+        duration: 2.5,
         color: 'white',
         a1 : 4,
         a2 : 4,
