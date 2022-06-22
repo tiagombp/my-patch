@@ -905,6 +905,13 @@ article.work h3::after {
 
 }
 
+article.long-quote {
+    font-size: .9rem;
+    margin: .5rem;
+    padding: .5rem;
+    background-color: #b9ccf0;
+}
+
 @media (max-width: 890px) {
 
     .work-screenshot {
