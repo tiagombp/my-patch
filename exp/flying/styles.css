@@ -1,0 +1,39 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Work Sans';
+}
+
+#map {
+    width: 100vw;
+    height: 100vh;
+}
+
+.steps-container {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+}
+
+.steps-container li {
+    list-style: none;
+    padding: .3em .6em;
+    color: #999;
+    cursor: pointer;
+
+}
+
+.steps-container li.selected {
+    border: 1px solid #333;
+    background: white;
+    color: #333;
+    border-radius: .5em;
+}
+
+.steps-container li + li {
+
+    margin-top: .5rem;
+}
