@@ -23,6 +23,8 @@ Será que vale a pena armazenar as posições e aí usar gsap para mover?
 
 Começar com uma cor só (Todos os retângulos e bordas). Aí gradativamente colore as bordas, depois os retângulos, e começa.
 
+Usar voronoi, em vez do treemap? Tesselations?
+
 aumentar fonte do h1 para 3 rem?
 
 fazer um scroller em cima de um mapa contando minha história
